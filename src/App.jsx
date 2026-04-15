@@ -50,72 +50,72 @@ const STORAGE_KEY = 'menus_app_v4';
 
 // Recettes avec tag protéine
 const DEFAULT_RECIPES = [
-  {id:1, name:'Salade de quinoa + œufs durs',      protein:'🥚', meal:'dejeuner', time:15, ing:'oeufs, quinoa, tomates'},
-  {id:2, name:'Omelette aux champignons',           protein:'🥚', meal:'dejeuner', time:10, ing:'oeufs, champignons, herbes'},
-  {id:3, name:'Œufs brouillés + salade verte',     protein:'🥚', meal:'diner',    time:10, ing:'oeufs, salade, huile de noix'},
-  {id:4, name:'Poulet rôti + légumes',              protein:'🍗', meal:'dejeuner', time:35, ing:'poulet, brocoli, carottes'},
-  {id:5, name:'Escalope de poulet + courgettes',   protein:'🍗', meal:'dejeuner', time:20, ing:'poulet, courgettes, huile olive'},
-  {id:6, name:'Poulet sauté + riz basmati',        protein:'🍗', meal:'diner',    time:25, ing:'poulet, riz basmati, poivron'},
-  {id:7, name:'Filet de poulet + haricots verts',  protein:'🍗', meal:'diner',    time:20, ing:'poulet, haricots verts, citron'},
-  {id:8, name:'Bœuf haché + légumes rôtis',        protein:'🥩', meal:'dejeuner', time:25, ing:'boeuf haché, courgette, tomate'},
-  {id:9, name:'Steak + salade verte',              protein:'🥩', meal:'diner',    time:15, ing:'steak, salade, vinaigrette noix'},
-  {id:10,name:'Tartare de bœuf + avocats',         protein:'🥩', meal:'diner',    time:15, ing:'boeuf, avocat, citron, câpres'},
-  {id:11,name:'Dos de cabillaud + haricots verts', protein:'🐟', meal:'dejeuner', time:20, ing:'cabillaud, haricots verts, citron'},
-  {id:12,name:'Sardines + lentilles',              protein:'🐟', meal:'dejeuner', time:15, ing:'sardines, lentilles, épinards'},
-  {id:13,name:'Maquereau + riz basmati',           protein:'🐟', meal:'diner',    time:25, ing:'maquereau, riz basmati, poireau'},
-  {id:14,name:'Poisson blanc + patate douce',      protein:'🐟', meal:'diner',    time:30, ing:'poisson blanc, patate douce, citron'},
-  {id:15, name:'Steak pomme de terre crispy four haricots verts vapeur', protein:'🥩', meal:'dejeuner', time:20, ing:'steak, pommes de terre, haricots verts'},
+  {id:1, name:'Salade de quinoa + œufs durs',      protein:'🥚', meal:'dejeuner', ing:'oeufs, quinoa, tomates'},
+  {id:2, name:'Omelette aux champignons',           protein:'🥚', meal:'dejeuner',ing:'oeufs, champignons, herbes'},
+  {id:3, name:'Œufs brouillés + salade verte',     protein:'🥚', meal:'diner',ing:'oeufs, salade, huile de noix'},
+  {id:4, name:'Poulet rôti + légumes',              protein:'🍗', meal:'dejeuner',ing:'poulet, brocoli, carottes'},
+  {id:5, name:'Escalope de poulet + courgettes',   protein:'🍗', meal:'dejeuner',ing:'poulet, courgettes, huile olive'},
+  {id:6, name:'Poulet sauté + riz basmati',        protein:'🍗', meal:'diner',ing:'poulet, riz basmati, poivron'},
+  {id:7, name:'Filet de poulet + haricots verts',  protein:'🍗', meal:'diner',ing:'poulet, haricots verts, citron'},
+  {id:8, name:'Bœuf haché + légumes rôtis',        protein:'🥩', meal:'dejeuner',ing:'boeuf haché, courgette, tomate'},
+  {id:9, name:'Steak + salade verte',              protein:'🥩', meal:'diner',ing:'steak, salade, vinaigrette noix'},
+  {id:10,name:'Tartare de bœuf + avocats',         protein:'🥩', meal:'diner',ing:'boeuf, avocat, citron, câpres'},
+  {id:11,name:'Dos de cabillaud + haricots verts', protein:'🐟', meal:'dejeuner',ing:'cabillaud, haricots verts, citron'},
+  {id:12,name:'Sardines + lentilles',              protein:'🐟', meal:'dejeuner',ing:'sardines, lentilles, épinards'},
+  {id:13,name:'Maquereau + riz basmati',           protein:'🐟', meal:'diner',ing:'maquereau, riz basmati, poireau'},
+  {id:14,name:'Poisson blanc + patate douce',      protein:'🐟', meal:'diner',ing:'poisson blanc, patate douce, citron'},
+  {id:15, name:'Steak pomme de terre crispy four haricots verts vapeur', protein:'🥩', meal:'dejeuner',ing:'steak, pommes de terre, haricots verts'},
   {id:16, name:'Chakchouka', protein:'🥚', meal:'diner', time:20, ing:'oeufs, tomates, poivrons, oignons, épices'},
-  {id:17, name:'Fatjias hauts de cuisse poulet + poivron + gruyere + salade', protein:'🍗', meal:'dejeuner', time:20, ing:'hauts de cuisse de poulet, poivron, gruyère, salade'},
+  {id:17, name:'Fatjias hauts de cuisse poulet + poivron + gruyere + salade', protein:'🍗', meal:'dejeuner',, ing:'hauts de cuisse de poulet, poivron, gruyère, salade'},
   {id:18, name:'Tajine poisson poivron pdt carotte', protein:'🐟', meal:'dejeuner', time:20, ing:'poisson, poivrons, pommes de terre, carottes, épices'},
-  {id:19, name:'Canelloni viande hachée au four tomate carotte salade', protein:'🥩', meal:'dejeuner', time:20, ing:'viande hachée, tomates, carottes, salade, pâtes'},
-  {id:20, name:'Pad Thaï hauts de cuisse + pousse soja + cébette + poireau + oeuf', protein:'🍗', meal:'dejeuner', time:20, ing:'hauts de cuisse de poulet, pousses de soja, cébette, poireau, oeuf, nouilles'},
+  {id:19, name:'Canelloni viande hachée au four tomate carotte salade', protein:'🥩', meal:'dejeuner', ing:'viande hachée, tomates, carottes, salade, pâtes'},
+  {id:20, name:'Pad Thaï hauts de cuisse + pousse soja + cébette + poireau + oeuf', protein:'🍗', meal:'dejeuner', ing:'hauts de cuisse de poulet, pousses de soja, cébette, poireau, oeuf, nouilles'},
   {id:21, name:'Poulet pané riz tasty', protein:'🍗', meal:'dejeuner', time:20, ing:'poulet pané, riz, épices'},
-  {id:22, name:'Steak courgette grillée purée de patate douce', protein:'🥩', meal:'dejeuner', time:20, ing:'steak, courgettes grillées, patate douce'},
-  {id:23, name:'Tartine avocat œuf salade oignons frits', protein:'🥚', meal:'dejeuner', time:20, ing:'pain, avocat, oeuf, salade, oignons frits'},
-  {id:24, name:'Cuisse poulet (tajine +grill) + basquaise + quinoa', protein:'🍗', meal:'dejeuner', time:20, ing:'cuisses de poulet, poivrons, quinoa, épices'},
-  {id:25, name:'Roulé Saumon four pdt epinards', protein:'🐟', meal:'dejeuner', time:20, ing:'saumon, pommes de terre, épinards'},
-  {id:26, name:'Enchiladas boeuf émietté + salade', protein:'🥩', meal:'dejeuner', time:20, ing:'boeuf émietté, tortillas, salade, épices'},
-  {id:27, name:'Poulet citron confit olives frites', protein:'🍗', meal:'dejeuner', time:20, ing:'poulet, citron confit, olives, frites'},
-  {id:28, name:'Poulet gratin chou fleur brocolis', protein:'🍗', meal:'dejeuner', time:20, ing:'poulet, chou-fleur, brocolis, béchamel'},
-  {id:29, name:'Bolognaise carottes poireau', protein:'🥩', meal:'dejeuner', time:20, ing:'viande hachée, carottes, poireau, pâtes, tomates'},
-  {id:30, name:'Pad Thaï crevettes + pousse soja + cébette + poireau + oeuf', protein:'🐟', meal:'dejeuner', time:20, ing:'crevettes, pousses de soja, cébette, poireau, oeuf, nouilles'},
-  {id:31, name:'Hauts de cuisse rôtis + légumes rôtis + semoule', protein:'🍗', meal:'dejeuner', time:20, ing:'hauts de cuisse de poulet, légumes variés, semoule'},
-  {id:32, name:'Wok boeuf + légumes + vermicelles', protein:'🥩', meal:'dejeuner', time:20, ing:'boeuf, légumes variés, vermicelles, sauce soja'},
-  {id:33, name:'Enchiladas poulet + poivrons + fromage', protein:'🍗', meal:'dejeuner', time:20, ing:'poulet, poivrons, fromage, tortillas'},
-  {id:34, name:'Poisson vapeur + haricots verts + riz', protein:'🐟', meal:'dejeuner', time:20, ing:'poisson, haricots verts, riz'},
-  {id:35, name:'Poulet tandoori + salade pois chiches', protein:'🍗', meal:'dejeuner', time:20, ing:'poulet, épices tandoori, pois chiches, salade'},
-  {id:36, name:'Biryani légumes + dinde effilochée', protein:'🍗', meal:'dejeuner', time:20, ing:'dinde effilochée, légumes, riz basmati, épices'},
-  {id:37, name:'Tajine agneau + courgette + pois chiches', protein:'🥩', meal:'dejeuner', time:20, ing:'agneau, courgettes, pois chiches, épices'},
-  {id:38, name:'Riz sauté aux œufs + légumes + épices', protein:'🥚', meal:'dejeuner', time:20, ing:'riz, oeufs, légumes variés, épices'},
-  {id:39, name:'Brochettes kefta + semoule + sauce yaourt', protein:'🥩', meal:'dejeuner', time:20, ing:'viande hachée, semoule, sauce yaourt, épices'},
-  {id:40, name:'Nouilles soba + saumon grillé + légumes', protein:'🐟', meal:'dejeuner', time:20, ing:'saumon, nouilles soba, légumes variés'},
-  {id:41, name:'Dhal lentilles corail + riz basmati', protein:'🍗', meal:'dejeuner', time:20, ing:'lentilles corail, riz basmati, épices, lait de coco, poulet'},
-  {id:42, name:"Sandwich pain orge, poulet, crudités", protein:'🍗', meal:'dejeuner', time:20, ing:"pain d'orge, poulet, crudités"},
-  {id:43, name:'Boeuf braisé + polenta crémeuse', protein:'🥩', meal:'dejeuner', time:20, ing:'boeuf, polenta, épices'},
-  {id:44, name:'Poulet citron confit + pommes de terre', protein:'🍗', meal:'dejeuner', time:20, ing:'poulet, citron confit, pommes de terre'},
-  {id:45, name:'Pilons de poulet + poêlée courgette + orge', protein:'🍗', meal:'dejeuner', time:20, ing:'pilons de poulet, courgettes, orge'},
-  {id:46, name:'Nouilles udon + dinde teriyaki + légumes', protein:'🍗', meal:'dejeuner', time:20, ing:'dinde, nouilles udon, légumes, sauce teriyaki'},
-  {id:47, name:'Boulettes viande + riz + sauce tomate', protein:'🥩', meal:'dejeuner', time:20, ing:'viande hachée, riz, tomates, épices'},
-  {id:48, name:'Pad thaï aux crevettes + légumes', protein:'🐟', meal:'dejeuner', time:20, ing:'crevettes, nouilles, légumes variés, épices'},
-  {id:49, name:'Tajine poisson + légumes + orge', protein:'🐟', meal:'dejeuner', time:20, ing:'poisson, légumes variés, orge, épices'},
-  {id:50, name:'Rôti agneau + légumes braisés + semoule', protein:'🥩', meal:'dejeuner', time:20, ing:'agneau, légumes braisés, semoule'},
-  {id:51, name:'Riz sauté légumes + œuf + coriandre', protein:'🥚', meal:'dejeuner', time:20, ing:'riz, oeufs, légumes variés, coriandre'},
-  {id:52, name:'Poisson grillé chermoula + salade quinoa', protein:'🐟', meal:'dejeuner', time:20, ing:'poisson, chermoula, quinoa, salade'},
-  {id:53, name:'Gnocchis + courgettes + dinde + crème', protein:'🍗', meal:'dejeuner', time:20, ing:'gnocchis, courgettes, dinde, crème'},
-  {id:54, name:'Pilons poulet épicés + tagliatelles + légumes', protein:'🍗', meal:'dejeuner', time:20, ing:'pilons de poulet, tagliatelles, légumes, épices'},
-  {id:55, name:'Poivrons farcis quinoa / viande', protein:'🥩', meal:'dejeuner', time:20, ing:'poivrons, quinoa, viande hachée, épices'},
-  {id:56, name:'Biryani ou couscous maison', protein:'🍗', meal:'dejeuner', time:20, ing:'légumes, semoule ou riz, épices, poulet'},
-  {id:57, name:'Tajine poulet pruneaux + pain ou semoule', protein:'🍗', meal:'dejeuner', time:20, ing:'poulet, pruneaux, pain ou semoule, épices'},
-  {id:58, name:'Salade tiède lentilles / feta / pickles', protein:'🥚', meal:'diner', time:20, ing:'lentilles, feta, pickles, vinaigrette, oeuf'},
-  {id:59, name:'Zaalouk + pain maïs + yaourt cumin', protein:'🥚', meal:'diner', time:20, ing:'aubergines, tomates, ail, épices, pain de maïs, yaourt, oeuf'},
-  {id:60, name:'Omelette épices + salade + cornichons', protein:'🥚', meal:'diner', time:20, ing:'oeufs, épices, salade, cornichons'},
-  {id:61, name:'Bouillon asiatique léger', protein:'🐟', meal:'diner', time:20, ing:'bouillon, légumes, épices asiatiques, crevettes'},
-  {id:62, name:'Poêlée courgette / tomate / feta', protein:'🍗', meal:'diner', time:20, ing:'courgettes, tomates, feta, poulet'},
-  {id:63, name:'Tarte fine tomate / moutarde / origan', protein:'🥚', meal:'diner', time:20, ing:'pâte fine, tomates, moutarde, origan, oeuf'},
-  {id:64, name:'Légumes grillés + œufs durs + pickles', protein:'🥚', meal:'diner', time:20, ing:'légumes variés, oeufs durs, pickles'},
-  {id:65, name:'Salade lentilles / tomates / thon / œuf', protein:'🐟', meal:'diner', time:20, ing:'lentilles, tomates, thon, oeuf'},
-  {id:66, name:'Bouillon asiatique + tofu ou crevettes', protein:'🐟', meal:'diner', time:20, ing:'bouillon, tofu ou crevettes, épices asiatiques'},
+  {id:22, name:'Steak courgette grillée purée de patate douce', protein:'🥩', meal:'dejeuner', ing:'steak, courgettes grillées, patate douce'},
+  {id:23, name:'Tartine avocat œuf salade oignons frits', protein:'🥚', meal:'dejeuner', ing:'pain, avocat, oeuf, salade, oignons frits'},
+  {id:24, name:'Cuisse poulet (tajine +grill) + basquaise + quinoa', protein:'🍗', meal:'dejeuner', ing:'cuisses de poulet, poivrons, quinoa, épices'},
+  {id:25, name:'Roulé Saumon four pdt epinards', protein:'🐟', meal:'dejeuner', ing:'saumon, pommes de terre, épinards'},
+  {id:26, name:'Enchiladas boeuf émietté + salade', protein:'🥩', meal:'dejeuner', ing:'boeuf émietté, tortillas, salade, épices'},
+  {id:27, name:'Poulet citron confit olives frites', protein:'🍗', meal:'dejeuner',, ing:'poulet, citron confit, olives, frites'},
+  {id:28, name:'Poulet gratin chou fleur brocolis', protein:'🍗', meal:'dejeuner', ing:'poulet, chou-fleur, brocolis, béchamel'},
+  {id:29, name:'Bolognaise carottes poireau', protein:'🥩', meal:'dejeuner',ing:'viande hachée, carottes, poireau, pâtes, tomates'},
+  {id:30, name:'Pad Thaï crevettes + pousse soja + cébette + poireau + oeuf', protein:'🐟', meal:'dejeuner',ing:'crevettes, pousses de soja, cébette, poireau, oeuf, nouilles'},
+  {id:31, name:'Hauts de cuisse rôtis + légumes rôtis + semoule', protein:'🍗', meal:'dejeuner',ing:'hauts de cuisse de poulet, légumes variés, semoule'},
+  {id:32, name:'Wok boeuf + légumes + vermicelles', protein:'🥩', meal:'dejeuner',ing:'boeuf, légumes variés, vermicelles, sauce soja'},
+  {id:33, name:'Enchiladas poulet + poivrons + fromage', protein:'🍗', meal:'dejeuner',ing:'poulet, poivrons, fromage, tortillas'},
+  {id:34, name:'Poisson vapeur + haricots verts + riz', protein:'🐟', meal:'dejeuner',ing:'poisson, haricots verts, riz'},
+  {id:35, name:'Poulet tandoori + salade pois chiches', protein:'🍗', meal:'dejeuner',ing:'poulet, épices tandoori, pois chiches, salade'},
+  {id:36, name:'Biryani légumes + dinde effilochée', protein:'🍗', meal:'dejeuner',ing:'dinde effilochée, légumes, riz basmati, épices'},
+  {id:37, name:'Tajine agneau + courgette + pois chiches', protein:'🥩', meal:'dejeuner',ing:'agneau, courgettes, pois chiches, épices'},
+  {id:38, name:'Riz sauté aux œufs + légumes + épices', protein:'🥚', meal:'dejeuner',ing:'riz, oeufs, légumes variés, épices'},
+  {id:39, name:'Brochettes kefta + semoule + sauce yaourt', protein:'🥩', meal:'dejeuner', ing:'viande hachée, semoule, sauce yaourt, épices'},
+  {id:40, name:'Nouilles soba + saumon grillé + légumes', protein:'🐟', meal:'dejeuner', ing:'saumon, nouilles soba, légumes variés'},
+  {id:41, name:'Dhal lentilles corail + riz basmati', protein:'🍗', meal:'dejeuner', ing:'lentilles corail, riz basmati, épices, lait de coco, poulet'},
+  {id:42, name:"Sandwich pain orge, poulet, crudités", protein:'🍗', meal:'dejeuner', ing:"pain d'orge, poulet, crudités"},
+  {id:43, name:'Boeuf braisé + polenta crémeuse', protein:'🥩', meal:'dejeuner',ing:'boeuf, polenta, épices'},
+  {id:44, name:'Poulet citron confit + pommes de terre', protein:'🍗', meal:'dejeuner',ing:'poulet, citron confit, pommes de terre'},
+  {id:45, name:'Pilons de poulet + poêlée courgette + orge', protein:'🍗', meal:'dejeuner',ing:'pilons de poulet, courgettes, orge'},
+  {id:46, name:'Nouilles udon + dinde teriyaki + légumes', protein:'🍗', meal:'dejeuner', ing:'dinde, nouilles udon, légumes, sauce teriyaki'},
+  {id:47, name:'Boulettes viande + riz + sauce tomate', protein:'🥩', meal:'dejeuner',ing:'viande hachée, riz, tomates, épices'},
+  {id:48, name:'Pad thaï aux crevettes + légumes', protein:'🐟', meal:'dejeuner',ing:'crevettes, nouilles, légumes variés, épices'},
+  {id:49, name:'Tajine poisson + légumes + orge', protein:'🐟', meal:'dejeuner',ing:'poisson, légumes variés, orge, épices'},
+  {id:50, name:'Rôti agneau + légumes braisés + semoule', protein:'🥩', meal:'dejeuner',ing:'agneau, légumes braisés, semoule'},
+  {id:51, name:'Riz sauté légumes + œuf + coriandre', protein:'🥚', meal:'dejeuner',ing:'riz, oeufs, légumes variés, coriandre'},
+  {id:52, name:'Poisson grillé chermoula + salade quinoa', protein:'🐟', meal:'dejeuner',ing:'poisson, chermoula, quinoa, salade'},
+  {id:53, name:'Gnocchis + courgettes + dinde + crème', protein:'🍗', meal:'dejeuner',ing:'gnocchis, courgettes, dinde, crème'},
+  {id:54, name:'Pilons poulet épicés + tagliatelles + légumes', protein:'🍗', meal:'dejeuner', ing:'pilons de poulet, tagliatelles, légumes, épices'},
+  {id:55, name:'Poivrons farcis quinoa / viande', protein:'🥩', meal:'dejeuner',ing:'poivrons, quinoa, viande hachée, épices'},
+  {id:56, name:'Biryani ou couscous maison', protein:'🍗', meal:'dejeuner',ing:'légumes, semoule ou riz, épices, poulet'},
+  {id:57, name:'Tajine poulet pruneaux + pain ou semoule', protein:'🍗', meal:'dejeuner', ing:'poulet, pruneaux, pain ou semoule, épices'},
+  {id:58, name:'Salade tiède lentilles / feta / pickles', protein:'🥚', meal:'diner',ing:'lentilles, feta, pickles, vinaigrette, oeuf'},
+  {id:59, name:'Zaalouk + pain maïs + yaourt cumin', protein:'🥚', meal:'diner',ing:'aubergines, tomates, ail, épices, pain de maïs, yaourt, oeuf'},
+  {id:60, name:'Omelette épices + salade + cornichons', protein:'🥚', meal:'diner', ing:'oeufs, épices, salade, cornichons'},
+  {id:61, name:'Bouillon asiatique léger', protein:'🐟', meal:'diner', ing:'bouillon, légumes, épices asiatiques, crevettes'},
+  {id:62, name:'Poêlée courgette / tomate / feta', protein:'🍗', meal:'diner', ing:'courgettes, tomates, feta, poulet'},
+  {id:63, name:'Tarte fine tomate / moutarde / origan', protein:'🥚', meal:'diner', ing:'pâte fine, tomates, moutarde, origan, oeuf'},
+  {id:64, name:'Légumes grillés + œufs durs + pickles', protein:'🥚', meal:'diner', ing:'légumes variés, oeufs durs, pickles'},
+  {id:65, name:'Salade lentilles / tomates / thon / œuf', protein:'🐟', meal:'diner', ing:'lentilles, tomates, thon, oeuf'},
+  {id:66, name:'Bouillon asiatique + tofu ou crevettes', protein:'🐟', meal:'diner', ing:'bouillon, tofu ou crevettes, épices asiatiques'},
 ];
 
 const STORAGE_RECIPES_KEY = 'menus_recipes_v4';
@@ -419,14 +419,14 @@ html,body{background:#FAF7F2;margin:0;padding:0;}
 
       <Toast msg={toast} bottom={toastBottom} />
 
-      {/* ══ PLANIFIER ═════════════════════════════════════════════ */}
+     {/* ══ PLANIFIER ═════════════════════════════════════════════ */}
       {tab==='planner' && (
         <div style={{display:'flex',flexDirection:'column',height:700}}>
-          <div style={{padding:'6px 20px 4px'}}>
+          <div style={{padding:'22px 20px 10px'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
               <div>
-                <div style={{fontSize:28,fontWeight:800,letterSpacing:-0.8,color:P.text}}>Mes menus</div>
-                <div style={{fontSize:13,color:P.textSec,marginTop:2}}>
+                <div style={{fontSize:30,fontWeight:800,letterSpacing:-0.8,color:P.text}}>Mes menus</div>
+                <div style={{fontSize:14,color:P.textSec,marginTop:5}}>
 {new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'}).replace(/^./, c => c.toUpperCase())}
                 </div>
               </div>
@@ -436,12 +436,12 @@ html,body{background:#FAF7F2;margin:0;padding:0;}
               </div>
             </div>
           </div>
-          <div className="scroll" style={{flex:1,overflowY:'auto',padding:'0 16px 16px'}}>
+          <div className="scroll" style={{flex:1,overflowY:'auto',padding:'0 20px 20px'}}>
             {/* Day strip */}
-            <div className="scroll" style={{display:'flex',gap:6,padding:'10px 0 6px',overflowX:'auto'}}>
+            <div className="scroll" style={{display:'flex',gap:8,padding:'14px 0 10px',overflowX:'auto'}}>
               {DAYS.map((d,i)=>(
-                <div key={i} onClick={()=>setSelectedDay(i)} style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:3,cursor:'pointer'}}>
-                  <div style={{width:38,height:38,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:700,background:i===selectedDay?P.accent:P.surface,color:i===selectedDay?'white':P.text,border:`1.5px solid ${i===selectedDay?P.accent:P.border}`,boxShadow:i===selectedDay?`0 4px 14px ${P.accentLight}66`:'none',transition:'all 0.18s'}}>{DATES[i]}</div>
+                <div key={i} onClick={()=>setSelectedDay(i)} style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:5,cursor:'pointer'}}>
+                  <div style={{width:42,height:42,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:700,background:i===selectedDay?P.accent:P.surface,color:i===selectedDay?'white':P.text,border:`1.5px solid ${i===selectedDay?P.accent:P.border}`,boxShadow:i===selectedDay?`0 4px 14px ${P.accentLight}66`:'none',transition:'all 0.18s'}}>{DATES[i]}</div>
                   <span style={{fontSize:10,fontWeight:600,color:i===selectedDay?P.accent:P.textTert,letterSpacing:'0.02em'}}>{d}</span>
                   <div style={{width:4,height:4,borderRadius:'50%',background:MEALS.some(m=>planner[`${i}-${m}`])?P.accentLight:'transparent'}}/>
                 </div>
@@ -456,29 +456,29 @@ html,body{background:#FAF7F2;margin:0;padding:0;}
               const hasPlanned = !!recipe;
               return (
                 <div key={m} onClick={()=>openAddMealSheet(m)}
-                  style={{background:P.surface,borderRadius:16,padding:'14px 16px',marginBottom:10,border:`0.5px solid ${P.border}`,cursor:'pointer',transition:'opacity 0.15s'}}
+                  style={{background:P.surface,borderRadius:20,padding:'18px 20px',marginBottom:14,border:`0.5px solid ${P.border}`,cursor:'pointer',transition:'opacity 0.15s'}}
                   onMouseDown={e=>e.currentTarget.style.opacity='0.75'}
                   onMouseUp={e=>e.currentTarget.style.opacity='1'}
                   onTouchStart={e=>e.currentTarget.style.opacity='0.75'}
                   onTouchEnd={e=>e.currentTarget.style.opacity='1'}
                 >
-                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
-                    <div style={{display:'flex',alignItems:'center',gap:6}}>
-                      <span style={{fontSize:11,fontWeight:800,color:P.accentLight,textTransform:'uppercase',letterSpacing:'0.1em'}}>{ML[m]}</span>
-                      <span style={{fontSize:17}}>{emoji}</span>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
+                    <div style={{display:'flex',alignItems:'center',gap:8}}>
+                      <span style={{fontSize:12,fontWeight:800,color:P.accentLight,textTransform:'uppercase',letterSpacing:'0.1em'}}>{ML[m]}</span>
+                      <span style={{fontSize:18}}>{emoji}</span>
                     </div>
                     <span style={{fontSize:12,fontWeight:600,color:hasPlanned?P.textSec:P.accent}}>{hasPlanned?'Modifier ›':'+ Ajouter'}</span>
                   </div>
                   {recipe ? (
                     <div style={{display:'flex',alignItems:'center',gap:10}}>
                       <div style={{flex:1}}>
-                        <div style={{fontSize:15,fontWeight:600,color:P.text}}>{recipe.name}</div>
-                        <div style={{fontSize:12,color:P.textSec,marginTop:2}}>{recipe.time} min</div>
+                        <div style={{fontSize:16,fontWeight:600,color:P.text,lineHeight:1.4}}>{recipe.name}</div>
+                        <div style={{fontSize:13,color:P.textSec,marginTop:5}}>{recipe.time} min</div>
                       </div>
-                      <span onClick={e=>{e.stopPropagation();removeMeal(selectedDay,m);}} style={{color:P.remove,fontSize:12,fontWeight:600,cursor:'pointer',padding:'4px 10px',background:P.redBg,borderRadius:20,flexShrink:0}}>Retirer</span>
+                      <span onClick={e=>{e.stopPropagation();removeMeal(selectedDay,m);}} style={{color:P.remove,fontSize:12,fontWeight:600,cursor:'pointer',padding:'5px 12px',background:P.redBg,borderRadius:20,flexShrink:0}}>Retirer</span>
                     </div>
                   ) : (
-                    <div style={{display:'flex',alignItems:'center',justifyContent:'center',padding:'12px 0',borderRadius:12,border:`1.5px dashed ${P.border}`,color:P.textTert,fontSize:13}}>
+                    <div style={{display:'flex',alignItems:'center',justifyContent:'center',padding:'16px 0',borderRadius:14,border:`1.5px dashed ${P.border}`,color:P.textTert,fontSize:13}}>
                       Appuyer pour planifier
                     </div>
                   )}
@@ -488,7 +488,7 @@ html,body{background:#FAF7F2;margin:0;padding:0;}
           </div>
         </div>
       )}
-
+      
       {/* ══ PLATS (ex-menutypes) ══════════════════════════════════ */}
       {tab==='menutypes' && (
         <div style={{display:'flex',flexDirection:'column',height:700}}>
