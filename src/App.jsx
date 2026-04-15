@@ -352,7 +352,7 @@ export default function App() {
         </Sheet>
       )}
 
-{/* 2. S'affiche UNIQUEMENT pour créer un NOUVEAU plat (Bouton Nouveau dans Plats) */}
+{/* 2. Tiroir Nouveau Plat (Garder celui-ci) */}
       {sheet === 'newRecipe' && (
         <Sheet open={true} onClose={() => setSheet(null)} title="Nouveau Plat">
           <VLabel>Nom du plat</VLabel>
@@ -366,7 +366,9 @@ export default function App() {
         </Sheet>
       )}
 
+      {/* --- LE TIROIR RANDOM A ÉTÉ SUPPRIMÉ ICI --- */}
 
-    </div> // Ferme la div principale (maxWidth:400)
-  ); // Ferme le return
+    </div> // 1. Ferme la div principale (maxWidth: 400)
+  ); // 2. Ferme le return ( ... )
+} // 3. Ferme la fonction export default function App() {
 } // Ferme la fonction App
