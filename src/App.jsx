@@ -308,7 +308,7 @@ export default function App() {
         </Sheet>
       )}
 
-      {/* 2. S'affiche UNIQUEMENT pour créer un NOUVEAU plat (Bouton Nouveau dans Plats) */}
+{/* 2. S'affiche UNIQUEMENT pour créer un NOUVEAU plat (Bouton Nouveau dans Plats) */}
       {sheet === 'newRecipe' && (
         <Sheet open={true} onClose={() => setSheet(null)} title="Nouveau Plat">
           <VLabel>Nom du plat</VLabel>
