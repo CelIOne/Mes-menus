@@ -366,18 +366,6 @@ export default function App() {
         </Sheet>
       )}
 
-      {/* 3. S'affiche UNIQUEMENT pour le tirage Aléatoire */}
-      {sheet === 'random' && (
-        <Sheet open={true} onClose={() => setSheet(null)} title="Générer la semaine">
-          <div style={{ padding: '10px 0' }}>
-            <p style={{ fontSize: 14, color: P.textSec, marginBottom: 20 }}>
-              Voulez-vous générer automatiquement tous les repas ?
-            </p>
-            <PrimaryBtn onClick={doRandom}>Lancer le tirage</PrimaryBtn>
-            <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
-          </div>
-        </Sheet>
-      )}
 
     </div> // Ferme la div principale (maxWidth:400)
   ); // Ferme le return
