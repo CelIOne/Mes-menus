@@ -11,6 +11,7 @@ const DATES = Array.from({ length: 7 }, (_, i) => {
 });
 const MEALS = ['dejeuner','diner'];
 const ML = { dejeuner:'Déjeuner', diner:'Dîner' };
+const [searchPlat, setSearchPlat] = useState('');
 
 // Emoji protéine par slot (jour 0-6, repas dejeuner/diner)
 const PROTEIN_EMOJI = {
@@ -27,18 +28,30 @@ const PROTEIN_EMOJI = {
 const EMOJI_LABEL = { '🥚':'Œuf', '🥩':'Bœuf', '🍗':'Poulet', '🐟':'Poisson' };
 
 const P = {
-  bg:'#F5F0FF', surface:'#FFFFFF', surface2:'#EDE6FF', surface3:'#F9F6FF',
-  accent:'#7C5CBF', accentLight:'#B79FE6', accentBg:'#EDE6FF', accentText:'#4A2D8C',
-  border:'#DDD4F5', border2:'#C9BAEE',
-  text:'#2D1F5E', textSec:'#7B6FA0', textTert:'#B0A3CC',
-  remove:'#C9506E', redBg:'#FAEAEA', tabBar:'#FFFFFF', handle:'#D4C8F0',
+  bg:'#F7F3EC',
+  surface:'#FDFAF5',
+  surface2:'#EEE8DC',
+  surface3:'#F4EFE6',
+  accent:'#6B8C6B',
+  accentLight:'#9DB89D',
+  accentBg:'#E8EFE8',
+  accentText:'#3D5C3D',
+  border:'#DDD5C4',
+  border2:'#C9BCA8',
+  text:'#2C2416',
+  textSec:'#7A6A52',
+  textTert:'#AFA08A',
+  remove:'#B85C3A',
+  redBg:'#F5E8E3',
+  tabBar:'#FDFAF5',
+  handle:'#C9BCA8',
 };
 
 const STORAGE_KEY = 'menus_app_v4';
 
 // Recettes avec tag protéine
 const DEFAULT_RECIPES = [
-  {id:1, name:'Salade de quinoa + œufs durs',      protein:'🥚', meal:'dejeuner', time:15, ing:'oeufs, quinoa, tomates'},
+  {id:1, name:'Salade de quinoa + œufs durs',      protein:'🥚', meal:'dejeuner', time:15, ing:'oeufs, quinoa, tomates, salade'},
   {id:2, name:'Omelette aux champignons',           protein:'🥚', meal:'dejeuner', time:10, ing:'oeufs, champignons, herbes'},
   {id:3, name:'Œufs brouillés + salade verte',     protein:'🥚', meal:'diner',    time:10, ing:'oeufs, salade, huile de noix'},
   {id:4, name:'Poulet rôti + légumes',              protein:'🍗', meal:'dejeuner', time:35, ing:'poulet, brocoli, carottes'},
@@ -52,58 +65,6 @@ const DEFAULT_RECIPES = [
   {id:12,name:'Sardines + lentilles',              protein:'🐟', meal:'dejeuner', time:15, ing:'sardines, lentilles, épinards'},
   {id:13,name:'Maquereau + riz basmati',           protein:'🐟', meal:'diner',    time:25, ing:'maquereau, riz basmati, poireau'},
   {id:14,name:'Poisson blanc + patate douce',      protein:'🐟', meal:'diner',    time:30, ing:'poisson blanc, patate douce, citron'},
-  {id:15, name:'Steak pomme de terre crispy four haricots verts vapeur', protein:'🥩', meal:'dejeuner', time:20, ing:'steak, pommes de terre, haricots verts'},
-  {id:16, name:'Chakchouka', protein:'🥚', meal:'diner', time:20, ing:'oeufs, tomates, poivrons, oignons, épices'},
-  {id:17, name:'Fatjias hauts de cuisse poulet + poivron + gruyere + salade', protein:'🍗', meal:'dejeuner', time:20, ing:'hauts de cuisse de poulet, poivron, gruyère, salade'},
-  {id:18, name:'Tajine poisson poivron pdt carotte', protein:'🐟', meal:'dejeuner', time:20, ing:'poisson, poivrons, pommes de terre, carottes, épices'},
-  {id:19, name:'Canelloni viande hachée au four tomate carotte salade', protein:'🥩', meal:'dejeuner', time:20, ing:'viande hachée, tomates, carottes, salade, pâtes'},
-  {id:20, name:'Pad Thaï hauts de cuisse + pousse soja + cébette + poireau + oeuf', protein:'🍗', meal:'dejeuner', time:20, ing:'hauts de cuisse de poulet, pousses de soja, cébette, poireau, oeuf, nouilles'},
-  {id:21, name:'Poulet pané riz tasty', protein:'🍗', meal:'dejeuner', time:20, ing:'poulet pané, riz, épices'},
-  {id:22, name:'Steak courgette grillée purée de patate douce', protein:'🥩', meal:'dejeuner', time:20, ing:'steak, courgettes grillées, patate douce'},
-  {id:23, name:'Tartine avocat œuf salade oignons frits', protein:'🥚', meal:'dejeuner', time:20, ing:'pain, avocat, oeuf, salade, oignons frits'},
-  {id:24, name:'Cuisse poulet (tajine +grill) + basquaise + quinoa', protein:'🍗', meal:'dejeuner', time:20, ing:'cuisses de poulet, poivrons, quinoa, épices'},
-  {id:25, name:'Roulé Saumon four pdt epinards', protein:'🐟', meal:'dejeuner', time:20, ing:'saumon, pommes de terre, épinards'},
-  {id:26, name:'Enchiladas boeuf émietté + salade', protein:'🥩', meal:'dejeuner', time:20, ing:'boeuf émietté, tortillas, salade, épices'},
-  {id:27, name:'Poulet citron confit olives frites', protein:'🍗', meal:'dejeuner', time:20, ing:'poulet, citron confit, olives, frites'},
-  {id:28, name:'Poulet gratin chou fleur brocolis', protein:'🍗', meal:'dejeuner', time:20, ing:'poulet, chou-fleur, brocolis, béchamel'},
-  {id:29, name:'Bolognaise carottes poireau', protein:'🥩', meal:'dejeuner', time:20, ing:'viande hachée, carottes, poireau, pâtes, tomates'},
-  {id:30, name:'Pad Thaï crevettes + pousse soja + cébette + poireau + oeuf', protein:'🐟', meal:'dejeuner', time:20, ing:'crevettes, pousses de soja, cébette, poireau, oeuf, nouilles'},
-  {id:31, name:'Hauts de cuisse rôtis + légumes rôtis + semoule', protein:'🍗', meal:'dejeuner', time:20, ing:'hauts de cuisse de poulet, légumes variés, semoule'},
-  {id:32, name:'Wok boeuf + légumes + vermicelles', protein:'🥩', meal:'dejeuner', time:20, ing:'boeuf, légumes variés, vermicelles, sauce soja'},
-  {id:33, name:'Enchiladas poulet + poivrons + fromage', protein:'🍗', meal:'dejeuner', time:20, ing:'poulet, poivrons, fromage, tortillas'},
-  {id:34, name:'Poisson vapeur + haricots verts + riz', protein:'🐟', meal:'dejeuner', time:20, ing:'poisson, haricots verts, riz'},
-  {id:35, name:'Poulet tandoori + salade pois chiches', protein:'🍗', meal:'dejeuner', time:20, ing:'poulet, épices tandoori, pois chiches, salade'},
-  {id:36, name:'Biryani légumes + dinde effilochée', protein:'🍗', meal:'dejeuner', time:20, ing:'dinde effilochée, légumes, riz basmati, épices'},
-  {id:37, name:'Tajine agneau + courgette + pois chiches', protein:'🥩', meal:'dejeuner', time:20, ing:'agneau, courgettes, pois chiches, épices'},
-  {id:38, name:'Riz sauté aux œufs + légumes + épices', protein:'🥚', meal:'dejeuner', time:20, ing:'riz, oeufs, légumes variés, épices'},
-  {id:39, name:'Brochettes kefta + semoule + sauce yaourt', protein:'🥩', meal:'dejeuner', time:20, ing:'viande hachée, semoule, sauce yaourt, épices'},
-  {id:40, name:'Nouilles soba + saumon grillé + légumes', protein:'🐟', meal:'dejeuner', time:20, ing:'saumon, nouilles soba, légumes variés'},
-  {id:41, name:'Dhal lentilles corail + riz basmati', protein:'🍗', meal:'dejeuner', time:20, ing:'lentilles corail, riz basmati, épices, lait de coco, poulet'},
-  {id:42, name:"Sandwich pain orge, poulet, crudités", protein:'🍗', meal:'dejeuner', time:20, ing:"pain d'orge, poulet, crudités"},
-  {id:43, name:'Boeuf braisé + polenta crémeuse', protein:'🥩', meal:'dejeuner', time:20, ing:'boeuf, polenta, épices'},
-  {id:44, name:'Poulet citron confit + pommes de terre', protein:'🍗', meal:'dejeuner', time:20, ing:'poulet, citron confit, pommes de terre'},
-  {id:45, name:'Pilons de poulet + poêlée courgette + orge', protein:'🍗', meal:'dejeuner', time:20, ing:'pilons de poulet, courgettes, orge'},
-  {id:46, name:'Nouilles udon + dinde teriyaki + légumes', protein:'🍗', meal:'dejeuner', time:20, ing:'dinde, nouilles udon, légumes, sauce teriyaki'},
-  {id:47, name:'Boulettes viande + riz + sauce tomate', protein:'🥩', meal:'dejeuner', time:20, ing:'viande hachée, riz, tomates, épices'},
-  {id:48, name:'Pad thaï aux crevettes + légumes', protein:'🐟', meal:'dejeuner', time:20, ing:'crevettes, nouilles, légumes variés, épices'},
-  {id:49, name:'Tajine poisson + légumes + orge', protein:'🐟', meal:'dejeuner', time:20, ing:'poisson, légumes variés, orge, épices'},
-  {id:50, name:'Rôti agneau + légumes braisés + semoule', protein:'🥩', meal:'dejeuner', time:20, ing:'agneau, légumes braisés, semoule'},
-  {id:51, name:'Riz sauté légumes + œuf + coriandre', protein:'🥚', meal:'dejeuner', time:20, ing:'riz, oeufs, légumes variés, coriandre'},
-  {id:52, name:'Poisson grillé chermoula + salade quinoa', protein:'🐟', meal:'dejeuner', time:20, ing:'poisson, chermoula, quinoa, salade'},
-  {id:53, name:'Gnocchis + courgettes + dinde + crème', protein:'🍗', meal:'dejeuner', time:20, ing:'gnocchis, courgettes, dinde, crème'},
-  {id:54, name:'Pilons poulet épicés + tagliatelles + légumes', protein:'🍗', meal:'dejeuner', time:20, ing:'pilons de poulet, tagliatelles, légumes, épices'},
-  {id:55, name:'Poivrons farcis quinoa / viande', protein:'🥩', meal:'dejeuner', time:20, ing:'poivrons, quinoa, viande hachée, épices'},
-  {id:56, name:'Biryani ou couscous maison', protein:'🍗', meal:'dejeuner', time:20, ing:'légumes, semoule ou riz, épices, poulet'},
-  {id:57, name:'Tajine poulet pruneaux + pain ou semoule', protein:'🍗', meal:'dejeuner', time:20, ing:'poulet, pruneaux, pain ou semoule, épices'},
-  {id:58, name:'Salade tiède lentilles / feta / pickles', protein:'🥚', meal:'diner', time:20, ing:'lentilles, feta, pickles, vinaigrette, oeuf'},
-  {id:59, name:'Zaalouk + pain maïs + yaourt cumin', protein:'🥚', meal:'diner', time:20, ing:'aubergines, tomates, ail, épices, pain de maïs, yaourt, oeuf'},
-  {id:60, name:'Omelette épices + salade + cornichons', protein:'🥚', meal:'diner', time:20, ing:'oeufs, épices, salade, cornichons'},
-  {id:61, name:'Bouillon asiatique léger', protein:'🐟', meal:'diner', time:20, ing:'bouillon, légumes, épices asiatiques, crevettes'},
-  {id:62, name:'Poêlée courgette / tomate / feta', protein:'🍗', meal:'diner', time:20, ing:'courgettes, tomates, feta, poulet'},
-  {id:63, name:'Tarte fine tomate / moutarde / origan', protein:'🥚', meal:'diner', time:20, ing:'pâte fine, tomates, moutarde, origan, oeuf'},
-  {id:64, name:'Légumes grillés + œufs durs + pickles', protein:'🥚', meal:'diner', time:20, ing:'légumes variés, oeufs durs, pickles'},
-  {id:65, name:'Salade lentilles / tomates / thon / œuf', protein:'🐟', meal:'diner', time:20, ing:'lentilles, tomates, thon, oeuf'},
-  {id:66, name:'Bouillon asiatique + tofu ou crevettes', protein:'🐟', meal:'diner', time:20, ing:'bouillon, tofu ou crevettes, épices asiatiques'},
 ];
 
 const STORAGE_RECIPES_KEY = 'menus_recipes_v4';
@@ -170,7 +131,6 @@ export default function App() {
   const [newRecipe, setNewRecipe] = useState({name:'',protein:'🍗',meal:'dejeuner',time:'',ing:''});
 
   const [antiRep, setAntiRep] = useState(true);
-  const [searchPlat, setSearchPlat] = useState('');
 
   const showToast = useCallback((msg, bottom = false) => {
     setToast(msg); setToastBottom(bottom);
@@ -304,12 +264,84 @@ export default function App() {
   ];
 
   return (
-    <div style={{maxWidth:390,margin:'0 auto',background:P.bg,minHeight:780,position:'relative',overflow:'hidden',borderRadius:44,fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif'}}>
+    <div style={{maxWidth:390,margin:'0 auto',background:P.bg,minHeight:780,position:'relative',overflow:'hidden',fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif'}}>
       <style>{`
         @keyframes fadeInOut{0%{opacity:0;transform:translateX(-50%) translateY(4px)}10%{opacity:1;transform:translateX(-50%) translateY(0)}80%{opacity:1}100%{opacity:0}}
         .scroll::-webkit-scrollbar{display:none}
       `}</style>
 
+      {/* Filigrane pattern répétitif */}
+      <div style={{position:'absolute',inset:0,zIndex:0,pointerEvents:'none',opacity:0.13}}>
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="food-pattern" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+              {/* Carotte */}
+              <g transform="translate(10,8)" stroke="#6B3A1F" strokeWidth="1.2" fill="none">
+                <path d="M0 0 Q2 8 0 16" stroke="#E07A3A" fill="#E07A3A" strokeWidth="0"/>
+                <ellipse cx="0" cy="8" rx="3" ry="8" fill="#E07A3A"/>
+                <path d="M-1 0 Q-4 -5 -2 -8" stroke="#4A7A3A" strokeWidth="1.2"/>
+                <path d="M0 0 Q2 -5 1 -8" stroke="#4A7A3A" strokeWidth="1.2"/>
+                <path d="M1 0 Q5 -4 4 -7" stroke="#4A7A3A" strokeWidth="1.2"/>
+              </g>
+              {/* Herbe / persil */}
+              <g transform="translate(48,6)" stroke="#4A7A3A" strokeWidth="1.1" fill="none">
+                <path d="M0 12 Q-3 4 -2 0"/>
+                <path d="M0 12 Q0 3 1 0"/>
+                <path d="M0 12 Q3 5 3 1"/>
+                <ellipse cx="-2" cy="0" rx="2.5" ry="1.5" fill="#5A8A4A" stroke="none"/>
+                <ellipse cx="1" cy="0" rx="2.5" ry="1.5" fill="#5A8A4A" stroke="none"/>
+                <ellipse cx="3" cy="1" rx="2.5" ry="1.5" fill="#5A8A4A" stroke="none"/>
+              </g>
+              {/* Citron */}
+              <g transform="translate(55,42)">
+                <ellipse cx="0" cy="0" rx="9" ry="7" fill="#E8C84A" stroke="#C9A830" strokeWidth="0.8"/>
+                <path d="M-6 0 Q0 -3 6 0 Q0 3 -6 0" fill="#D4B83A" stroke="none"/>
+                <path d="M-3 -5 Q0 -8 3 -5" stroke="#C9A830" strokeWidth="0.8" fill="none"/>
+              </g>
+              {/* Poivron */}
+              <g transform="translate(8,46)">
+                <path d="M0-2 Q-8 0 -7 9 Q-6 16 0 16 Q6 16 7 9 Q8 0 0-2Z" fill="#C84A3A" stroke="#A83A2A" strokeWidth="0.8"/>
+                <path d="M0-2 Q1-7 0-9" stroke="#4A7A3A" strokeWidth="1.2" fill="none"/>
+                <path d="M-3 4 Q0 6 3 4" stroke="#A83A2A" strokeWidth="0.6" fill="none"/>
+              </g>
+              {/* Feuille */}
+              <g transform="translate(34,28)">
+                <path d="M0 14 Q-7 6 -4 0 Q0-4 4 0 Q7 6 0 14Z" fill="#5A8A4A" stroke="#3A6A2A" strokeWidth="0.7"/>
+                <path d="M0 14 Q0 6 0 0" stroke="#3A6A2A" strokeWidth="0.7" fill="none"/>
+              </g>
+              {/* Tomate */}
+              <g transform="translate(66,20)">
+                <circle cx="0" cy="4" r="7" fill="#C84040" stroke="#A83030" strokeWidth="0.8"/>
+                <path d="M-2 0 Q0-5 2 0" stroke="#4A7A3A" strokeWidth="1" fill="none"/>
+                <path d="M0-3 Q2-7 1-9" stroke="#4A7A3A" strokeWidth="1" fill="none"/>
+              </g>
+              {/* Oeuf */}
+              <g transform="translate(30,58)">
+                <ellipse cx="0" cy="0" rx="6" ry="8" fill="#F5EDD0" stroke="#D4C4A0" strokeWidth="0.8"/>
+              </g>
+              {/* Poisson */}
+              <g transform="translate(62,60)" stroke="#4A6A8A" strokeWidth="0.9" fill="none">
+                <path d="M-10 0 Q-4-5 4-4 Q8-2 10 0 Q8 2 4 4 Q-4 5 -10 0Z" fill="#7AAAC0" stroke="#4A6A8A"/>
+                <path d="M10 0 Q13-4 16 0 Q13 4 10 0Z" fill="#7AAAC0" stroke="#4A6A8A"/>
+                <circle cx="5" cy="-1" r="1" fill="#2A4A6A" stroke="none"/>
+              </g>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#food-pattern)"/>
+        </svg>
+      </div>
+
+      {/* Contenu au-dessus du filigrane */}
+      <div style={{position:'relative',zIndex:1}}>
+
+      {/* STATUS BAR */}
+      <div style={{height:50,display:'flex',alignItems:'flex-end',justifyContent:'space-between',padding:'0 28px 8px'}}>
+        <span style={{fontSize:15,fontWeight:600,color:P.text}}>9:41</span>
+        <div style={{display:'flex',gap:6,alignItems:'center'}}>
+          <svg width="16" height="12" viewBox="0 0 17 12"><rect x="0" y="3" width="3" height="9" rx="1" fill={P.text}/><rect x="4.5" y="2" width="3" height="10" rx="1" fill={P.text}/><rect x="9" y="0" width="3" height="12" rx="1" fill={P.text}/><rect x="13.5" y="0" width="3.5" height="12" rx="1" fill={P.text} opacity=".3"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0" y="1" width="21" height="10" rx="3" stroke={P.text} strokeWidth="1"/><rect x="22" y="4" width="3" height="4" rx="1.5" fill={P.text}/><rect x="1.5" y="2.5" width="16" height="7" rx="2" fill={P.text}/></svg>
+        </div>
+      </div>
 
       <Toast msg={toast} bottom={toastBottom} />
 
@@ -321,7 +353,7 @@ export default function App() {
               <div>
                 <div style={{fontSize:28,fontWeight:800,letterSpacing:-0.8,color:P.text}}>Mes menus</div>
                 <div style={{fontSize:13,color:P.textSec,marginTop:2}}>
-{new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'}).replace(/^./, c => c.toUpperCase())}
+                  {new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'})}
                 </div>
               </div>
               <div style={{display:'flex',gap:8,marginTop:6}}>
@@ -390,6 +422,7 @@ export default function App() {
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
               <div>
                 <div style={{fontSize:28,fontWeight:800,letterSpacing:-0.8,color:P.text}}>Mes plats</div>
+                <div style={{fontSize:13,color:P.textSec,marginTop:1}}>Classés par protéine</div>
               </div>
               <button onClick={()=>setSheet('newRecipe')} style={{background:P.accent,color:'white',border:'none',borderRadius:20,padding:'7px 14px',fontSize:13,fontWeight:700,cursor:'pointer',marginTop:6,boxShadow:`0 4px 12px ${P.accentLight}55`}}>+ Nouveau</button>
             </div>
@@ -451,7 +484,7 @@ if (!list.length) return null;
                           <div onClick={()=>setGroceryChecked(p=>({...p,[key]:!chk}))} style={{width:22,height:22,borderRadius:8,flexShrink:0,cursor:'pointer',background:chk?P.accent:P.surface2,border:`1.5px solid ${chk?P.accent:P.border}`,display:'flex',alignItems:'center',justifyContent:'center',transition:'all 0.15s'}}>
                             {chk&&<svg viewBox="0 0 12 10" style={{width:10,height:10}}><path d="M1 5l3 3 7-7" stroke="white" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                           </div>
-                          <span style={{fontSize:15,color:chk?P.textTert:P.text,textDecoration:chk?'line-through':'none',flex:1,transition:'all 0.15s'}}>{item.charAt(0).toUpperCase() + item.slice(1)}</span>
+                          <span style={{fontSize:15,color:chk?P.textTert:P.text,textDecoration:chk?'line-through':'none',flex:1,transition:'all 0.15s'}}>{item}</span>
                         </div>
                       );
                     })}
@@ -557,6 +590,7 @@ if (!list.length) return null;
   <PrimaryBtn onClick={saveNewRecipe}>Enregistrer</PrimaryBtn>
   <GhostBtn onClick={()=>setSheet(null)}>Annuler</GhostBtn>
 </Sheet>
-</div>
+</div> {/* fin div zIndex:1 */}
+    </div>
   );
 }
