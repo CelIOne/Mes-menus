@@ -279,7 +279,6 @@ export default function App() {
           ))}
           <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
       </Sheet>
-//
       
       {tab === 'courses' && (
         <div style={{padding: 20}}>
