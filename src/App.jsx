@@ -84,23 +84,6 @@ function Sheet({ open, onClose, title, children }) {
     </>
   );
 }
-
-const VLabel = ({children}) => <div style={{fontSize:11,fontWeight:700,color:P.textTert,textTransform:'uppercase',letterSpacing:'0.08em',padding:'14px 2px 5px'}}>{children}</div>;
-const VInput = (props) => <input {...props} style={{width:'100%',background:P.surface2,border:`0.5px solid ${P.border}`,borderRadius:12,padding:'13px 14px',fontSize:16,color:P.text,outline:'none',boxSizing:'border-box',...(props.style||{})}} />;
-const VSelect = ({children,...props}) => <select {...props} style={{width:'100%',background:P.surface2,border:`0.5px solid ${P.border}`,borderRadius:12,padding:'13px 14px',fontSize:16,color:P.text,outline:'none',appearance:'none',...(props.style||{})}}>{children}</select>;
-const PrimaryBtn = ({children,...props}) => <button {...props} style={{width:'100%',background:P.accent,color:'white',border:'none',borderRadius:14,padding:16,fontSize:16,fontWeight:700,cursor:'pointer',marginTop:10,boxShadow:`0 4px 16px ${P.accentLight}66`,...(props.style||{})}}>{children}</button>;
-const GhostBtn = ({children,...props}) => <button {...props} style={{width:'100%',background:P.surface2,color:P.textSec,border:`0.5px solid ${P.border}`,borderRadius:14,padding:14,fontSize:15,fontWeight:500,cursor:'pointer',marginTop:6,...(props.style||{})}}>{children}</button>;
-
-function Toggle({ value, onChange }) {
-  return (
-    <div onClick={onChange} style={{position:'relative',width:51,height:31,flexShrink:0,cursor:'pointer'}}>
-      <div style={{position:'absolute',inset:0,borderRadius:16,background:value?P.accent:P.border,transition:'background 0.2s',display:'flex',alignItems:'center'}}>
-        <div style={{width:27,height:27,background:'white',borderRadius:'50%',margin:'0 2px',transition:'transform 0.2s',transform:value?'translateX(20px)':'translateX(0)',boxShadow:'0 1px 4px rgba(0,0,0,0.18)'}} />
-      </div>
-    </div>
-  );
-}
-
 // --- Application Principale ---
 export default function App() {
   const [recipes, setRecipes] = useState(DEFAULT_RECIPES);
@@ -121,7 +104,7 @@ export default function App() {
 
   const showToast = useCallback((msg) => { setToast(msg); setTimeout(()=>setToast(''),2200); }, []);
 
-  // --- Persistance avec LocalStorage ---
+  // --- Persistance ---
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -143,21 +126,21 @@ export default function App() {
   }, [recipes, planner, groceryChecked, manualItems, nextRid, loaded]);
 
   // --- Actions ---
-  function doAddMeal() {
-    if (!addRecipeId) return;
-    setPlanner(p => ({...p, [`${selectedDay}-${addMeal}`]: addRecipeId}));
+  
+  // FONCTION CORRIGÉE POUR L'AJOUT AUTOMATIQUE
+  const selectAndAddMeal = (recipeId) => {
+    setPlanner(prev => ({
+      ...prev, 
+      [`${selectedDay}-${addMeal}`]: recipeId
+    }));
     setSheet(null);
     showToast('Plat planifié ✓');
-  }
-  // Nouvelle fonction pour l'ajout automatique
-function selectAndAddMeal(recipeId) {
-  setPlanner(p => ({...p, [`${selectedDay}-${addMeal}`]: recipeId}));
-  setSheet(null);
-  showToast('Plat planifié ✓');
-}
+  };
+
   function removeMeal(day, meal) {
     setPlanner(p => { const n={...p}; delete n[`${day}-${meal}`]; return n; });
   }
+
   function openAddMealSheet(meal) {
     setAddMeal(meal);
     const slotEmoji = PROTEIN_EMOJI[`${selectedDay}-${meal}`];
@@ -199,7 +182,6 @@ function selectAndAddMeal(recipeId) {
     showToast('Plat ajouté ✓');
   }
 
-  // --- Logique Courses ---
   const groceryCats = (() => {
     const rids = [...new Set(Object.values(planner))];
     const recs = rids.map(id=>recipes.find(r=>r.id===id)).filter(Boolean);
@@ -240,15 +222,15 @@ function selectAndAddMeal(recipeId) {
 
       <Toast msg={toast} />
 
-      {/* Rendu des onglets (Planner, Menus, Courses) - Identique à votre logique originale */}
       {tab==='planner' && (
         <div style={{padding:'20px'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
-                <h1 style={{fontSize:24, color:P.text, margin:0}}>Mes menus</h1>
-              <div style={{ fontSize: 13, color: P.textSec, marginTop: 2, textTransform: 'capitalize' }}>
-        {new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(new Date())}
-    </div>
-     
+                <div>
+                  <h1 style={{fontSize:24, color:P.text, margin:0}}>Mes menus</h1>
+                  <div style={{ fontSize: 13, color: P.textSec, marginTop: 2, textTransform: 'capitalize' }}>
+                    Semaine de {new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(new Date())}
+                  </div>
+                </div>
                 <button onClick={()=>setSheet('random')} style={{background:P.accentBg, color:P.accentText, border:'none', padding:'8px 12px', borderRadius:12, fontWeight:600}}>Aléatoire</button>
             </div>
             
@@ -287,28 +269,7 @@ function selectAndAddMeal(recipeId) {
             })}
         </div>
       )}
-{/* Sheets (Modals) */}
-      <Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title="Choisir un plat">
-          {filteredForSlot.map(r => (
-              <div 
-                key={r.id} 
-                onClick={() => selectAndAddMeal(r.id)} // Utilisation de la sélection automatique
-                style={{
-                  padding:16, 
-                  borderRadius:12, 
-                  background: addRecipeId===r.id?P.accentBg:P.surface2, 
-                  marginBottom:8, 
-                  border:`1px solid ${addRecipeId===r.id?P.accent:P.border}`,
-                  cursor: 'pointer'
-                }}
-              >
-                  <div style={{fontWeight: 600, color: P.text}}>{r.name}</div>
-                  <div style={{fontSize: 12, color: P.textSec}}>{r.time} min</div>
-              </div>
-          ))}
-          {/* Suppression du bouton "Confirmer" pour plus de rapidité */}
-          <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
-      </Sheet>
+
       {tab==='menutypes' && (
           <div style={{padding:20}}>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
@@ -356,8 +317,7 @@ function selectAndAddMeal(recipeId) {
           </div>
       )}
 
-      {/* Navigation Basse */}
-      <div style={{position:'fixed', bottom:0, left:0, right:0, height:70, background:'white', borderTop:`1px solid ${P.border}`, display:'flex', justifyContent:'space-around', alignItems:'center'}}>
+      <div style={{position:'fixed', bottom:0, left:0, right:0, height:70, background:'white', borderTop:`1px solid ${P.border}`, display:'flex', justifyContent:'space-around', alignItems:'center', zIndex:10}}>
           {['planner', 'menutypes', 'courses'].map(t => (
               <button key={t} onClick={()=>setTab(t)} style={{background:'none', border:'none', color:tab===t?P.accent:P.textTert, fontWeight:600, fontSize:12}}>
                   {t === 'planner' ? '📅 Plan' : t === 'menutypes' ? '🍳 Plats' : '🛒 Courses'}
@@ -365,14 +325,28 @@ function selectAndAddMeal(recipeId) {
           ))}
       </div>
 
-      {/* Sheets (Modals) */}
+      {/* SHEET AJOUT AUTOMATIQUE CORRIGÉ */}
       <Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title="Choisir un plat">
-          {filteredForSlot.map(r => (
-              <div key={r.id} onClick={()=>setAddRecipeId(r.id)} style={{padding:16, borderRadius:12, background: addRecipeId===r.id?P.accentBg:P.surface2, marginBottom:8, border:`1px solid ${addRecipeId===r.id?P.accent:P.border}`}}>
-                  {r.name}
+          {filteredForSlot.length > 0 ? filteredForSlot.map(r => (
+              <div 
+                key={r.id} 
+                onClick={() => selectAndAddMeal(r.id)} 
+                style={{
+                  padding:16, 
+                  borderRadius:12, 
+                  background: P.surface2, 
+                  marginBottom:8, 
+                  border:`1px solid ${P.border}`,
+                  cursor: 'pointer'
+                }}
+              >
+                  <div style={{fontWeight: 600, color: P.text}}>{r.name}</div>
+                  <div style={{fontSize: 12, color: P.textSec}}>{r.time} min</div>
               </div>
-          ))}
-          <PrimaryBtn onClick={doAddMeal}>Confirmer</PrimaryBtn>
+          )) : (
+            <div style={{padding:20, textAlign:'center', color:P.textSec}}>Aucun plat trouvé pour cette protéine.</div>
+          )}
+          <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
       </Sheet>
 
       <Sheet open={sheet==='newRecipe'} onClose={()=>setSheet(null)} title="Nouveau Plat">
