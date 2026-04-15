@@ -260,10 +260,10 @@ export default function App() {
 
     <div style={{
   position:'absolute', inset:0, zIndex:0, pointerEvents:'none',
-  backgroundImage:'url(public/fond-ecran.png)',
+  backgroundImage:'url(/fond-ecran.png)',
   backgroundRepeat:'repeat',
   backgroundSize:'200px',
-  opacity:18
+  opacity:0.07
 }} />
 
       <Toast msg={toast} bottom={toastBottom} />
