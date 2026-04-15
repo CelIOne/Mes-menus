@@ -4,27 +4,20 @@ const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const FULL_DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 const MEALS = ['dejeuner','diner'];
 const ML = { dejeuner:'Déjeuner', diner:'Dîner' };
-// Fonction pour récupérer les numéros de jour de la semaine actuelle (Lundi à Dimanche)
+
 const getWeekDates = () => {
   const now = new Date();
-  const dayOfWeek = now.getDay(); // 0 (Dimanche) à 6 (Samedi)
-  
-  // Ajustement pour que la semaine commence le Lundi (index 0 dans votre tableau DAYS)
-  // Si c'est dimanche (0), on recule de 6 jours, sinon on recule jusqu'au lundi (1)
+  const dayOfWeek = now.getDay(); 
   const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-  
   const monday = new Date(now);
   monday.setDate(now.getDate() + diffToMonday);
-
   return Array.from({ length: 7 }, (_, i) => {
     const d = new Date(monday);
     d.setDate(monday.getDate() + i);
     return d.getDate();
   });
 };
-
-const DATES = getWeekDates(); // Génère les dates dynamiquement
-
+const DATES = getWeekDates();
 
 const PROTEIN_EMOJI = {
   '0-dejeuner':'🥚','0-diner':'🥩',
@@ -65,10 +58,9 @@ const DEFAULT_RECIPES = [
   {id:14,name:'Poisson blanc + patate douce',      protein:'🐟', meal:'diner',    time:30, ing:'poisson blanc, patate douce, citron'},
 ];
 
-// --- Composants Internes ---
 function Toast({ msg }) {
   return msg ? (
-    <div style={{position:'absolute',top:62,left:'50%',transform:'translateX(-50%)',background:P.accent,color:'white',fontSize:13,fontWeight:500,padding:'7px 18px',borderRadius:20,zIndex:300,whiteSpace:'nowrap',animation:'fadeInOut 2s ease forwards',pointerEvents:'none',boxShadow:`0 4px 16px ${P.accentLight}88`}}>{msg}</div>
+    <div style={{position:'absolute',top:62,left:'50%',transform:'translateX(-50%)',background:P.accent,color:'white',fontSize:13,fontWeight:500,padding:'7px 18px',borderRadius:20,zIndex:300,whiteSpace:'nowrap',pointerEvents:'none',boxShadow:`0 4px 16px ${P.accentLight}88`}}>{msg}</div>
   ) : null;
 }
 
@@ -78,13 +70,18 @@ function Sheet({ open, onClose, title, children }) {
       {open && <div onClick={onClose} style={{position:'absolute',inset:0,background:'rgba(45,31,94,0.35)',zIndex:50}} />}
       <div style={{position:'absolute',bottom:0,left:0,right:0,background:P.surface,borderRadius:'24px 24px 0 0',padding:'0 0 36px',zIndex:51,transform:open?'translateY(0)':'translateY(100%)',transition:'transform 0.32s cubic-bezier(0.32,0.72,0,1)',boxShadow:`0 -8px 32px ${P.accentLight}44`}}>
         <div style={{width:40,height:4,background:P.handle,borderRadius:2,margin:'12px auto 0'}} />
-        <div style={{fontSize:17,fontWeight:700,textAlign:'center',padding:'14px 20px 4px',color:P.text,letterSpacing:-0.3}}>{title}</div>
+        <div style={{fontSize:17,fontWeight:700,textAlign:'center',padding:'14px 20px 4px',color:P.text}}>{title}</div>
         <div style={{maxHeight:540,overflowY:'auto',padding:'4px 16px'}}>{children}</div>
       </div>
     </>
   );
 }
-// --- Application Principale ---
+
+const VLabel = ({children}) => <div style={{fontSize:11,fontWeight:700,color:P.textTert,textTransform:'uppercase',letterSpacing:'0.08em',padding:'14px 2px 5px'}}>{children}</div>;
+const VInput = (props) => <input {...props} style={{width:'100%',background:P.surface2,border:`0.5px solid ${P.border}`,borderRadius:12,padding:'13px 14px',fontSize:16,color:P.text,outline:'none',boxSizing:'border-box'}} />;
+const PrimaryBtn = ({children,...props}) => <button {...props} style={{width:'100%',background:P.accent,color:'white',border:'none',borderRadius:14,padding:16,fontSize:16,fontWeight:700,cursor:'pointer',marginTop:10}}>{children}</button>;
+const GhostBtn = ({children,...props}) => <button {...props} style={{width:'100%',background:P.surface2,color:P.textSec,border:`0.5px solid ${P.border}`,borderRadius:14,padding:14,fontSize:15,fontWeight:500,cursor:'pointer',marginTop:6}}>{children}</button>;
+
 export default function App() {
   const [recipes, setRecipes] = useState(DEFAULT_RECIPES);
   const [planner, setPlanner] = useState({});
@@ -98,13 +95,11 @@ export default function App() {
   const [toast, setToast] = useState('');
   const [sheet, setSheet] = useState(null);
   const [addMeal, setAddMeal] = useState('dejeuner');
-  const [addRecipeId, setAddRecipeId] = useState(null);
   const [newRecipe, setNewRecipe] = useState({name:'',protein:'🍗',meal:'dejeuner',time:'',ing:''});
   const [antiRep, setAntiRep] = useState(true);
 
   const showToast = useCallback((msg) => { setToast(msg); setTimeout(()=>setToast(''),2200); }, []);
 
-  // --- Persistance ---
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -115,111 +110,72 @@ export default function App() {
         if (d.groceryChecked) setGroceryChecked(d.groceryChecked);
         if (d.manualItems) setManualItems(d.manualItems);
         if (d.nextRid) setNextRid(d.nextRid);
-      } catch(e) { console.error("Erreur de chargement", e); }
+      } catch(e) {}
     }
     setLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (!loaded) return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({recipes, planner, groceryChecked, manualItems, nextRid}));
+    if (loaded) localStorage.setItem(STORAGE_KEY, JSON.stringify({recipes, planner, groceryChecked, manualItems, nextRid}));
   }, [recipes, planner, groceryChecked, manualItems, nextRid, loaded]);
 
-  // --- Actions ---
-  
-  // FONCTION CORRIGÉE POUR L'AJOUT AUTOMATIQUE
   const selectAndAddMeal = (recipeId) => {
-    setPlanner(prev => ({
-      ...prev, 
-      [`${selectedDay}-${addMeal}`]: recipeId
-    }));
+    setPlanner(prev => ({...prev, [`${selectedDay}-${addMeal}`]: recipeId}));
     setSheet(null);
     showToast('Plat planifié ✓');
   };
 
-  function removeMeal(day, meal) {
+  const removeMeal = (day, meal) => {
     setPlanner(p => { const n={...p}; delete n[`${day}-${meal}`]; return n; });
-  }
+  };
 
-  function openAddMealSheet(meal) {
+  const openAddMealSheet = (meal) => {
     setAddMeal(meal);
-    const slotEmoji = PROTEIN_EMOJI[`${selectedDay}-${meal}`];
-    const pool = recipes.filter(r => r.protein === slotEmoji);
-    setAddRecipeId(planner[`${selectedDay}-${meal}`] || pool[0]?.id || null);
     setSheet('addMeal');
-  }
+  };
 
-  function doRandom() {
+  const doRandom = () => {
     const np = {};
     DAYS.forEach((_,i) => {
       MEALS.forEach(m => {
         const emoji = PROTEIN_EMOJI[`${i}-${m}`];
         let pool = recipes.filter(r => r.protein===emoji);
         if (!pool.length) pool = recipes;
-        if (antiRep) { 
-            const used = Object.values(np); 
-            const fresh = pool.filter(r => !used.includes(r.id)); 
-            if (fresh.length) pool = fresh; 
-        }
         np[`${i}-${m}`] = pool[Math.floor(Math.random()*pool.length)].id;
       });
     });
     setPlanner(np);
     setSheet(null);
     showToast('Semaine générée !');
-  }
+  };
 
-  function saveNewRecipe() {
+  const saveNewRecipe = () => {
     if (!newRecipe.name.trim()) return;
-    setRecipes(prev => [...prev, {
-      id: nextRid, name: newRecipe.name.trim(),
-      protein: newRecipe.protein, meal: newRecipe.meal,
-      time: parseInt(newRecipe.time)||20, ing: newRecipe.ing.trim()
-    }]);
+    setRecipes(prev => [...prev, { id: nextRid, name: newRecipe.name.trim(), protein: newRecipe.protein, meal: newRecipe.meal, time: parseInt(newRecipe.time)||20, ing: newRecipe.ing.trim() }]);
     setNextRid(n => n+1);
     setNewRecipe({name:'',protein:'🍗',meal:'dejeuner',time:'',ing:''});
     setSheet(null);
     showToast('Plat ajouté ✓');
-  }
+  };
 
   const groceryCats = (() => {
     const rids = [...new Set(Object.values(planner))];
     const recs = rids.map(id=>recipes.find(r=>r.id===id)).filter(Boolean);
-    const cats = {'Féculents & légumineuses':[],'Protéines':[],'Légumes & fruits':[],'Produits laitiers':[],'Épicerie':[]};
-    const kws = {
-      'Féculents & légumineuses':['quinoa','riz','lentilles','haricot','pois','farine','patate douce'],
-      'Protéines':['cabillaud','poulet','sardine','maquereau','oeuf','oeufs','poisson','thon','boeuf','steak','tartare','feta','avocat'],
-      'Légumes & fruits':['courgette','tomate','haricot vert','brocoli','carotte','épinard','salade','poireau','citron','poire','pomme','champignon','poivron'],
-      'Produits laitiers':['fromage','yaourt','brebis','chèvre','faisselle'],
-    };
+    const cats = {'Féculents':[],'Protéines':[],'Légumes':[],'Épicerie':[]};
     const added = new Set();
-    recs.forEach(r => r.ing.split(',').map(s=>s.trim()).filter(Boolean).forEach(ing => {
-      if (added.has(ing)) return; added.add(ing);
-      let placed=false;
-      for (const [cat,ks] of Object.entries(kws)) { if (ks.some(k=>ing.toLowerCase().includes(k))) { cats[cat].push(ing); placed=true; break; } }
-      if (!placed) cats['Épicerie'].push(ing);
+    recs.forEach(r => r.ing.split(',').forEach(ing => {
+      const it = ing.trim();
+      if (it && !added.has(it)) { added.add(it); cats['Épicerie'].push(it); }
     }));
     return cats;
   })();
 
-  function addManualItem() {
-    if (!newItem.trim()) return;
-    setManualItems(prev => [...prev, {id: Date.now(), name:newItem.trim(), checked:false}]);
-    setNewItem('');
-  }
-
   const PROTEIN_ORDER = ['🥚','🍗','🥩','🐟'];
   const recipesByProtein = PROTEIN_ORDER.reduce((acc,e) => { acc[e] = recipes.filter(r=>r.protein===e); return acc; }, {});
-  const slotEmoji = PROTEIN_EMOJI[`${selectedDay}-${addMeal}`] || '🍗';
-  const filteredForSlot = recipes.filter(r => r.protein === slotEmoji);
+  const filteredForSlot = recipes.filter(r => r.protein === PROTEIN_EMOJI[`${selectedDay}-${addMeal}`]);
 
   return (
     <div style={{maxWidth:400, margin:'0 auto', background:P.bg, minHeight:'100vh', position:'relative', fontFamily:'sans-serif', paddingBottom: 100}}>
-      <style>{`
-        @keyframes fadeInOut{0%{opacity:0;transform:translateX(-50%) translateY(4px)}10%{opacity:1;transform:translateX(-50%) translateY(0)}80%{opacity:1}100%{opacity:0}}
-        .scroll::-webkit-scrollbar{display:none}
-      `}</style>
-
       <Toast msg={toast} />
 
       {tab==='planner' && (
@@ -234,7 +190,7 @@ export default function App() {
                 <button onClick={()=>setSheet('random')} style={{background:P.accentBg, color:P.accentText, border:'none', padding:'8px 12px', borderRadius:12, fontWeight:600}}>Aléatoire</button>
             </div>
             
-            <div style={{display:'flex', gap:8, overflowX:'auto', marginBottom:20}} className="scroll">
+            <div style={{display:'flex', gap:8, overflowX:'auto', marginBottom:20}}>
                 {DAYS.map((d, i) => (
                     <div key={i} onClick={()=>setSelectedDay(i)} style={{textAlign:'center', cursor:'pointer', minWidth:45}}>
                         <div style={{width:40, height:40, borderRadius:20, display:'flex', alignItems:'center', justifyContent:'center', background:selectedDay===i?P.accent:P.surface, color:selectedDay===i?'white':P.text, border:`1px solid ${P.border}`}}>
@@ -248,22 +204,18 @@ export default function App() {
             {MEALS.map(m => {
                 const rid = planner[`${selectedDay}-${m}`];
                 const recipe = recipes.find(r=>r.id===rid);
-                const emoji = PROTEIN_EMOJI[`${selectedDay}-${m}`];
                 return (
                     <div key={m} style={{background:P.surface, padding:16, borderRadius:16, marginBottom:12, border:`1px solid ${P.border}`}}>
                         <div style={{display:'flex', justifyContent:'space-between', marginBottom:8}}>
-                            <span style={{fontSize:12, fontWeight:700, color:P.accentLight}}>{ML[m]} {emoji}</span>
+                            <span style={{fontSize:12, fontWeight:700, color:P.accentLight}}>{ML[m]} {PROTEIN_EMOJI[`${selectedDay}-${m}`]}</span>
                             <button onClick={()=>openAddMealSheet(m)} style={{background:'none', border:'none', color:P.accent, fontWeight:600}}>{recipe?'Changer':'+ Ajouter'}</button>
                         </div>
                         {recipe ? (
                             <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                                <div>
-                                    <div style={{fontWeight:600}}>{recipe.name}</div>
-                                    <div style={{fontSize:12, color:P.textSec}}>{recipe.time} min</div>
-                                </div>
+                                <div><div style={{fontWeight:600}}>{recipe.name}</div></div>
                                 <button onClick={()=>removeMeal(selectedDay, m)} style={{color:P.remove, background:P.redBg, border:'none', padding:'4px 8px', borderRadius:8}}>Retirer</button>
                             </div>
-                        ) : <div style={{color:P.textTert, fontSize:14, fontStyle:'italic'}}>Rien de prévu</div>}
+                        ) : <div style={{color:P.textTert, fontSize:14}}>Rien de prévu</div>}
                     </div>
                 )
             })}
@@ -278,10 +230,10 @@ export default function App() {
               </div>
               {PROTEIN_ORDER.map(emoji => (
                   <div key={emoji} style={{marginBottom:20}}>
-                      <div style={{fontSize:12, fontWeight:700, color:P.textTert, marginBottom:8}}>{EMOJI_LABEL[emoji]} {emoji}</div>
+                      <div style={{fontSize:12, fontWeight:700, color:P.textTert, marginBottom:8}}>{EMOJI_LABEL[emoji]}</div>
                       <div style={{background:P.surface, borderRadius:16, border:`1px solid ${P.border}`, overflow:'hidden'}}>
                         {recipesByProtein[emoji]?.map((r, idx) => (
-                            <div key={r.id} style={{padding:12, borderBottom: idx===recipesByProtein[emoji].length-1?'none':`1px solid ${P.border}`, display:'flex', justifyContent:'space-between'}}>
+                            <div key={r.id} style={{padding:12, borderBottom:`1px solid ${P.border}`, display:'flex', justifyContent:'space-between'}}>
                                 <span>{r.name}</span>
                                 <button onClick={()=>setRecipes(prev=>prev.filter(x=>x.id!==r.id))} style={{color:P.remove, border:'none', background:'none'}}>✕</button>
                             </div>
@@ -299,25 +251,19 @@ export default function App() {
                   <div key={cat} style={{marginBottom:20}}>
                       <div style={{fontSize:12, fontWeight:700, color:P.accent, marginBottom:8}}>{cat}</div>
                       <div style={{background:P.surface, borderRadius:16, border:`1px solid ${P.border}`}}>
-                        {items.map((it, idx) => (
-                            <div key={it} onClick={()=>setGroceryChecked(p=>({...p, [it]:!p[it]}))} style={{padding:14, borderBottom: idx===items.length-1?'none':`1px solid ${P.border}`, display:'flex', alignItems:'center', gap:10}}>
-                                <div style={{width:20, height:20, borderRadius:6, border:`2px solid ${P.accent}`, background: groceryChecked[it]?P.accent:'none', display:'flex', alignItems:'center', justifyContent:'center'}}>
-                                    {groceryChecked[it] && <span style={{color:'white', fontSize:12}}>✓</span>}
-                                </div>
+                        {items.map((it) => (
+                            <div key={it} onClick={()=>setGroceryChecked(p=>({...p, [it]:!p[it]}))} style={{padding:14, display:'flex', alignItems:'center', gap:10}}>
+                                <div style={{width:20, height:20, borderRadius:6, border:`2px solid ${P.accent}`, background: groceryChecked[it]?P.accent:'none'}} />
                                 <span style={{textDecoration: groceryChecked[it]?'line-through':'none', color: groceryChecked[it]?P.textTert:P.text}}>{it}</span>
                             </div>
                         ))}
                       </div>
                   </div>
               ))}
-              <div style={{marginTop:20}}>
-                  <input value={newItem} onChange={e=>setNewItem(e.target.value)} placeholder="Ajouter un article..." style={{width:'70%', padding:12, borderRadius:12, border:`1px solid ${P.border}`}} />
-                  <button onClick={addManualItem} style={{width:'25%', marginLeft:'5%', padding:12, background:P.accent, color:'white', border:'none', borderRadius:12}}>OK</button>
-              </div>
           </div>
       )}
 
-      <div style={{position:'fixed', bottom:0, left:0, right:0, height:70, background:'white', borderTop:`1px solid ${P.border}`, display:'flex', justifyContent:'space-around', alignItems:'center', zIndex:10}}>
+      <div style={{position:'fixed', bottom:0, left:0, right:0, height:70, background:'white', borderTop:`1px solid ${P.border}`, display:'flex', justifyContent:'space-around', alignItems:'center'}}>
           {['planner', 'menutypes', 'courses'].map(t => (
               <button key={t} onClick={()=>setTab(t)} style={{background:'none', border:'none', color:tab===t?P.accent:P.textTert, fontWeight:600, fontSize:12}}>
                   {t === 'planner' ? '📅 Plan' : t === 'menutypes' ? '🍳 Plats' : '🛒 Courses'}
@@ -325,43 +271,22 @@ export default function App() {
           ))}
       </div>
 
-      {/* SHEET AJOUT AUTOMATIQUE CORRIGÉ */}
       <Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title="Choisir un plat">
-          {filteredForSlot.length > 0 ? filteredForSlot.map(r => (
-              <div 
-                key={r.id} 
-                onClick={() => selectAndAddMeal(r.id)} 
-                style={{
-                  padding:16, 
-                  borderRadius:12, 
-                  background: P.surface2, 
-                  marginBottom:8, 
-                  border:`1px solid ${P.border}`,
-                  cursor: 'pointer'
-                }}
-              >
-                  <div style={{fontWeight: 600, color: P.text}}>{r.name}</div>
-                  <div style={{fontSize: 12, color: P.textSec}}>{r.time} min</div>
+          {filteredForSlot.map(r => (
+              <div key={r.id} onClick={() => selectAndAddMeal(r.id)} style={{padding:16, borderRadius:12, background:P.surface2, marginBottom:8, border:`1px solid ${P.border}`, cursor:'pointer'}}>
+                  <div style={{fontWeight:600}}>{r.name}</div>
               </div>
-          )) : (
-            <div style={{padding:20, textAlign:'center', color:P.textSec}}>Aucun plat trouvé pour cette protéine.</div>
-          )}
+          ))}
           <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
       </Sheet>
 
       <Sheet open={sheet==='newRecipe'} onClose={()=>setSheet(null)} title="Nouveau Plat">
             <VLabel>Nom</VLabel>
             <VInput value={newRecipe.name} onChange={e=>setNewRecipe({...newRecipe, name:e.target.value})} />
-            <VLabel>Ingrédients (virgules)</VLabel>
-            <VInput value={newRecipe.ing} onChange={e=>setNewRecipe({...newRecipe, ing:e.target.value})} />
             <PrimaryBtn onClick={saveNewRecipe}>Enregistrer</PrimaryBtn>
       </Sheet>
 
       <Sheet open={sheet==='random'} onClose={()=>setSheet(null)} title="Générer la semaine">
-            <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', padding:10}}>
-                <span>Anti-répétition</span>
-                <Toggle value={antiRep} onChange={()=>setAntiRep(!antiRep)} />
-            </div>
             <PrimaryBtn onClick={doRandom}>Lancer le tirage</PrimaryBtn>
       </Sheet>
     </div>
