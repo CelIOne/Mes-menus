@@ -271,14 +271,21 @@ export default function App() {
           ))}
       </div>
 
-      <Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title="Choisir un plat">
-          {filteredForSlot.map(r => (
-              <div key={r.id} onClick={() => selectAndAddMeal(r.id)} style={{padding:16, borderRadius:12, background:P.surface2, marginBottom:8, border:`1px solid ${P.border}`, cursor:'pointer'}}>
-                  <div style={{fontWeight:600}}>{r.name}</div>
-              </div>
-          ))}
-          <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
-      </Sheet>
+{/* On ajoute la condition {sheet === 'addMeal' && ( ... )} autour */}
+{sheet === 'addMeal' && (
+  <Sheet open={true} onClose={() => setSheet(null)} title="Choisir un plat">
+    {filteredForSlot.map(r => (
+      <div 
+        key={r.id} 
+        onClick={() => selectAndAddMeal(r.id)} 
+        style={{padding:16, borderRadius:12, background:P.surface2, marginBottom:8, border:`1px solid ${P.border}`, cursor:'pointer'}}
+      >
+        <div style={{fontWeight:600, color:P.text}}>{r.name}</div>
+      </div>
+    ))}
+    <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
+  </Sheet>
+)}
       
       {tab === 'courses' && (
         <div style={{padding: 20}}>
