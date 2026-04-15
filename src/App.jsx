@@ -277,7 +277,7 @@ export default function App() {
               <div>
                 <div style={{fontSize:28,fontWeight:800,letterSpacing:-0.8,color:P.text}}>Mes menus</div>
                 <div style={{fontSize:13,color:P.textSec,marginTop:2}}>
-                  {new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'})}
+{new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'}).replace(/^./, c => c.toUpperCase())}
                 </div>
               </div>
               <div style={{display:'flex',gap:8,marginTop:6}}>
