@@ -259,7 +259,7 @@ export default function App() {
       `}</style>
 
     <div style={{
-  position:'absolute', inset:0, zIndex:1, pointerEvents:'none',
+  position:'absolute', inset:0, zIndex:0, pointerEvents:'none',
   backgroundImage:'url(/fond-ecran.png)',
   backgroundRepeat:'repeat',
   backgroundSize:'600px',
