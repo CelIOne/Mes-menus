@@ -168,7 +168,7 @@ export default function App() {
   const [nextRid, setNextRid]             = useState(15);
   const [loaded, setLoaded]               = useState(false);
 
-  const [tab, setTab]               = useState('planner');
+  const [, set]               = useState('planner');
   const [selectedDay, setSelectedDay] = useState(0);
   const [toast, setToast]           = useState('');
   const [toastBottom, setToastBottom] = useState(false);
@@ -309,7 +309,7 @@ export default function App() {
   const slotEmoji = PROTEIN_EMOJI[`${selectedDay}-${addMeal}`] || '🍗';
   const filteredForSlot = recipes.filter(r => r.protein === slotEmoji);
 
-  const tabCfg = [
+  const Cfg = [
     {name:'planner',   label:'Planifier'},
     {name:'menutypes', label:'Plats'},
     {name:'courses',   label:'Courses'},
@@ -336,7 +336,7 @@ html,body{background:#fffefb;margin:0;padding:0;}
       <Toast msg={toast} bottom={toastBottom} />
 
      {/* ══ PLANIFIER ═════════════════════════════════════════════ */}
-      {tab==='planner' && (
+      {==='planner' && (
         <div style={{display:'flex',flexDirection:'column',height:700}}>
           <div style={{padding:'22px 20px 10px'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
@@ -406,7 +406,7 @@ html,body{background:#fffefb;margin:0;padding:0;}
       )}
       
       {/* ══ PLATS (ex-menutypes) ══════════════════════════════════ */}
-      {tab==='menutypes' && (
+      {==='menutypes' && (
         <div style={{display:'flex',flexDirection:'column',height:700}}>
           <div style={{padding:'6px 20px 4px'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
@@ -452,7 +452,7 @@ if (!list.length) return null;
       )}
 
       {/* ══ COURSES ═══════════════════════════════════════════════ */}
-      {tab==='courses' && (
+      {==='courses' && (
         <div style={{display:'flex',flexDirection:'column',height:700}}>
           <div style={{padding:'6px 20px 4px'}}>
             <div style={{fontSize:28,fontWeight:800,letterSpacing:-0.8,color:P.text}}>Courses</div>
@@ -516,19 +516,19 @@ if (!list.length) return null;
         </div>
       )}
 
-      {/* TAB BAR */}
-      <div style={{position:'absolute',bottom:0,left:0,right:0,height:82,background:P.tabBar,borderTop:`0.5px solid ${P.border}`,display:'flex',alignItems:'flex-start',paddingTop:10}}>
-        {tabCfg.map(({name,label})=>(
-          <div key={name} onClick={()=>setTab(name)} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4,cursor:'pointer',padding:'4px 0'}}>
-            <svg viewBox="0 0 24 24" style={{width:22,height:22}} fill="none" stroke={tab===name?P.accent:P.textTert} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              {name==='planner'   && <><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></>}
-              {name==='menutypes' && <><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9 2 2 4-4"/></>}
-              {name==='courses'   && <><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></>}
-            </svg>
-            <span style={{fontSize:10,fontWeight:600,color:tab===name?P.accent:P.textTert,letterSpacing:'0.01em'}}>{label}</span>
-          </div>
-        ))}
-      </div>
+{/* TAB BAR */}
+<div style={{position:'absolute',bottom:0,left:0,right:0,height:82,background:P.tabBar,borderTop:`0.5px solid ${P.border}`,display:'flex',alignItems:'flex-start',paddingTop:10}}>
+  {tabCfg.map(({name,label})=>(
+    <div key={name} onClick={()=>setTab(name)} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4,cursor:'pointer',padding:'4px 0'}}>
+      <span style={{fontSize:24}}>
+        {name==='planner' && '📅'}
+        {name==='menutypes' && '🍽️'}
+        {name==='courses' && '🛒'}
+      </span>
+      <span style={{fontSize:10,fontWeight:600,color:tab===name?P.accent:P.textTert,letterSpacing:'0.01em'}}>{label}</span>
+    </div>
+  ))}
+</div>
 
       {/* ══ SHEETS ════════════════════════════════════════════════ */}
 
