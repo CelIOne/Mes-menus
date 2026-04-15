@@ -263,7 +263,7 @@ export default function App() {
   backgroundImage:'url(/fond-ecran.png)',
   backgroundRepeat:'repeat',
   backgroundSize:'600px',
-  opacity:0.10
+  opacity:0.20
 }} />
 
       <Toast msg={toast} bottom={toastBottom} />
