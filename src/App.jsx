@@ -287,58 +287,53 @@ export default function App() {
       )}
 
 {/* --- FIN DES ONGLETS --- */}
+{/* --- SECTION DES TIROIRS (SHEETS) --- */}
 
-      {/* --- NAVIGATION BASSE --- */}
-      <div style={{position:'fixed', bottom:0, left:0, right:0, height:70, background:'white', borderTop:`1px solid ${P.border}`, display:'flex', justifyContent:'space-around', alignItems:'center', zIndex:100}}>
-          <button onClick={()=>setTab('planner')} style={{background:'none', border:'none', color:tab==='planner'?P.accent:P.textTert, fontWeight:600, fontSize:12, cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center'}}>
-            <span>📅</span>
-            <span>Plan</span>
-          </button>
-          <button onClick={()=>setTab('menutypes')} style={{background:'none', border:'none', color:tab==='menutypes'?P.accent:P.textTert, fontWeight:600, fontSize:12, cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center'}}>
-            <span>🍳</span>
-            <span>Plats</span>
-          </button>
-          <button onClick={()=>setTab('courses')} style={{background:'none', border:'none', color:tab==='courses'?P.accent:P.textTert, fontWeight:600, fontSize:12, cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center'}}>
-            <span>🛒</span>
-            <span>Courses</span>
-          </button>
-      </div>
-
-      {/* --- SECTION DES TIROIRS (SHEETS) --- */}
-
-      {/* 1. Tiroir Ajout de plat automatique */}
+      {/* 1. S'affiche uniquement pour ajouter un repas sur le planning */}
       {sheet === 'addMeal' && (
         <Sheet open={true} onClose={() => setSheet(null)} title="Choisir un plat">
-          {filteredForSlot.map(r => (
-            <div key={r.id} onClick={() => selectAndAddMeal(r.id)} style={{padding:16, borderRadius:12, background:P.surface2, marginBottom:8, border:`1px solid ${P.border}`, cursor:'pointer'}}>
-              <div style={{fontWeight:600, color:P.text}}>{r.name}</div>
-            </div>
-          ))}
-          <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
+          <div style={{display:'flex', flexDirection:'column', gap:8}}>
+            {filteredForSlot.map(r => (
+              <div 
+                key={r.id} 
+                onClick={() => selectAndAddMeal(r.id)} 
+                style={{padding:16, borderRadius:12, background:P.surface2, border:`1px solid ${P.border}`, cursor:'pointer'}}
+              >
+                <div style={{fontWeight:600, color:P.text}}>{r.name}</div>
+              </div>
+            ))}
+            <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
+          </div>
         </Sheet>
       )}
 
-      {/* 2. Tiroir Nouveau Plat */}
+      {/* 2. S'affiche uniquement pour créer un NOUVEAU plat (Bouton Nouveau dans Plats) */}
       {sheet === 'newRecipe' && (
         <Sheet open={true} onClose={() => setSheet(null)} title="Nouveau Plat">
           <VLabel>Nom du plat</VLabel>
-          <VInput value={newRecipe.name} onChange={e => setNewRecipe({ ...newRecipe, name: e.target.value })} placeholder="Ex: Poulet curry" />
+          <VInput 
+            value={newRecipe.name} 
+            onChange={e => setNewRecipe({ ...newRecipe, name: e.target.value })} 
+            placeholder="Ex: Poulet au curry"
+          />
           <PrimaryBtn onClick={saveNewRecipe}>Enregistrer</PrimaryBtn>
           <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
         </Sheet>
       )}
 
-      {/* 3. Tiroir Tirage Aléatoire */}
+      {/* 3. S'affiche uniquement pour le tirage Aléatoire */}
       {sheet === 'random' && (
         <Sheet open={true} onClose={() => setSheet(null)} title="Générer la semaine">
           <div style={{ padding: '10px 0' }}>
-            <p style={{ fontSize: 14, color: P.textSec, marginBottom: 20 }}>Voulez-vous générer automatiquement tous les repas ?</p>
+            <p style={{ fontSize: 14, color: P.textSec, marginBottom: 20 }}>
+              Voulez-vous générer automatiquement tous les repas ?
+            </p>
             <PrimaryBtn onClick={doRandom}>Lancer le tirage</PrimaryBtn>
             <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
           </div>
         </Sheet>
       )}
 
-    </div>
-  );
-}
+    </div> // Ferme la div principale
+  ); // Ferme le return
+} // Ferme la fonction App
