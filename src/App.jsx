@@ -256,15 +256,6 @@ export default function App() {
         .scroll::-webkit-scrollbar{display:none}
       `}</style>
 
-      {/* STATUS BAR */}
-      <div style={{height:50,display:'flex',alignItems:'flex-end',justifyContent:'space-between',padding:'0 28px 8px'}}>
-        <span style={{fontSize:15,fontWeight:600,color:P.text}}>9:41</span>
-        <div style={{display:'flex',gap:6,alignItems:'center'}}>
-          <svg width="16" height="12" viewBox="0 0 17 12"><rect x="0" y="3" width="3" height="9" rx="1" fill={P.text}/><rect x="4.5" y="2" width="3" height="10" rx="1" fill={P.text}/><rect x="9" y="0" width="3" height="12" rx="1" fill={P.text}/><rect x="13.5" y="0" width="3.5" height="12" rx="1" fill={P.text} opacity=".3"/></svg>
-          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0" y="1" width="21" height="10" rx="3" stroke={P.text} strokeWidth="1"/><rect x="22" y="4" width="3" height="4" rx="1.5" fill={P.text}/><rect x="1.5" y="2.5" width="16" height="7" rx="2" fill={P.text}/></svg>
-        </div>
-      </div>
-
       <Toast msg={toast} bottom={toastBottom} />
 
       {/* ══ PLANIFIER ═════════════════════════════════════════════ */}
