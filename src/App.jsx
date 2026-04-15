@@ -218,7 +218,7 @@ export default function App() {
       {tab==='planner' && (
         <div style={{padding:'20px'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
-                <h1 style={{fontSize:24, color:P.text, margin:0}}>Mon Plan</h1>
+                <h1 style={{fontSize:24, color:P.text, margin:0}}>Mes menus</h1>
                 <button onClick={()=>setSheet('random')} style={{background:P.accentBg, color:P.accentText, border:'none', padding:'8px 12px', borderRadius:12, fontWeight:600}}>Aléatoire</button>
             </div>
             
