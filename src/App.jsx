@@ -325,7 +325,7 @@ html,body{background:#fffefb;margin:0;padding:0;}
       `}</style>
 
       {/* Filigrane botanical journaling */}
-      <div style={{position:'absolute',inset:0,zIndex:0,pointerEvents:'none',opacity:0.03}}>
+      <div style={{position:'absolute',inset:0,zIndex:0,pointerEvents:'none',opacity:0.08}}>
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="fp" x="0" y="0" width="160" height="160" patternUnits="userSpaceOnUse">
