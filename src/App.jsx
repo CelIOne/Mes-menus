@@ -303,16 +303,22 @@ export default function App() {
         <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
       </Sheet>
 
-      {/* 3. Tiroir Tirage Aléatoire */}
-      <Sheet open={sheet === 'random'} onClose={() => setSheet(null)} title="Générer la semaine">
-        <div style={{ padding: '10px 0' }}>
-          <p style={{ fontSize: 14, color: P.textSec, marginBottom: 20 }}>
-            Voulez-vous générer automatiquement tous les repas de la semaine ?
-          </p>
-          <PrimaryBtn onClick={doRandom}>Lancer le tirage</PrimaryBtn>
-          <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
-        </div>
-      </Sheet>
+    {/* 3. Tiroir Tirage Aléatoire - MODIFIÉ AVEC CONDITION DE GARDE */}
+{sheet === 'random' && (
+  <Sheet 
+    open={true} 
+    onClose={() => setSheet(null)} 
+    title="Générer la semaine"
+  >
+    <div style={{ padding: '10px 0' }}>
+      <p style={{ fontSize: 14, color: P.textSec, marginBottom: 20 }}>
+        Voulez-vous générer automatiquement tous les repas de la semaine ?
+      </p>
+      <PrimaryBtn onClick={doRandom}>Lancer le tirage</PrimaryBtn>
+      <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
+    </div>
+  </Sheet>
+)}
 
     </div> // Fermeture de la div principale
   ); // Fermeture du return
