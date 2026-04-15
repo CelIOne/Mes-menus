@@ -279,32 +279,41 @@ export default function App() {
           ))}
           <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
       </Sheet>
+{/* --- FIN DES ONGLETS ET DEBUT DES TIROIRS --- */}
 
-      <Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title="Choisir un plat">
-          {filteredForSlot.map(r => (
-              <div key={r.id} onClick={() => selectAndAddMeal(r.id)} style={{padding:16, borderRadius:12, background:P.surface2, marginBottom:8, border:`1px solid ${P.border}`, cursor:'pointer'}}>
-                  <div style={{fontWeight:600}}>{r.name}</div>
-              </div>
-          ))}
-          <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
+      {/* 1. Tiroir Ajout de plat automatique */}
+      <Sheet open={sheet === 'addMeal'} onClose={() => setSheet(null)} title="Choisir un plat">
+        {filteredForSlot.map(r => (
+          <div 
+            key={r.id} 
+            onClick={() => selectAndAddMeal(r.id)} 
+            style={{padding: 16, borderRadius: 12, background: P.surface2, marginBottom: 8, border: `1px solid ${P.border}`, cursor: 'pointer'}}
+          >
+            <div style={{fontWeight: 600, color: P.text}}>{r.name}</div>
+          </div>
+        ))}
+        <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
       </Sheet>
 
-      <Sheet open={sheet==='newRecipe'} onClose={()=>setSheet(null)} title="Nouveau Plat">
-            <VLabel>Nom</VLabel>
-            <VInput value={newRecipe.name} onChange={e=>setNewRecipe({...newRecipe, name:e.target.value})} />
-            <PrimaryBtn onClick={saveNewRecipe}>Enregistrer</PrimaryBtn>
-{/* Tirage Aléatoire - Corrigé */}
-<Sheet 
-  open={sheet === 'random'} 
-  onClose={() => setSheet(null)} 
-  title="Générer la semaine"
->
-  <div style={{ padding: '10px 0' }}>
-    <p style={{ fontSize: 14, color: P.textSec, marginBottom: 20 }}>
-      Voulez-vous générer automatiquement tous les repas de la semaine en fonction des protéines définies ?
-    </p>
-    <PrimaryBtn onClick={doRandom}>Lancer le tirage</PrimaryBtn>
-    <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
-  </div>
-  );
-}
+      {/* 2. Tiroir Nouveau Plat */}
+      <Sheet open={sheet === 'newRecipe'} onClose={() => setSheet(null)} title="Nouveau Plat">
+        <VLabel>Nom du plat</VLabel>
+        <VInput value={newRecipe.name} onChange={e => setNewRecipe({ ...newRecipe, name: e.target.value })} />
+        <PrimaryBtn onClick={saveNewRecipe}>Enregistrer</PrimaryBtn>
+        <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
+      </Sheet>
+
+      {/* 3. Tiroir Tirage Aléatoire */}
+      <Sheet open={sheet === 'random'} onClose={() => setSheet(null)} title="Générer la semaine">
+        <div style={{ padding: '10px 0' }}>
+          <p style={{ fontSize: 14, color: P.textSec, marginBottom: 20 }}>
+            Voulez-vous générer automatiquement tous les repas de la semaine ?
+          </p>
+          <PrimaryBtn onClick={doRandom}>Lancer le tirage</PrimaryBtn>
+          <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
+        </div>
+      </Sheet>
+
+    </div> // Fermeture de la div principale
+  ); // Fermeture du return
+} // Fermeture de la fonction App
