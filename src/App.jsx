@@ -295,7 +295,7 @@ export default function App() {
         <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
       </Sheet>
 
-      {/* 2. Tiroir Nouveau Plat */}
+    {/* 2. Tiroir Nouveau Plat */}
       <Sheet open={sheet === 'newRecipe'} onClose={() => setSheet(null)} title="Nouveau Plat">
         <VLabel>Nom du plat</VLabel>
         <VInput value={newRecipe.name} onChange={e => setNewRecipe({ ...newRecipe, name: e.target.value })} />
