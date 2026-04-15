@@ -28,7 +28,7 @@ const EMOJI_LABEL = { '🥚':'Œuf', '🥩':'Bœuf', '🍗':'Poulet', '🐟':'Po
 
 const P = {
   bg:'#FAF7F2',
-  surface:'#F5EFE3',
+  surface:'#FEFCF8',
   surface2:'#F2EDE3',
   surface3:'#F7F3EC',
   accent:'#6B8C6B',
