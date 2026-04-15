@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+const [searchPlat, setSearchPlat] = useState('');
 
 const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const FULL_DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
@@ -350,6 +351,10 @@ export default function App() {
             </div>
           </div>
           <div className="scroll" style={{flex:1,overflowY:'auto',padding:'0 16px 16px'}}>
+            <div style={{background:P.surface2,borderRadius:12,padding:'9px 14px',display:'flex',alignItems:'center',gap:8,margin:'8px 0 6px',border:`0.5px solid ${P.border}`}}>
+  <svg viewBox="0 0 20 20" style={{width:14,height:14,fill:P.textTert,flexShrink:0}}><path d="M13.3 11.9l4.8 4.8-1.4 1.4-4.8-4.8A7 7 0 1 1 13.3 11.9zM8 13A5 5 0 1 0 8 3a5 5 0 0 0 0 10z"/></svg>
+  <input value={searchPlat} onChange={e=>setSearchPlat(e.target.value)} placeholder="Rechercher un plat…" style={{background:'none',border:'none',outline:'none',fontSize:15,color:P.text,flex:1,fontFamily:'inherit'}}/>
+</div>
             {PROTEIN_ORDER.map(emoji => {
               const list = recipesByProtein[emoji] || [];
               if (!list.length) return null;
