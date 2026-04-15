@@ -208,98 +208,70 @@ export default function App() {
                 Vider
               </button>
 
-{/* Bouton Aléatoire Direct */}
-<button 
-  onClick={doRandom} 
-  style={{ 
-    background: P.accentBg, 
-    color: P.accentText, 
-    border: 'none', 
-    padding: '8px 12px', 
-    borderRadius: 12, 
-    fontWeight: 600, 
-    fontSize: 12, 
-    cursor: 'pointer' 
-  }}
->
-  Aléatoire
-</button>
-          
-          {/* Reste du code (Jours et Repas)... */}
-            
-            <div style={{display:'flex', gap:8, overflowX:'auto', marginBottom:20}}>
-                {DAYS.map((d, i) => (
-                    <div key={i} onClick={()=>setSelectedDay(i)} style={{textAlign:'center', cursor:'pointer', minWidth:45}}>
-                        <div style={{width:40, height:40, borderRadius:20, display:'flex', alignItems:'center', justifyContent:'center', background:selectedDay===i?P.accent:P.surface, color:selectedDay===i?'white':P.text, border:`1px solid ${P.border}`}}>
-                            {DATES[i]}
-                        </div>
-                        <div style={{fontSize:10, marginTop:4, color:P.textSec}}>{d}</div>
-                    </div>
-                ))}
+{tab === 'planner' && (
+        <div style={{ padding: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+            <div>
+              <h1 style={{ fontSize: 24, color: P.text, margin: 0 }}>Mes menus</h1>
+              <div style={{ fontSize: 13, color: P.textSec, marginTop: 2, textTransform: 'capitalize' }}>
+                {new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(new Date())}
+              </div>
             </div>
+            
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button 
+                onClick={() => {
+                  if (window.confirm("Voulez-vous vraiment supprimer tous les menus de la semaine ?")) {
+                    setPlanner({});
+                  }
+                }} 
+                style={{ background: P.redBg, color: P.remove, border: 'none', padding: '8px 12px', borderRadius: 12, fontWeight: 600, fontSize: 12, cursor: 'pointer' }}
+              >
+                Vider
+              </button>
 
-            {MEALS.map(m => {
-                const rid = planner[`${selectedDay}-${m}`];
-                const recipe = recipes.find(r=>r.id===rid);
-                return (
-                    <div key={m} style={{background:P.surface, padding:16, borderRadius:16, marginBottom:12, border:`1px solid ${P.border}`}}>
-                        <div style={{display:'flex', justifyContent:'space-between', marginBottom:8}}>
-                            <span style={{fontSize:12, fontWeight:700, color:P.accentLight}}>{ML[m]} {PROTEIN_EMOJI[`${selectedDay}-${m}`]}</span>
-                            <button onClick={()=>openAddMealSheet(m)} style={{background:'none', border:'none', color:P.accent, fontWeight:600}}>{recipe?'Changer':'+ Ajouter'}</button>
-                        </div>
-                        {recipe ? (
-                            <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                                <div><div style={{fontWeight:600}}>{recipe.name}</div></div>
-                                <button onClick={()=>removeMeal(selectedDay, m)} style={{color:P.remove, background:P.redBg, border:'none', padding:'4px 8px', borderRadius:8}}>Retirer</button>
-                            </div>
-                        ) : <div style={{color:P.textTert, fontSize:14}}>Rien de prévu</div>}
-                    </div>
-                )
-            })}
+              <button 
+                onClick={doRandom} 
+                style={{ background: P.accentBg, color: P.accentText, border: 'none', padding: '8px 12px', borderRadius: 12, fontWeight: 600, fontSize: 12, cursor: 'pointer' }}
+              >
+                Aléatoire
+              </button>
+            </div> {/* <-- CETTE DIV ÉTAIT MANQUANTE */}
+          </div>
+
+          <div style={{display:'flex', gap:8, overflowX:'auto', marginBottom:20}}>
+            {DAYS.map((d, i) => (
+              <div key={i} onClick={()=>setSelectedDay(i)} style={{textAlign:'center', cursor:'pointer', minWidth:45}}>
+                <div style={{width:40, height:40, borderRadius:20, display:'flex', alignItems:'center', justifyContent:'center', background:selectedDay===i?P.accent:P.surface, color:selectedDay===i?'white':P.text, border:`1px solid ${P.border}`}}>
+                  {DATES[i]}
+                </div>
+                <div style={{fontSize:10, marginTop:4, color:P.textSec}}>{d}</div>
+              </div>
+            ))}
+          </div>
+
+          {MEALS.map(m => {
+            const rid = planner[`${selectedDay}-${m}`];
+            const recipe = recipes.find(r=>r.id===rid);
+            return (
+              <div key={m} style={{background:P.surface, padding:16, borderRadius:16, marginBottom:12, border:`1px solid ${P.border}`}}>
+                <div style={{display:'flex', justifyContent:'space-between', marginBottom:8}}>
+                  <span style={{fontSize:12, fontWeight:700, color:P.accentLight}}>{ML[m]} {PROTEIN_EMOJI[`${selectedDay}-${m}`]}</span>
+                  <button onClick={()=>openAddMealSheet(m)} style={{background:'none', border:'none', color:P.accent, fontWeight:600}}>{recipe?'Changer':'+ Ajouter'}</button>
+                </div>
+                {recipe ? (
+                  <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                    <div><div style={{fontWeight:600}}>{recipe.name}</div></div>
+                    <button onClick={()=>removeMeal(selectedDay, m)} style={{color:P.remove, background:P.redBg, border:'none', padding:'4px 8px', borderRadius:8}}>Retirer</button>
+                  </div>
+                ) : <div style={{color:P.textTert, fontSize:14}}>Rien de prévu</div>}
+              </div>
+            )
+          })}
         </div>
       )}
 
-      {tab==='menutypes' && (
-          <div style={{padding:20}}>
-              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
-                <h1 style={{fontSize:24, color:P.text, margin:0}}>Mes Plats</h1>
-                <button onClick={()=>setSheet('newRecipe')} style={{background:P.accent, color:'white', border:'none', padding:'8px 16px', borderRadius:12, fontWeight:600}}>+ Nouveau</button>
-              </div>
-              {PROTEIN_ORDER.map(emoji => (
-                  <div key={emoji} style={{marginBottom:20}}>
-                      <div style={{fontSize:12, fontWeight:700, color:P.textTert, marginBottom:8}}>{EMOJI_LABEL[emoji]}</div>
-                      <div style={{background:P.surface, borderRadius:16, border:`1px solid ${P.border}`, overflow:'hidden'}}>
-                        {recipesByProtein[emoji]?.map((r, idx) => (
-                            <div key={r.id} style={{padding:12, borderBottom:`1px solid ${P.border}`, display:'flex', justifyContent:'space-between'}}>
-                                <span>{r.name}</span>
-                                <button onClick={()=>setRecipes(prev=>prev.filter(x=>x.id!==r.id))} style={{color:P.remove, border:'none', background:'none'}}>✕</button>
-                            </div>
-                        ))}
-                      </div>
-                  </div>
-              ))}
-          </div>
-      )}
-
-      {tab==='courses' && (
-          <div style={{padding:20}}>
-              <h1 style={{fontSize:24, color:P.text, marginBottom:20}}>Courses</h1>
-              {Object.entries(groceryCats).map(([cat, items]) => items.length > 0 && (
-                  <div key={cat} style={{marginBottom:20}}>
-                      <div style={{fontSize:12, fontWeight:700, color:P.accent, marginBottom:8}}>{cat}</div>
-                      <div style={{background:P.surface, borderRadius:16, border:`1px solid ${P.border}`}}>
-                        {items.map((it) => (
-                            <div key={it} onClick={()=>setGroceryChecked(p=>({...p, [it]:!p[it]}))} style={{padding:14, display:'flex', alignItems:'center', gap:10}}>
-                                <div style={{width:20, height:20, borderRadius:6, border:`2px solid ${P.accent}`, background: groceryChecked[it]?P.accent:'none'}} />
-                                <span style={{textDecoration: groceryChecked[it]?'line-through':'none', color: groceryChecked[it]?P.textTert:P.text}}>{it}</span>
-                            </div>
-                        ))}
-                      </div>
-                  </div>
-              ))}
-          </div>
-      )}
-
+      {/* Navigation Basse */}
       <div style={{position:'fixed', bottom:0, left:0, right:0, height:70, background:'white', borderTop:`1px solid ${P.border}`, display:'flex', justifyContent:'space-around', alignItems:'center'}}>
           {['planner', 'menutypes', 'courses'].map(t => (
               <button key={t} onClick={()=>setTab(t)} style={{background:'none', border:'none', color:tab===t?P.accent:P.textTert, fontWeight:600, fontSize:12}}>
@@ -308,9 +280,7 @@ export default function App() {
           ))}
       </div>
 
-{/* --- SECTION DES TIROIRS (SHEETS) --- */}
-
-      {/* 1. Ajouter un repas */}
+      {/* Tiroirs (Sheets) */}
       {sheet === 'addMeal' && (
         <Sheet open={true} onClose={() => setSheet(null)} title="Choisir un plat">
           <div style={{display:'flex', flexDirection:'column', gap:8}}>
@@ -329,20 +299,15 @@ export default function App() {
         </Sheet>
       )}
 
-      {/* 2. Nouveau Plat */}
       {sheet === 'newRecipe' && (
         <Sheet open={true} onClose={() => setSheet(null)} title="Nouveau Plat">
           <VLabel>Nom du plat</VLabel>
-          <VInput 
-            value={newRecipe.name} 
-            onChange={e => setNewRecipe({ ...newRecipe, name: e.target.value })} 
-            placeholder="Ex: Poulet au curry"
-          />
+          <VInput value={newRecipe.name} onChange={e => setNewRecipe({ ...newRecipe, name: e.target.value })} placeholder="Ex: Poulet au curry" />
           <PrimaryBtn onClick={saveNewRecipe}>Enregistrer</PrimaryBtn>
           <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
         </Sheet>
       )}
 
-    </div> // Ferme la div principale (maxWidth: 400)
+    </div> // Ferme la div principale
   ); // Ferme le return
-} // Ferme la fonction App (UNE SEULE FOIS)
+} // Ferme la fonction App
