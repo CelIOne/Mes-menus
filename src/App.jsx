@@ -27,11 +27,23 @@ const PROTEIN_EMOJI = {
 const EMOJI_LABEL = { '🥚':'Œuf', '🥩':'Bœuf', '🍗':'Poulet', '🐟':'Poisson' };
 
 const P = {
-  bg:'#F5F0FF', surface:'#FFFFFF', surface2:'#EDE6FF', surface3:'#F9F6FF',
-  accent:'#7C5CBF', accentLight:'#B79FE6', accentBg:'#EDE6FF', accentText:'#4A2D8C',
-  border:'#DDD4F5', border2:'#C9BAEE',
-  text:'#2D1F5E', textSec:'#7B6FA0', textTert:'#B0A3CC',
-  remove:'#C9506E', redBg:'#FAEAEA', tabBar:'#FFFFFF', handle:'#D4C8F0',
+  bg:'#FAF7F2',
+  surface:'#FEFCF8',
+  surface2:'#F2EDE3',
+  surface3:'#F7F3EC',
+  accent:'#6B8C6B',
+  accentLight:'#9DB89D',
+  accentBg:'#EBF0EB',
+  accentText:'#3D5C3D',
+  border:'#E4DAC8',
+  border2:'#D4C6B0',
+  text:'#2C2416',
+  textSec:'#7A6A52',
+  textTert:'#AFA08A',
+  remove:'#B85C3A',
+  redBg:'#F7EDE8',
+  tabBar:'#FEFCF8',
+  handle:'#D4C6B0',
 };
 
 const STORAGE_KEY = 'menus_app_v4';
