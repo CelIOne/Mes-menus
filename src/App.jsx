@@ -284,11 +284,20 @@ export default function App() {
             <VLabel>Nom</VLabel>
             <VInput value={newRecipe.name} onChange={e=>setNewRecipe({...newRecipe, name:e.target.value})} />
             <PrimaryBtn onClick={saveNewRecipe}>Enregistrer</PrimaryBtn>
-      </Sheet>
-
-      <Sheet open={sheet==='random'} onClose={()=>setSheet(null)} title="Générer la semaine">
-            <PrimaryBtn onClick={doRandom}>Lancer le tirage</PrimaryBtn>
-      </Sheet>
+{/* Tirage Aléatoire - Corrigé */}
+<Sheet 
+  open={sheet === 'random'} 
+  onClose={() => setSheet(null)} 
+  title="Générer la semaine"
+>
+  <div style={{ padding: '10px 0' }}>
+    <p style={{ fontSize: 14, color: P.textSec, marginBottom: 20 }}>
+      Voulez-vous générer automatiquement tous les repas de la semaine en fonction des protéines définies ?
+    </p>
+    <PrimaryBtn onClick={doRandom}>Lancer le tirage</PrimaryBtn>
+    <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
+  </div>
+</Sheet>
     </div>
   );
 }
