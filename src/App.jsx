@@ -356,8 +356,10 @@ export default function App() {
   <input value={searchPlat} onChange={e=>setSearchPlat(e.target.value)} placeholder="Rechercher un plat…" style={{background:'none',border:'none',outline:'none',fontSize:15,color:P.text,flex:1,fontFamily:'inherit'}}/>
 </div>
             {PROTEIN_ORDER.map(emoji => {
-              const list = recipesByProtein[emoji] || [];
-              if (!list.length) return null;
+const list = (recipesByProtein[emoji] || []).filter(r =>
+  r.name.toLowerCase().includes(searchPlat.toLowerCase())
+);
+if (!list.length) return null;
               return (
                 <div key={emoji}>
                   <div style={{display:'flex',alignItems:'center',gap:8,padding:'14px 2px 6px'}}>
