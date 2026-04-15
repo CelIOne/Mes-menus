@@ -258,7 +258,13 @@ export default function App() {
         #root{background:#fffefb;}
       `}</style>
 
-      <div style={{position:'absolute',inset:0,zIndex:0,pointerEvents:'none',backgroundImage:'url(/fond-ecran.png)',backgroundRepeat:'repeat',backgroundSize:'200px',opacity:0.07}} />
+    <div style={{
+  position:'absolute', inset:0, zIndex:0, pointerEvents:'none',
+  backgroundImage:'url(/fond-ecran.png)',
+  backgroundRepeat:'repeat',
+  backgroundSize:'200px',
+  opacity:0.07
+}} />
 
       <Toast msg={toast} bottom={toastBottom} />
 
