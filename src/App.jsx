@@ -319,7 +319,9 @@ export default function App() {
     <div style={{maxWidth:390,margin:'0 auto',background:P.bg,minHeight:780,position:'relative',overflow:'hidden',borderRadius:44,fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif'}}>
       <style>{`
         @keyframes fadeInOut{0%{opacity:0;transform:translateX(-50%) translateY(4px)}10%{opacity:1;transform:translateX(-50%) translateY(0)}80%{opacity:1}100%{opacity:0}}
-        .scroll::-webkit-scrollbar{display:none}
+.scroll::-webkit-scrollbar{display:none}
+html,body{background:#FAF7F2;margin:0;padding:0;}
+#root{background:#FAF7F2;}
       `}</style>
 
 
