@@ -2,9 +2,29 @@ import { useState, useEffect, useCallback } from "react";
 
 const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const FULL_DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
-const DATES = [14,15,16,17,18,19,20];
 const MEALS = ['dejeuner','diner'];
 const ML = { dejeuner:'Déjeuner', diner:'Dîner' };
+// Fonction pour récupérer les numéros de jour de la semaine actuelle (Lundi à Dimanche)
+const getWeekDates = () => {
+  const now = new Date();
+  const dayOfWeek = now.getDay(); // 0 (Dimanche) à 6 (Samedi)
+  
+  // Ajustement pour que la semaine commence le Lundi (index 0 dans votre tableau DAYS)
+  // Si c'est dimanche (0), on recule de 6 jours, sinon on recule jusqu'au lundi (1)
+  const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+  
+  const monday = new Date(now);
+  monday.setDate(now.getDate() + diffToMonday);
+
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    return d.getDate();
+  });
+};
+
+const DATES = getWeekDates(); // Génère les dates dynamiquement
+
 
 const PROTEIN_EMOJI = {
   '0-dejeuner':'🥚','0-diner':'🥩',
