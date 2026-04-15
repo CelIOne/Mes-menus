@@ -149,6 +149,12 @@ export default function App() {
     setSheet(null);
     showToast('Plat planifié ✓');
   }
+  // Nouvelle fonction pour l'ajout automatique
+function selectAndAddMeal(recipeId) {
+  setPlanner(p => ({...p, [`${selectedDay}-${addMeal}`]: recipeId}));
+  setSheet(null);
+  showToast('Plat planifié ✓');
+}
   function removeMeal(day, meal) {
     setPlanner(p => { const n={...p}; delete n[`${day}-${meal}`]; return n; });
   }
@@ -281,7 +287,28 @@ export default function App() {
             })}
         </div>
       )}
-
+{/* Sheets (Modals) */}
+      <Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title="Choisir un plat">
+          {filteredForSlot.map(r => (
+              <div 
+                key={r.id} 
+                onClick={() => selectAndAddMeal(r.id)} // Utilisation de la sélection automatique
+                style={{
+                  padding:16, 
+                  borderRadius:12, 
+                  background: addRecipeId===r.id?P.accentBg:P.surface2, 
+                  marginBottom:8, 
+                  border:`1px solid ${addRecipeId===r.id?P.accent:P.border}`,
+                  cursor: 'pointer'
+                }}
+              >
+                  <div style={{fontWeight: 600, color: P.text}}>{r.name}</div>
+                  <div style={{fontSize: 12, color: P.textSec}}>{r.time} min</div>
+              </div>
+          ))}
+          {/* Suppression du bouton "Confirmer" pour plus de rapidité */}
+          <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
+      </Sheet>
       {tab==='menutypes' && (
           <div style={{padding:20}}>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
