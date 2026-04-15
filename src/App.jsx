@@ -324,6 +324,98 @@ html,body{background:#FAF7F2;margin:0;padding:0;}
 #root{background:#FAF7F2;}
       `}</style>
 
+      {/* Filigrane botanical journaling */}
+      <div style={{position:'absolute',inset:0,zIndex:0,pointerEvents:'none',opacity:0.06}}>
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="fp" x="0" y="0" width="160" height="160" patternUnits="userSpaceOnUse">
+
+              {/* Branche avec feuilles — style croquis botanique */}
+              <g transform="translate(20,18)" stroke="#5A6E3A" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M0 40 Q2 28 0 14 Q-1 6 2 0" strokeWidth="1.2"/>
+                <path d="M0 32 Q-8 26 -12 20" strokeWidth="0.9"/>
+                <path d="M-12 20 Q-10 14 -6 18 Q-8 24 -12 20Z" fill="#5A6E3A" strokeWidth="0.7"/>
+                <path d="M0 24 Q9 18 13 12" strokeWidth="0.9"/>
+                <path d="M13 12 Q11 6 7 10 Q9 16 13 12Z" fill="#5A6E3A" strokeWidth="0.7"/>
+                <path d="M0 16 Q-7 10 -10 4" strokeWidth="0.9"/>
+                <path d="M-10 4 Q-8-2 -4 2 Q-6 8 -10 4Z" fill="#5A6E3A" strokeWidth="0.7"/>
+              </g>
+
+              {/* Carotte style crayon botanique */}
+              <g transform="translate(95,12)" stroke="#8B4E1A" fill="none" strokeLinecap="round">
+                <path d="M0 0 Q1 6 0 14 Q-1 20 1 26" strokeWidth="0.8"/>
+                <ellipse cx="0" cy="13" rx="4" ry="13" fill="#D4702A" stroke="#8B4E1A" strokeWidth="0.8" opacity="0.85"/>
+                <path d="M0 2 Q3 8 2 14" stroke="#C45A18" strokeWidth="0.5"/>
+                <path d="M-1 0 Q-5-4 -3-9" stroke="#4A7A2A" strokeWidth="1"/>
+                <path d="M1 0 Q4-3 2-8" stroke="#4A7A2A" strokeWidth="1"/>
+                <path d="M2 1 Q7-2 6-7" stroke="#4A7A2A" strokeWidth="1"/>
+              </g>
+
+              {/* Citron coupe transversale — style botanique */}
+              <g transform="translate(130,75)">
+                <ellipse cx="0" cy="0" rx="13" ry="10" fill="#F0D060" stroke="#B8980A" strokeWidth="0.9" opacity="0.8"/>
+                <ellipse cx="0" cy="0" rx="9" ry="6.5" fill="none" stroke="#B8980A" strokeWidth="0.6"/>
+                <path d="M0-6.5 L0 6.5" stroke="#B8980A" strokeWidth="0.5"/>
+                <path d="M-9 0 L9 0" stroke="#B8980A" strokeWidth="0.5"/>
+                <path d="M-6-4 L6 4M-6 4 L6-4" stroke="#B8980A" strokeWidth="0.4"/>
+                <path d="M-13 0 Q-15-4 -12-6" stroke="#8A7A1A" strokeWidth="0.8" fill="none"/>
+              </g>
+
+              {/* Herbes fines — romarin style */}
+              <g transform="translate(48,88)" stroke="#4A6E2A" fill="none" strokeLinecap="round">
+                <path d="M0 36 Q1 24 0 12 Q-1 4 1 0" strokeWidth="1"/>
+                <path d="M0 30 L-5 26M0 30 L5 27" strokeWidth="0.7"/>
+                <path d="M0 24 L-5 20M0 24 L5 21" strokeWidth="0.7"/>
+                <path d="M0 18 L-5 14M0 18 L4 15" strokeWidth="0.7"/>
+                <path d="M0 12 L-4 9M0 12 L4 9" strokeWidth="0.7"/>
+                <path d="M0 6 L-3 3M0 6 L3 3" strokeWidth="0.7"/>
+                <ellipse cx="-5" cy="26" rx="2" ry="1" fill="#4A6E2A" transform="rotate(-20,-5,26)"/>
+                <ellipse cx="5" cy="27" rx="2" ry="1" fill="#4A6E2A" transform="rotate(15,5,27)"/>
+                <ellipse cx="-5" cy="20" rx="2" ry="1" fill="#4A6E2A" transform="rotate(-25,-5,20)"/>
+                <ellipse cx="5" cy="21" rx="2" ry="1" fill="#4A6E2A" transform="rotate(20,5,21)"/>
+              </g>
+
+              {/* Tomate cerise sur tige */}
+              <g transform="translate(118,118)" stroke="#8A2A2A" fill="none" strokeLinecap="round">
+                <path d="M0-16 Q1-10 0-6" strokeWidth="0.9" stroke="#4A7A2A"/>
+                <path d="M0-6 Q-4-8 -3-5" strokeWidth="0.8" stroke="#4A7A2A"/>
+                <circle cx="0" cy="0" r="9" fill="#C83838" stroke="#8A2A2A" strokeWidth="0.9" opacity="0.85"/>
+                <path d="M-5-5 Q0-8 5-5" strokeWidth="0.5" stroke="#A82828"/>
+                <path d="M-6 1 Q-4-1 -2 1" strokeWidth="0.5" stroke="#E05050"/>
+              </g>
+
+              {/* Oeuf style journaling */}
+              <g transform="translate(22,108)">
+                <path d="M0-14 Q10-14 12-4 Q12 8 0 12 Q-12 8 -12-4 Q-10-14 0-14Z" fill="#F8EDD0" stroke="#C4A870" strokeWidth="0.9" opacity="0.85"/>
+                <path d="M-4-8 Q0-11 4-8" stroke="#D4B880" strokeWidth="0.5" fill="none"/>
+                <path d="M-8 0 Q-6-3 -3 0" stroke="#D4B880" strokeWidth="0.4" fill="none"/>
+              </g>
+
+              {/* Poisson — dessin fin */}
+              <g transform="translate(82,140)" stroke="#3A5A7A" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M-18 0 Q-8-8 4-6 Q12-3 16 0 Q12 3 4 6 Q-8 8 -18 0Z" fill="#8AB4CC" stroke="#3A5A7A" strokeWidth="0.9" opacity="0.8"/>
+                <path d="M16 0 Q20-6 24 0 Q20 6 16 0Z" fill="#8AB4CC" stroke="#3A5A7A" strokeWidth="0.9"/>
+                <circle cx="6" cy="-1.5" r="1.5" fill="#1A3A5A" stroke="none"/>
+                <path d="M-10-3 Q-4-5 2-3" strokeWidth="0.5" stroke="#2A4A6A"/>
+                <path d="M-14 0 Q-10 2 -6 0" strokeWidth="0.5" stroke="#2A4A6A"/>
+              </g>
+
+              {/* Petites étoiles botaniques / graines */}
+              <g fill="#8A7A5A" opacity="0.7">
+                <circle cx="68" cy="30" r="1.2"/>
+                <circle cx="72" cy="34" r="0.8"/>
+                <circle cx="65" cy="36" r="1"/>
+                <circle cx="140" cy="50" r="1.2"/>
+                <circle cx="144" cy="46" r="0.8"/>
+                <circle cx="148" cy="52" r="1"/>
+              </g>
+
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#fp)"/>
+        </svg>
+      </div>
+
 
       <Toast msg={toast} bottom={toastBottom} />
 
