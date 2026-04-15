@@ -249,13 +249,6 @@ export default function App() {
     {name:'courses',   label:'Courses'},
   ];
 
-  return (
-    <div style={{maxWidth:390,margin:'0 auto',background:P.bg,minHeight:780,position:'relative',overflow:'hidden',borderRadius:44,border:`1px solid ${P.border}`,fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif'}}>
-      <style>{`
-        @keyframes fadeInOut{0%{opacity:0;transform:translateX(-50%) translateY(4px)}10%{opacity:1;transform:translateX(-50%) translateY(0)}80%{opacity:1}100%{opacity:0}}
-        .scroll::-webkit-scrollbar{display:none}
-      `}</style>
-
       <Toast msg={toast} bottom={toastBottom} />
 
       {/* ══ PLANIFIER ═════════════════════════════════════════════ */}
