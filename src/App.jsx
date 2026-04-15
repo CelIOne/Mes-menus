@@ -279,7 +279,7 @@ export default function App() {
           ))}
           <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
       </Sheet>
-// ... (Fin de la section des onglets Planner, Menutypes, Courses)
+//
       
       {tab === 'courses' && (
         <div style={{padding: 20}}>
