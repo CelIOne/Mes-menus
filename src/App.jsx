@@ -297,7 +297,5 @@ export default function App() {
     <PrimaryBtn onClick={doRandom}>Lancer le tirage</PrimaryBtn>
     <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
   </div>
-</Sheet>
-    </div>
   );
 }
