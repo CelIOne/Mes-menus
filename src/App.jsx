@@ -279,47 +279,29 @@ export default function App() {
           ))}
           <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
       </Sheet>
-{/* --- FIN DES ONGLETS ET DEBUT DES TIROIRS --- */}
+// ... (Fin de la section des onglets Planner, Menutypes, Courses)
+      
+      {tab === 'courses' && (
+        <div style={{padding: 20}}>
+          {/* ... contenu des courses ... */}
+        </div>
+      )}
 
-      {/* 1. Tiroir Ajout de plat automatique */}
-      <Sheet open={sheet === 'addMeal'} onClose={() => setSheet(null)} title="Choisir un plat">
-        {filteredForSlot.map(r => (
-          <div 
-            key={r.id} 
-            onClick={() => selectAndAddMeal(r.id)} 
-            style={{padding: 16, borderRadius: 12, background: P.surface2, marginBottom: 8, border: `1px solid ${P.border}`, cursor: 'pointer'}}
-          >
-            <div style={{fontWeight: 600, color: P.text}}>{r.name}</div>
-          </div>
-        ))}
-        <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
-      </Sheet>
+      {/* --- INSÉREZ LE NOUVEAU BLOC ICI --- */}
+      {/* C'est ici que vous collez tout le bloc "NAVIGATION BASSE" et les "TIROIRS" */}
+      
+      <div style={{position:'fixed', bottom:0, ...}}>
+          {/* ... boutons de navigation ... */}
+      </div>
 
-    {/* 2. Tiroir Nouveau Plat */}
-      <Sheet open={sheet === 'newRecipe'} onClose={() => setSheet(null)} title="Nouveau Plat">
-        <VLabel>Nom du plat</VLabel>
-        <VInput value={newRecipe.name} onChange={e => setNewRecipe({ ...newRecipe, name: e.target.value })} />
-        <PrimaryBtn onClick={saveNewRecipe}>Enregistrer</PrimaryBtn>
-        <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
-      </Sheet>
+      {sheet === 'addMeal' && (
+        <Sheet ...>
+          {/* ... */}
+        </Sheet>
+      )}
 
-    {/* 3. Tiroir Tirage Aléatoire - MODIFIÉ AVEC CONDITION DE GARDE */}
-{sheet === 'random' && (
-  <Sheet 
-    open={true} 
-    onClose={() => setSheet(null)} 
-    title="Générer la semaine"
-  >
-    <div style={{ padding: '10px 0' }}>
-      <p style={{ fontSize: 14, color: P.textSec, marginBottom: 20 }}>
-        Voulez-vous générer automatiquement tous les repas de la semaine ?
-      </p>
-      <PrimaryBtn onClick={doRandom}>Lancer le tirage</PrimaryBtn>
-      <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
-    </div>
-  </Sheet>
-)}
+      {/* ... les autres tiroirs ... */}
 
-    </div> // Fermeture de la div principale
-  ); // Fermeture du return
-} // Fermeture de la fonction App
+    </div> // Ferme le div principal
+  ); // Ferme le return
+} // Ferme la fonction App
