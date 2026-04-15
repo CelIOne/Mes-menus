@@ -308,32 +308,9 @@ export default function App() {
           ))}
       </div>
 
-{/* On ajoute la condition {sheet === 'addMeal' && ( ... )} autour */}
-{sheet === 'addMeal' && (
-  <Sheet open={true} onClose={() => setSheet(null)} title="Choisir un plat">
-    {filteredForSlot.map(r => (
-      <div 
-        key={r.id} 
-        onClick={() => selectAndAddMeal(r.id)} 
-        style={{padding:16, borderRadius:12, background:P.surface2, marginBottom:8, border:`1px solid ${P.border}`, cursor:'pointer'}}
-      >
-        <div style={{fontWeight:600, color:P.text}}>{r.name}</div>
-      </div>
-    ))}
-    <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
-  </Sheet>
-)}
-      
-      {tab === 'courses' && (
-        <div style={{padding: 20}}>
-          {/* ... contenu des courses ... */}
-        </div>
-      )}
-
-{/* --- FIN DES ONGLETS --- */}
 {/* --- SECTION DES TIROIRS (SHEETS) --- */}
 
-      {/* 1. S'affiche UNIQUEMENT pour ajouter un repas sur le planning */}
+      {/* 1. Ajouter un repas */}
       {sheet === 'addMeal' && (
         <Sheet open={true} onClose={() => setSheet(null)} title="Choisir un plat">
           <div style={{display:'flex', flexDirection:'column', gap:8}}>
@@ -352,7 +329,7 @@ export default function App() {
         </Sheet>
       )}
 
-{/* 2. Tiroir Nouveau Plat (Garder celui-ci) */}
+      {/* 2. Nouveau Plat */}
       {sheet === 'newRecipe' && (
         <Sheet open={true} onClose={() => setSheet(null)} title="Nouveau Plat">
           <VLabel>Nom du plat</VLabel>
@@ -366,9 +343,6 @@ export default function App() {
         </Sheet>
       )}
 
-      {/* --- LE TIROIR RANDOM A ÉTÉ SUPPRIMÉ ICI --- */}
-
-    </div> // 1. Ferme la div principale (maxWidth: 400)
-  ); // 2. Ferme le return ( ... )
-} // 3. Ferme la fonction export default function App() {
-} // Ferme la fonction App
+    </div> // Ferme la div principale (maxWidth: 400)
+  ); // Ferme le return
+} // Ferme la fonction App (UNE SEULE FOIS)
