@@ -501,19 +501,6 @@ export default function App() {
             </button>
           ))}
         </div>
-        <VLabel>Repas</VLabel>
-        <div style={{display:'flex',gap:8,marginBottom:4}}>
-          {MEALS.map(m=>(
-            <button key={m} onClick={()=>setNewRecipe(f=>({...f,meal:m}))} style={{flex:1,padding:'10px 0',borderRadius:12,fontSize:14,fontWeight:600,cursor:'pointer',fontFamily:'inherit',border:`1px solid ${newRecipe.meal===m?P.accent:P.border}`,background:newRecipe.meal===m?P.accentBg:'transparent',color:newRecipe.meal===m?P.accentText:P.textSec,transition:'all 0.15s'}}>{ML[m]}</button>
-          ))}
-        </div>
-        <VLabel>Temps de préparation (min)</VLabel>
-        <VInput type="number" value={newRecipe.time} onChange={e=>setNewRecipe(f=>({...f,time:e.target.value}))} placeholder="20"/>
-        <VLabel>Ingrédients principaux</VLabel>
-        <VInput value={newRecipe.ing} onChange={e=>setNewRecipe(f=>({...f,ing:e.target.value}))} placeholder="séparés par des virgules"/>
-        <PrimaryBtn onClick={saveNewRecipe}>Enregistrer</PrimaryBtn>
-        <GhostBtn onClick={()=>setSheet(null)}>Annuler</GhostBtn>
-      </Sheet>
-    </div>
+
   );
 }
