@@ -587,7 +587,7 @@ if (!list.length) return null;
           </div>
 
           {/* Barre d'ajout manuel fixée en bas */}
-          <div style={{position:'absolute',bottom:82,left:0,right:0,background:P.surface,borderTop:`0.5px solid ${P.border}`,padding:'10px 16px',display:'flex',gap:10,alignItems:'center'}}>
+          <div style={{position:'absolute',bottom:110,left:0,right:0,background:P.surface,borderTop:`0.5px solid ${P.border}`,padding:'10px 16px',display:'flex',gap:10,alignItems:'center'}}>
             <input
               value={newItem}
               onChange={e=>setNewItem(e.target.value)}
