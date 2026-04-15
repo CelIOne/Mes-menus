@@ -27,7 +27,7 @@ const PROTEIN_EMOJI = {
 const EMOJI_LABEL = { '🥚':'Œuf', '🥩':'Bœuf', '🍗':'Poulet', '🐟':'Poisson' };
 
 const P = {
-  bg:'#FAF7F2',
+  bg:'#FEFEFE',
   surface:'#ffffff',
   surface2:'#F2EDE3',
   surface3:'#F7F3EC',
