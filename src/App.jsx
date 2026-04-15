@@ -280,7 +280,7 @@ export default function App() {
               </div>
               <div style={{display:'flex',gap:8,marginTop:6}}>
                 <button onClick={()=>{ if(window.confirm('Vider le planning ?')){ setPlanner({}); showToast('Planning vidé', true); }}} style={{background:P.redBg,color:P.remove,border:'none',borderRadius:20,padding:'7px 12px',fontSize:13,fontWeight:700,cursor:'pointer'}}>Vider</button>
-                <button onClick={()=>setSheet('random')} style={{background:P.accentBg,color:P.accentText,border:`1px solid ${P.accentLight}`,borderRadius:20,padding:'7px 14px',fontSize:13,fontWeight:700,cursor:'pointer'}}>Aléatoire</button>
+                <button onClick={doRandom} style={{background:P.accentBg,color:P.accentText,border:`1px solid ${P.accentLight}`,borderRadius:20,padding:'7px 14px',fontSize:13,fontWeight:700,cursor:'pointer'}}>Aléatoire</button>
               </div>
             </div>
           </div>
@@ -488,20 +488,6 @@ export default function App() {
         <GhostBtn onClick={()=>setSheet(null)}>Annuler</GhostBtn>
       </Sheet>
 
-      {/* Tirage aléatoire */}
-      <Sheet open={sheet==='random'} onClose={()=>setSheet(null)} title="Tirage aléatoire">
-        <div style={{background:P.surface3,borderRadius:14,overflow:'hidden',marginBottom:8,border:`0.5px solid ${P.border}`}}>
-          <div style={{display:'flex',alignItems:'center',padding:'14px 16px',gap:12}}>
-            <div style={{flex:1,fontSize:15,fontWeight:500,color:P.text}}>Anti-répétition</div>
-            <Toggle value={antiRep} onChange={()=>setAntiRep(v=>!v)}/>
-          </div>
-        </div>
-        <div style={{fontSize:13,color:P.textSec,padding:'8px 2px',lineHeight:1.6}}>
-          Les plats sont tirés selon la protéine assignée à chaque slot de la semaine.
-        </div>
-        <PrimaryBtn onClick={doRandom}>Générer la semaine</PrimaryBtn>
-        <GhostBtn onClick={()=>setSheet(null)}>Annuler</GhostBtn>
-      </Sheet>
 
       {/* Nouveau plat */}
       <Sheet open={sheet==='newRecipe'} onClose={()=>setSheet(null)} title="Nouveau plat">
