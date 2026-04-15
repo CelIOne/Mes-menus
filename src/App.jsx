@@ -280,6 +280,15 @@ export default function App() {
           <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
       </Sheet>
 
+      <Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title="Choisir un plat">
+          {filteredForSlot.map(r => (
+              <div key={r.id} onClick={() => selectAndAddMeal(r.id)} style={{padding:16, borderRadius:12, background:P.surface2, marginBottom:8, border:`1px solid ${P.border}`, cursor:'pointer'}}>
+                  <div style={{fontWeight:600}}>{r.name}</div>
+              </div>
+          ))}
+          <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
+      </Sheet>
+
       <Sheet open={sheet==='newRecipe'} onClose={()=>setSheet(null)} title="Nouveau Plat">
             <VLabel>Nom</VLabel>
             <VInput value={newRecipe.name} onChange={e=>setNewRecipe({...newRecipe, name:e.target.value})} />
