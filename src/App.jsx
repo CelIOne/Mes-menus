@@ -149,6 +149,13 @@ export default function App() {
     showToast('Semaine générée !');
   };
 
+  const clearAllMeals = () => {
+  if (window.confirm("Voulez-vous vraiment supprimer tous les menus de la semaine ?")) {
+    setPlanner({});
+    showToast('Planning vidé');
+  }
+};
+
   const saveNewRecipe = () => {
     if (!newRecipe.name.trim()) return;
     setRecipes(prev => [...prev, { id: nextRid, name: newRecipe.name.trim(), protein: newRecipe.protein, meal: newRecipe.meal, time: parseInt(newRecipe.time)||20, ing: newRecipe.ing.trim() }]);
@@ -179,16 +186,30 @@ export default function App() {
       <Toast msg={toast} />
 
       {tab==='planner' && (
-        <div style={{padding:'20px'}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
-                <div>
-                  <h1 style={{fontSize:24, color:P.text, margin:0}}>Mes menus</h1>
-                  <div style={{ fontSize: 13, color: P.textSec, marginTop: 2, textTransform: 'capitalize' }}>
-                   {new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(new Date())}
-                  </div>
-                </div>
-                <button onClick={()=>setSheet('random')} style={{background:P.accentBg, color:P.accentText, border:'none', padding:'8px 12px', borderRadius:12, fontWeight:600}}>Aléatoire</button>
-            </div>
+<div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20}}>
+    <div>
+      <h1 style={{fontSize:24, color:P.text, margin:0}}>Mes menus</h1>
+      <div style={{ fontSize: 13, color: P.textSec, marginTop: 2, textTransform: 'capitalize' }}>
+        Semaine de {new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(new Date())}
+      </div>
+    </div>
+    <div style={{display:'flex', gap: 8}}>
+        {/* Nouveau bouton Tout supprimer */}
+        <button 
+          onClick={clearAllMeals} 
+          style={{background:P.redBg, color:P.remove, border:'none', padding:'8px 12px', borderRadius:12, fontWeight:600, fontSize: 12}}
+        >
+          Vider
+        </button>
+        {/* Bouton Aléatoire existant */}
+        <button 
+          onClick={()=>setSheet('random')} 
+          style={{background:P.accentBg, color:P.accentText, border:'none', padding:'8px 12px', borderRadius:12, fontWeight:600, fontSize: 12}}
+        >
+          Aléatoire
+        </button>
+    </div>
+</div>
             
             <div style={{display:'flex', gap:8, overflowX:'auto', marginBottom:20}}>
                 {DAYS.map((d, i) => (
