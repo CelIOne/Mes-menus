@@ -289,7 +289,7 @@ export default function App() {
 {/* --- FIN DES ONGLETS --- */}
 {/* --- SECTION DES TIROIRS (SHEETS) --- */}
 
-      {/* 1. S'affiche uniquement pour ajouter un repas sur le planning */}
+      {/* 1. S'affiche UNIQUEMENT pour ajouter un repas sur le planning */}
       {sheet === 'addMeal' && (
         <Sheet open={true} onClose={() => setSheet(null)} title="Choisir un plat">
           <div style={{display:'flex', flexDirection:'column', gap:8}}>
@@ -300,6 +300,7 @@ export default function App() {
                 style={{padding:16, borderRadius:12, background:P.surface2, border:`1px solid ${P.border}`, cursor:'pointer'}}
               >
                 <div style={{fontWeight:600, color:P.text}}>{r.name}</div>
+                <div style={{fontSize:12, color:P.textSec}}>{r.time} min</div>
               </div>
             ))}
             <GhostBtn onClick={() => setSheet(null)}>Annuler</GhostBtn>
@@ -307,7 +308,7 @@ export default function App() {
         </Sheet>
       )}
 
-      {/* 2. S'affiche uniquement pour créer un NOUVEAU plat (Bouton Nouveau dans Plats) */}
+      {/* 2. S'affiche UNIQUEMENT pour créer un NOUVEAU plat (Bouton Nouveau dans Plats) */}
       {sheet === 'newRecipe' && (
         <Sheet open={true} onClose={() => setSheet(null)} title="Nouveau Plat">
           <VLabel>Nom du plat</VLabel>
@@ -321,7 +322,7 @@ export default function App() {
         </Sheet>
       )}
 
-      {/* 3. S'affiche uniquement pour le tirage Aléatoire */}
+      {/* 3. S'affiche UNIQUEMENT pour le tirage Aléatoire */}
       {sheet === 'random' && (
         <Sheet open={true} onClose={() => setSheet(null)} title="Générer la semaine">
           <div style={{ padding: '10px 0' }}>
@@ -334,6 +335,6 @@ export default function App() {
         </Sheet>
       )}
 
-    </div> // Ferme la div principale
+    </div> // Ferme la div principale (maxWidth:400)
   ); // Ferme le return
 } // Ferme la fonction App
