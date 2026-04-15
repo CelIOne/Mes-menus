@@ -208,15 +208,22 @@ export default function App() {
                 Vider
               </button>
 
-              {/* Bouton Aléatoire */}
-              <button 
-                onClick={() => setSheet('random')} 
-                style={{ background: P.accentBg, color: P.accentText, border: 'none', padding: '8px 12px', borderRadius: 12, fontWeight: 600, fontSize: 12, cursor: 'pointer' }}
-              >
-                Aléatoire
-              </button>
-            </div>
-          </div>
+{/* Bouton Aléatoire Direct */}
+<button 
+  onClick={doRandom} 
+  style={{ 
+    background: P.accentBg, 
+    color: P.accentText, 
+    border: 'none', 
+    padding: '8px 12px', 
+    borderRadius: 12, 
+    fontWeight: 600, 
+    fontSize: 12, 
+    cursor: 'pointer' 
+  }}
+>
+  Aléatoire
+</button>
           
           {/* Reste du code (Jours et Repas)... */}
             
