@@ -11,7 +11,6 @@ const DATES = Array.from({ length: 7 }, (_, i) => {
 });
 const MEALS = ['dejeuner','diner'];
 const ML = { dejeuner:'Déjeuner', diner:'Dîner' };
-const [searchPlat, setSearchPlat] = useState('');
 
 // Emoji protéine par slot (jour 0-6, repas dejeuner/diner)
 const PROTEIN_EMOJI = {
@@ -28,23 +27,11 @@ const PROTEIN_EMOJI = {
 const EMOJI_LABEL = { '🥚':'Œuf', '🥩':'Bœuf', '🍗':'Poulet', '🐟':'Poisson' };
 
 const P = {
-  bg:'#F7F3EC',
-  surface:'#FDFAF5',
-  surface2:'#EEE8DC',
-  surface3:'#F4EFE6',
-  accent:'#6B8C6B',
-  accentLight:'#9DB89D',
-  accentBg:'#E8EFE8',
-  accentText:'#3D5C3D',
-  border:'#DDD5C4',
-  border2:'#C9BCA8',
-  text:'#2C2416',
-  textSec:'#7A6A52',
-  textTert:'#AFA08A',
-  remove:'#B85C3A',
-  redBg:'#F5E8E3',
-  tabBar:'#FDFAF5',
-  handle:'#C9BCA8',
+  bg:'#F5F0FF', surface:'#FFFFFF', surface2:'#EDE6FF', surface3:'#F9F6FF',
+  accent:'#7C5CBF', accentLight:'#B79FE6', accentBg:'#EDE6FF', accentText:'#4A2D8C',
+  border:'#DDD4F5', border2:'#C9BAEE',
+  text:'#2D1F5E', textSec:'#7B6FA0', textTert:'#B0A3CC',
+  remove:'#C9506E', redBg:'#FAEAEA', tabBar:'#FFFFFF', handle:'#D4C8F0',
 };
 
 const STORAGE_KEY = 'menus_app_v4';
@@ -131,6 +118,7 @@ export default function App() {
   const [newRecipe, setNewRecipe] = useState({name:'',protein:'🍗',meal:'dejeuner',time:'',ing:''});
 
   const [antiRep, setAntiRep] = useState(true);
+  const [searchPlat, setSearchPlat] = useState('');
 
   const showToast = useCallback((msg, bottom = false) => {
     setToast(msg); setToastBottom(bottom);
@@ -264,75 +252,11 @@ export default function App() {
   ];
 
   return (
-    <div style={{maxWidth:390,margin:'0 auto',background:P.bg,minHeight:780,position:'relative',overflow:'hidden',fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif'}}>
+    <div style={{maxWidth:390,margin:'0 auto',background:P.bg,minHeight:780,position:'relative',overflow:'hidden',borderRadius:44,border:`1px solid ${P.border}`,fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif'}}>
       <style>{`
         @keyframes fadeInOut{0%{opacity:0;transform:translateX(-50%) translateY(4px)}10%{opacity:1;transform:translateX(-50%) translateY(0)}80%{opacity:1}100%{opacity:0}}
         .scroll::-webkit-scrollbar{display:none}
       `}</style>
-
-      {/* Filigrane pattern répétitif */}
-      <div style={{position:'absolute',inset:0,zIndex:0,pointerEvents:'none',opacity:0.13}}>
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="food-pattern" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
-              {/* Carotte */}
-              <g transform="translate(10,8)" stroke="#6B3A1F" strokeWidth="1.2" fill="none">
-                <path d="M0 0 Q2 8 0 16" stroke="#E07A3A" fill="#E07A3A" strokeWidth="0"/>
-                <ellipse cx="0" cy="8" rx="3" ry="8" fill="#E07A3A"/>
-                <path d="M-1 0 Q-4 -5 -2 -8" stroke="#4A7A3A" strokeWidth="1.2"/>
-                <path d="M0 0 Q2 -5 1 -8" stroke="#4A7A3A" strokeWidth="1.2"/>
-                <path d="M1 0 Q5 -4 4 -7" stroke="#4A7A3A" strokeWidth="1.2"/>
-              </g>
-              {/* Herbe / persil */}
-              <g transform="translate(48,6)" stroke="#4A7A3A" strokeWidth="1.1" fill="none">
-                <path d="M0 12 Q-3 4 -2 0"/>
-                <path d="M0 12 Q0 3 1 0"/>
-                <path d="M0 12 Q3 5 3 1"/>
-                <ellipse cx="-2" cy="0" rx="2.5" ry="1.5" fill="#5A8A4A" stroke="none"/>
-                <ellipse cx="1" cy="0" rx="2.5" ry="1.5" fill="#5A8A4A" stroke="none"/>
-                <ellipse cx="3" cy="1" rx="2.5" ry="1.5" fill="#5A8A4A" stroke="none"/>
-              </g>
-              {/* Citron */}
-              <g transform="translate(55,42)">
-                <ellipse cx="0" cy="0" rx="9" ry="7" fill="#E8C84A" stroke="#C9A830" strokeWidth="0.8"/>
-                <path d="M-6 0 Q0 -3 6 0 Q0 3 -6 0" fill="#D4B83A" stroke="none"/>
-                <path d="M-3 -5 Q0 -8 3 -5" stroke="#C9A830" strokeWidth="0.8" fill="none"/>
-              </g>
-              {/* Poivron */}
-              <g transform="translate(8,46)">
-                <path d="M0-2 Q-8 0 -7 9 Q-6 16 0 16 Q6 16 7 9 Q8 0 0-2Z" fill="#C84A3A" stroke="#A83A2A" strokeWidth="0.8"/>
-                <path d="M0-2 Q1-7 0-9" stroke="#4A7A3A" strokeWidth="1.2" fill="none"/>
-                <path d="M-3 4 Q0 6 3 4" stroke="#A83A2A" strokeWidth="0.6" fill="none"/>
-              </g>
-              {/* Feuille */}
-              <g transform="translate(34,28)">
-                <path d="M0 14 Q-7 6 -4 0 Q0-4 4 0 Q7 6 0 14Z" fill="#5A8A4A" stroke="#3A6A2A" strokeWidth="0.7"/>
-                <path d="M0 14 Q0 6 0 0" stroke="#3A6A2A" strokeWidth="0.7" fill="none"/>
-              </g>
-              {/* Tomate */}
-              <g transform="translate(66,20)">
-                <circle cx="0" cy="4" r="7" fill="#C84040" stroke="#A83030" strokeWidth="0.8"/>
-                <path d="M-2 0 Q0-5 2 0" stroke="#4A7A3A" strokeWidth="1" fill="none"/>
-                <path d="M0-3 Q2-7 1-9" stroke="#4A7A3A" strokeWidth="1" fill="none"/>
-              </g>
-              {/* Oeuf */}
-              <g transform="translate(30,58)">
-                <ellipse cx="0" cy="0" rx="6" ry="8" fill="#F5EDD0" stroke="#D4C4A0" strokeWidth="0.8"/>
-              </g>
-              {/* Poisson */}
-              <g transform="translate(62,60)" stroke="#4A6A8A" strokeWidth="0.9" fill="none">
-                <path d="M-10 0 Q-4-5 4-4 Q8-2 10 0 Q8 2 4 4 Q-4 5 -10 0Z" fill="#7AAAC0" stroke="#4A6A8A"/>
-                <path d="M10 0 Q13-4 16 0 Q13 4 10 0Z" fill="#7AAAC0" stroke="#4A6A8A"/>
-                <circle cx="5" cy="-1" r="1" fill="#2A4A6A" stroke="none"/>
-              </g>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#food-pattern)"/>
-        </svg>
-      </div>
-
-      {/* Contenu au-dessus du filigrane */}
-      <div style={{position:'relative',zIndex:1}}>
 
       {/* STATUS BAR */}
       <div style={{height:50,display:'flex',alignItems:'flex-end',justifyContent:'space-between',padding:'0 28px 8px'}}>
@@ -590,7 +514,6 @@ if (!list.length) return null;
   <PrimaryBtn onClick={saveNewRecipe}>Enregistrer</PrimaryBtn>
   <GhostBtn onClick={()=>setSheet(null)}>Annuler</GhostBtn>
 </Sheet>
-</div> {/* fin div zIndex:1 */}
-    </div>
+</div>
   );
 }
