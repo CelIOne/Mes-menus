@@ -42,7 +42,7 @@ const P = {
   textTert:'#AFA08A',
   remove:'#B85C3A',
   redBg:'#F7EDE8',
-  tabBar:'#6B8C6B',
+  tabBar:'#FEFCF8',
   handle:'#D4C6B0',
 };
 
