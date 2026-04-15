@@ -239,6 +239,11 @@ export default function App() {
         <div style={{padding:'20px'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
                 <h1 style={{fontSize:24, color:P.text, margin:0}}>Mes menus</h1>
+              {/* C'EST ICI : Affichage dynamique du mois et de l'année */}
+        <div style={{ fontSize: 13, color: P.textSec, marginTop: 1, textTransform: 'capitalize' }}>
+          Semaine de {new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(new Date())}
+        </div>
+      </div>
                 <button onClick={()=>setSheet('random')} style={{background:P.accentBg, color:P.accentText, border:'none', padding:'8px 12px', borderRadius:12, fontWeight:600}}>Aléatoire</button>
             </div>
             
