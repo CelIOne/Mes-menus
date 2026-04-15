@@ -506,6 +506,6 @@ export default function App() {
   <PrimaryBtn onClick={saveNewRecipe}>Enregistrer</PrimaryBtn>
   <GhostBtn onClick={()=>setSheet(null)}>Annuler</GhostBtn>
 </Sheet>
-
+</div>
   );
 }
