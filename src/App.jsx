@@ -489,18 +489,23 @@ export default function App() {
       </Sheet>
 
 
-      {/* Nouveau plat */}
-      <Sheet open={sheet==='newRecipe'} onClose={()=>setSheet(null)} title="Nouveau plat">
-        <VLabel>Nom du plat</VLabel>
-        <VInput value={newRecipe.name} onChange={e=>setNewRecipe(f=>({...f,name:e.target.value}))} placeholder="Ex. : Filet de bœuf + haricots"/>
-        <VLabel>Protéine</VLabel>
-        <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:4}}>
-          {PROTEIN_ORDER.map(e=>(
-            <button key={e} onClick={()=>setNewRecipe(f=>({...f,protein:e}))} style={{padding:'8px 16px',borderRadius:20,fontSize:18,cursor:'pointer',border:`1.5px solid ${newRecipe.protein===e?P.accent:P.border}`,background:newRecipe.protein===e?P.accentBg:'transparent',transition:'all 0.15s'}}>
-              {e}
-            </button>
-          ))}
-        </div>
+    {/* Nouveau plat */}
+<Sheet open={sheet==='newRecipe'} onClose={()=>setSheet(null)} title="Nouveau plat">
+  <VLabel>Nom du plat</VLabel>
+  <VInput value={newRecipe.name} onChange={e=>setNewRecipe(f=>({...f,name:e.target.value}))} placeholder="Ex. : Filet de bœuf + haricots"/>
+  <VLabel>Protéine</VLabel>
+  <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:4}}>
+    {PROTEIN_ORDER.map(e=>(
+      <button key={e} onClick={()=>setNewRecipe(f=>({...f,protein:e}))} style={{padding:'8px 16px',borderRadius:20,fontSize:18,cursor:'pointer',border:`1.5px solid ${newRecipe.protein===e?P.accent:P.border}`,background:newRecipe.protein===e?P.accentBg:'transparent',transition:'all 0.15s'}}>
+        {e}
+      </button>
+    ))}
+  </div>
+  <VLabel>Ingrédients principaux</VLabel>
+  <VInput value={newRecipe.ing} onChange={e=>setNewRecipe(f=>({...f,ing:e.target.value}))} placeholder="séparés par des virgules"/>
+  <PrimaryBtn onClick={saveNewRecipe}>Enregistrer</PrimaryBtn>
+  <GhostBtn onClick={()=>setSheet(null)}>Annuler</GhostBtn>
+</Sheet>
 
   );
 }
