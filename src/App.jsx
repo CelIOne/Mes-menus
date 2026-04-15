@@ -247,7 +247,7 @@ export default function App() {
   const slotEmoji = PROTEIN_EMOJI[`${selectedDay}-${addMeal}`] || '🍗';
   const filteredForSlot = recipes.filter(r => r.protein === slotEmoji);
   const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plats'},{name:'courses',label:'Courses'}];
-  const TAB_EMOJI = {planner:'📅', menutypes:'🍽️', courses:'🛒'};
+  const TAB_EMOJI = {planner:'📆', menutypes:'🥗', courses:'🛒'};
 
   return (
     <div style={{maxWidth:390,margin:'0 auto',background:P.bg,minHeight:780,position:'relative',overflow:'hidden',fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif'}}>
