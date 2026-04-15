@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-const [searchPlat, setSearchPlat] = useState('');
+
 
 const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const FULL_DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
@@ -11,6 +11,7 @@ const DATES = Array.from({ length: 7 }, (_, i) => {
 });
 const MEALS = ['dejeuner','diner'];
 const ML = { dejeuner:'Déjeuner', diner:'Dîner' };
+const [searchPlat, setSearchPlat] = useState('');
 
 // Emoji protéine par slot (jour 0-6, repas dejeuner/diner)
 const PROTEIN_EMOJI = {
