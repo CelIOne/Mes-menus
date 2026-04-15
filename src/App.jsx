@@ -11,7 +11,6 @@ const DATES = Array.from({ length: 7 }, (_, i) => {
 });
 const MEALS = ['dejeuner','diner'];
 const ML = { dejeuner:'Déjeuner', diner:'Dîner' };
-const [searchPlat, setSearchPlat] = useState('');
 
 // Emoji protéine par slot (jour 0-6, repas dejeuner/diner)
 const PROTEIN_EMOJI = {
@@ -119,6 +118,7 @@ export default function App() {
   const [newRecipe, setNewRecipe] = useState({name:'',protein:'🍗',meal:'dejeuner',time:'',ing:''});
 
   const [antiRep, setAntiRep] = useState(true);
+  const [searchPlat, setSearchPlat] = useState('');
 
   const showToast = useCallback((msg, bottom = false) => {
     setToast(msg); setToastBottom(bottom);
