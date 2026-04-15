@@ -262,7 +262,7 @@ export default function App() {
   position:'absolute', inset:0, zIndex:1, pointerEvents:'none',
   backgroundImage:'url(/fond-ecran.png)',
   backgroundRepeat:'repeat',
-  backgroundSize:'200px',
+  backgroundSize:'600px',
   opacity:0.5
 }} />
 
