@@ -520,9 +520,9 @@ if (!list.length) return null;
 <div style={{position:'absolute',bottom:0,left:0,right:0,height:82,background:P.tabBar,borderTop:`0.5px solid ${P.border}`,display:'flex',alignItems:'flex-start',paddingTop:10}}>
   {tabCfg.map(({name,label})=>(
     <div key={name} onClick={()=>setTab(name)} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4,cursor:'pointer',padding:'4px 0'}}>
-  <span style={{fontSize:24}}>
-  {name==='planner' ? '📅' : name==='menutypes' ? '🍽️' : '🛒'}
-</span>
+ <span style={{fontSize:24}}>
+  {({'planner':'📅','menutypes':'🍽️','courses':'🛒'})[name]}
+</span
       <span style={{fontSize:10,fontWeight:600,color:tab===name?P.accent:P.textTert,letterSpacing:'0.01em'}}>{label}</span>
     </div>
   ))}
