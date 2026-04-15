@@ -399,7 +399,7 @@ if (!list.length) return null;
                           <div onClick={()=>setGroceryChecked(p=>({...p,[key]:!chk}))} style={{width:22,height:22,borderRadius:8,flexShrink:0,cursor:'pointer',background:chk?P.accent:P.surface2,border:`1.5px solid ${chk?P.accent:P.border}`,display:'flex',alignItems:'center',justifyContent:'center',transition:'all 0.15s'}}>
                             {chk&&<svg viewBox="0 0 12 10" style={{width:10,height:10}}><path d="M1 5l3 3 7-7" stroke="white" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                           </div>
-                          <span style={{fontSize:15,color:chk?P.textTert:P.text,textDecoration:chk?'line-through':'none',flex:1,transition:'all 0.15s'}}>{item}</span>
+                          <span style={{fontSize:15,color:chk?P.textTert:P.text,textDecoration:chk?'line-through':'none',flex:1,transition:'all 0.15s'}}>{item.charAt(0).toUpperCase() + item.slice(1)}</span>
                         </div>
                       );
                     })}
