@@ -268,6 +268,7 @@ const [selectedDay, setSelectedDay] = useState(() => {
         .scroll::-webkit-scrollbar{display:none}
         html,body{background:#fffefb;margin:0;padding:0;}
         #root{background:#fffefb;}
+          body{overscroll-behavior:none;overflow:hidden;}
       `}</style>
 
     <div style={{
