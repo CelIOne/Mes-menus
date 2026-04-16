@@ -99,10 +99,19 @@ function Toast({ msg, bottom }) {
   return <div style={{position:'absolute',left:'50%',transform:'translateX(-50%)',background:P.accent,color:'white',fontSize:13,fontWeight:500,padding:'7px 18px',borderRadius:20,zIndex:300,whiteSpace:'nowrap',animation:'fadeInOut 2s ease forwards',pointerEvents:'none',boxShadow:`0 4px 16px ${P.accentLight}88`,...pos}}>{msg}</div>;
 }
 function Sheet({ open, onClose, title, children }) {
+  const [startY, setStartY] = useState(0);
+  const [dragY, setDragY] = useState(0);
+  const isDragging = dragY > 0;
+
   return (
     <>
       {open && <div onClick={onClose} style={{position:'absolute',inset:0,background:'rgba(45,31,94,0.35)',zIndex:50}} />}
-      <div style={{position:'absolute',bottom:0,left:0,right:0,background:P.surface,borderRadius:'24px 24px 0 0',padding:'0 0 36px',zIndex:51,transform:open?'translateY(0)':'translateY(100%)',transition:'transform 0.32s cubic-bezier(0.32,0.72,0,1)',boxShadow:`0 -8px 32px ${P.accentLight}44`}}>
+      <div
+        style={{position:'absolute',bottom:0,left:0,right:0,background:P.surface,borderRadius:'24px 24px 0 0',padding:'0 0 36px',zIndex:51,transform:open?`translateY(${dragY}px)`:'translateY(100%)',transition:isDragging?'none':'transform 0.32s cubic-bezier(0.32,0.72,0,1)',boxShadow:`0 -8px 32px ${P.accentLight}44`}}
+        onTouchStart={e=>setStartY(e.touches[0].clientY)}
+        onTouchMove={e=>{const delta=e.touches[0].clientY-startY; if(delta>0) setDragY(delta);}}
+        onTouchEnd={()=>{if(dragY>80) onClose(); setDragY(0);}}
+      >
         <div style={{width:40,height:4,background:P.handle,borderRadius:2,margin:'12px auto 0'}} />
         <div style={{fontSize:17,fontWeight:700,textAlign:'center',padding:'14px 20px 4px',color:P.text,letterSpacing:-0.3}}>{title}</div>
         <div style={{maxHeight:540,overflowY:'auto',padding:'4px 16px'}}>{children}</div>
