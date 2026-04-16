@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-const AIRTABLE_TOKEN = 'patItgkDuEvljtMfg.40a65d368deab775d8ad973cea3d43e1a16cc8be406053de90a4884b47e0a5a4';
-const AIRTABLE_BASE = 'appAgLdpqG8ZUlfk2';
 const AT_URL = '/api/airtable';
-const AT_HEADERS = {'Authorization':`Bearer ${AIRTABLE_TOKEN}`,'Content-Type':'application/json'};
+const AT_HEADERS = {'Content-Type':'application/json'};
 const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const FULL_DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 const DATES = Array.from({ length: 7 }, (_, i) => {
