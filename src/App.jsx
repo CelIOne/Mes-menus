@@ -265,7 +265,7 @@ const [selectedDay, setSelectedDay] = useState(() => {
   position:'absolute', inset:0, zIndex:0, pointerEvents:'none',
   backgroundImage:'url(/fon-ecran.png)',
   backgroundRepeat:'repeat',
-  backgroundSize:'600px',
+  backgroundSize:'300px',
   opacity:0.20
 }} />
 
