@@ -395,7 +395,7 @@ const [selectedDay, setSelectedDay] = useState(() => {
                           <div style={{fontSize:14,fontWeight:600,color:P.text}}>{r.name}</div>
                           <div style={{fontSize:12,color:P.textSec,marginTop:2}}>{ML[r.meal]}</div>
                         </div>
-                        <button onClick={async()=>{if(r.airtableId){try{await fetch(`${AT_URL}/${r.airtableId}`,{method:'DELETE',headers:AT_HEADERS});}catch(e){}}setRecipes(prev=>prev.filter(x=>x.id!==r.id));}} style={{background:'none',border:'none',color:P.remove,fontSize:12,fontWeight:600,cursor:'pointer',padding:'3px 6px',flexShrink:0}}>✕</button>
+                        <button onClick={async()=>{if(r.airtableId){try{await fetch(`${AT_URL}?id=${r.airtableId}`,{method:'DELETE',headers:AT_HEADERS});}catch(e){}}setRecipes(prev=>prev.filter(x=>x.id!==r.id));}} style={{background:'none',border:'none',color:P.remove,fontSize:12,fontWeight:600,cursor:'pointer',padding:'3px 6px',flexShrink:0}}>✕</button>
                       </div>
                     ))}
                   </div>
