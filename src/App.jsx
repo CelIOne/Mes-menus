@@ -441,7 +441,7 @@ const [selectedDay, setSelectedDay] = useState(() => {
       </div>
 
       {/* SHEETS */}
-      <Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title={`${planner[selectedDay+'-'+addMeal]?'Modifier':'Ajouter'} · ${ML[addMeal]} ${PROTEIN_EMOJI[selectedDay+'-'+addMeal]||''}`}
+      <Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title={`${planner[selectedDay+'-'+addMeal]?'Modifier':'Ajouter'} · ${ML[addMeal]} ${PROTEIN_EMOJI[selectedDay+'-'+addMeal]||''}`}>
         <VLabel>Jour</VLabel>
         <VSelect value={selectedDay} onChange={e=>setSelectedDay(Number(e.target.value))}>
           {FULL_DAYS.map((d,i)=><option key={i} value={i}>{d}</option>)}
