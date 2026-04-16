@@ -450,7 +450,7 @@ const [selectedDay, setSelectedDay] = useState(() => {
         {filteredForSlot.length === 0
           ? <div style={{color:P.textTert,fontSize:14,padding:'12px 0',textAlign:'center'}}>Aucun plat pour cette protéine.<br/>Ajoutez-en dans "Plats".</div>
           : filteredForSlot.map(r => (
-           <div key={r.id} onClick={()=>{setPlanner(p=>({...p,[`${selectedDay}-${addMeal}`]:r.id}));setSheet(null);}} style={{...}}>
+<div key={r.id} onClick={()=>{setPlanner(p=>({...p,[selectedDay+'-'+addMeal]:r.id}));setSheet(null);}} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 14px',borderRadius:14,marginBottom:6,cursor:'pointer',background:P.surface3,border:`1px solid ${P.border}`}}>
               <div style={{flex:1}}>
                 <div style={{fontSize:15,fontWeight:addRecipeId===r.id?600:500,color:addRecipeId===r.id?P.accentText:P.text}}>{r.name}</div>
                 <div style={{fontSize:12,color:P.textSec,marginTop:2}}>{ML[r.meal]}</div>
