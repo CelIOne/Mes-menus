@@ -8,6 +8,10 @@ const DATES = Array.from({ length: 7 }, (_, i) => {
   const day = d.getDay();
   const diff = d.getDate() - day + (day === 0 ? -6 : 1) + i;
   const nd = new Date(d); nd.setDate(diff); return nd.getDate();
+  const [refreshing, setRefreshing] = useState(false);
+const [pullY, setPullY] = useState(0);
+const pullStart = useRef(0);
+
 });
 const MEALS = ['dejeuner','diner'];
 const ML = { dejeuner:'Déjeuner', diner:'Dîner' };
@@ -93,9 +97,6 @@ const DEFAULT_RECIPES = [
   {id:65, name:'Salade lentilles / tomates / thon / œuf', protein:'🐟', meal:'diner', ing:'lentilles, tomates, thon, oeuf'},
   {id:66, name:'Bouillon asiatique + tofu ou crevettes', protein:'🐟', meal:'diner', ing:'bouillon, tofu ou crevettes, épices asiatiques'},
 ];
-const [refreshing, setRefreshing] = useState(false);
-const [pullY, setPullY] = useState(0);
-const pullStart = useRef(0);
 
 async function doRefresh() {
   setRefreshing(true);
