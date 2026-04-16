@@ -110,7 +110,7 @@ function Sheet({ open, onClose, title, children }) {
         style={{position:'absolute',bottom:0,left:0,right:0,background:P.surface,borderRadius:'24px 24px 0 0',padding:'0 0 36px',zIndex:51,transform:open?`translateY(${dragY}px)`:'translateY(100%)',transition:isDragging?'none':'transform 0.32s cubic-bezier(0.32,0.72,0,1)',boxShadow:`0 -8px 32px ${P.accentLight}44`}}
         onTouchStart={e=>setStartY(e.touches[0].clientY)}
         onTouchMove={e=>{const delta=e.touches[0].clientY-startY; if(delta>0) setDragY(delta);}}
-        onTouchEnd={()=>{if(dragY>80) onClose(); setDragY(0);}}
+        onTouchEnd={()=>{if(dragY>100) onClose(); setDragY(0);}}
       >
         <div style={{width:40,height:4,background:P.handle,borderRadius:2,margin:'12px auto 0'}} />
         <div style={{fontSize:17,fontWeight:700,textAlign:'center',padding:'14px 20px 4px',color:P.text,letterSpacing:-0.3}}>{title}</div>
