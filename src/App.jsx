@@ -451,10 +451,6 @@ const [selectedDay, setSelectedDay] = useState(() => {
 
       {/* SHEETS */}
       <Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title={`${planner[selectedDay+'-'+addMeal]?'Modifier':'Ajouter'} · ${ML[addMeal]} ${PROTEIN_EMOJI[selectedDay+'-'+addMeal]||''}`}>
-        <VLabel>Jour</VLabel>
-        <VSelect value={selectedDay} onChange={e=>setSelectedDay(Number(e.target.value))}>
-          {FULL_DAYS.map((d,i)=><option key={i} value={i}>{d}</option>)}
-        </VSelect>
         <VLabel>Plats disponibles · {EMOJI_LABEL[slotEmoji]} {slotEmoji}</VLabel>
         {filteredForSlot.length === 0
           ? <div style={{color:P.textTert,fontSize:14,padding:'12px 0',textAlign:'center'}}>Aucun plat pour cette protéine.<br/>Ajoutez-en dans "Plats".</div>
