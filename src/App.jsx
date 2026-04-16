@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 const AT_URL = '/api/airtable';
 const AT_HEADERS = {'Content-Type':'application/json'};
 const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
@@ -93,7 +93,36 @@ const DEFAULT_RECIPES = [
   {id:65, name:'Salade lentilles / tomates / thon / œuf', protein:'🐟', meal:'diner', ing:'lentilles, tomates, thon, oeuf'},
   {id:66, name:'Bouillon asiatique + tofu ou crevettes', protein:'🐟', meal:'diner', ing:'bouillon, tofu ou crevettes, épices asiatiques'},
 ];
+const [refreshing, setRefreshing] = useState(false);
+const [pullY, setPullY] = useState(0);
+const pullStart = useRef(0);
 
+async function doRefresh() {
+  setRefreshing(true);
+  try {
+    const res = await fetch(`${AT_URL}`, {headers: AT_HEADERS});
+    const data = await res.json();
+    if (data.records?.length) {
+      setRecipes(data.records.map(r => ({
+        id: r.fields.id||r.id, airtableId: r.id,
+        name: r.fields.name||'', protein: r.fields.protein||'🍗',
+        meal: r.fields.meal||'dejeuner', ing: r.fields.ing||''
+      })));
+    }
+    const res2 = await fetch('/api/planner', {headers: AT_HEADERS});
+    const data2 = await res2.json();
+    if (data2.records?.length) {
+      const p = {};
+      data2.records.forEach(r => {
+        if (r.fields.Slot && r.fields.recipeID)
+          p[r.fields.Slot] = {recipeId: r.fields.recipeID, airtableId: r.id};
+      });
+      setPlanner(p);
+    }
+  } catch(e) {}
+  setRefreshing(false);
+  showToast('Actualisé ✓');
+}
 function Toast({ msg, bottom }) {
   if (!msg) return null;
   const pos = bottom ? { bottom: 90 } : { top: 62 };
@@ -351,6 +380,11 @@ const [selectedDay, setSelectedDay] = useState(() => {
 }} />
 
       <Toast msg={toast} bottom={toastBottom} />
+      {pullY > 10 && (
+  <div style={{position:'absolute',top:pullY-20,left:'50%',transform:'translateX(-50%)',fontSize:20,zIndex:200,transition:'top 0.1s'}}>
+    {refreshing ? '⏳' : '↓'}
+  </div>
+)}
 
       {/* ══ PLANIFIER ══ */}
       {tab==='planner' && (
@@ -367,7 +401,11 @@ const [selectedDay, setSelectedDay] = useState(() => {
               </div>
             </div>
           </div>
-          <div className="scroll" style={{flex:1,overflowY:'auto',padding:'0 20px 20px'}}>
+<div className="scroll" style={{flex:1,overflowY:'auto',padding:'0 20px 20px'}}
+  onTouchStart={e=>{ pullStart.current = e.touches[0].clientY; }}
+  onTouchMove={e=>{ const delta = e.touches[0].clientY - pullStart.current; if(delta>0 && delta<80) setPullY(delta); }}
+  onTouchEnd={()=>{ if(pullY>60) doRefresh(); setPullY(0); }}
+>
             <div className="scroll" style={{display:'flex',gap:8,padding:'14px 0 10px',overflowX:'auto'}}>
               {DAYS.map((d,i)=>(
                 <div key={i} onClick={()=>setSelectedDay(i)} style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:5,cursor:'pointer'}}>
