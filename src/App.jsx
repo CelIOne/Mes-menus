@@ -1,5 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
-
+const AIRTABLE_TOKEN = 'patItgkDuEvljtMfg.40a65d368deab775d8ad973cea3d43e1a16cc8be406053de90a4884b47e0a5a4';
+const AIRTABLE_BASE = 'appAgLdpqG8ZUlfk2';
+const AT_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE}`;
+const AT_HEADERS = {'Authorization':`Bearer ${AIRTABLE_TOKEN}`,'Content-Type':'application/json'};
 const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const FULL_DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 const DATES = Array.from({ length: 7 }, (_, i) => {
@@ -174,6 +177,18 @@ const [selectedDay, setSelectedDay] = useState(() => {
           if (d.nextRid) setNextRid(d.nextRid);
         }
       } catch(e) {}
+      
+      try {
+  const res = await fetch(`${AT_URL}/Recipes`, {headers: AT_HEADERS});
+  const data = await res.json();
+  if (data.records?.length) {
+    setRecipes(data.records.map(r => ({
+      id: r.fields.id || r.id, airtableId: r.id,
+      name: r.fields.name||'', protein: r.fields.protein||'🍗',
+      meal: r.fields.meal||'dejeuner', ing: r.fields.ing||''
+    })));
+  }
+} catch(e) {}
       setLoaded(true);
     }
     load();
@@ -217,14 +232,21 @@ const [selectedDay, setSelectedDay] = useState(() => {
     setSheet(null);
     showToast('Semaine générée !', true);
   }
-  function saveNewRecipe() {
-    if (!newRecipe.name.trim()) return;
-    setRecipes(prev => [...prev, {id:nextRid, name:newRecipe.name.trim(), protein:newRecipe.protein, meal:newRecipe.meal, time:parseInt(newRecipe.time)||20, ing:newRecipe.ing.trim()}]);
-    setNextRid(n => n+1);
-    setNewRecipe({name:'',protein:'🍗',meal:'dejeuner',time:'',ing:''});
-    setSheet(null);
-    showToast('Plat ajouté ✓');
-  }
+  async function saveNewRecipe() {
+  if (!newRecipe.name.trim()) return;
+  const newR = {id:nextRid, name:newRecipe.name.trim(), protein:newRecipe.protein, meal:newRecipe.meal, ing:newRecipe.ing.trim()};
+  try {
+    const res = await fetch(`${AT_URL}/Recipes`, {method:'POST', headers:AT_HEADERS,
+      body:JSON.stringify({fields:{id:nextRid, name:newR.name, protein:newR.protein, meal:newR.meal, ing:newR.ing}})});
+    const data = await res.json();
+    newR.airtableId = data.id;
+  } catch(e) {}
+  setRecipes(prev=>[...prev,newR]);
+  setNextRid(n=>n+1);
+  setNewRecipe({name:'',protein:'🍗',meal:'dejeuner',ing:''});
+  setSheet(null);
+  showToast('Plat ajouté ✓');
+}
 
   const groceryCats = (() => {
     const rids = [...new Set(Object.values(planner))];
@@ -375,7 +397,7 @@ const [selectedDay, setSelectedDay] = useState(() => {
                           <div style={{fontSize:14,fontWeight:600,color:P.text}}>{r.name}</div>
                           <div style={{fontSize:12,color:P.textSec,marginTop:2}}>{ML[r.meal]}</div>
                         </div>
-                        <button onClick={()=>setRecipes(prev=>prev.filter(x=>x.id!==r.id))} style={{background:'none',border:'none',color:P.remove,fontSize:12,fontWeight:600,cursor:'pointer',padding:'3px 6px',flexShrink:0}}>✕</button>
+                        <button onClick={async()=>{if(r.airtableId){try{await fetch(`${AT_URL}/Recipes/${r.airtableId}`,{method:'DELETE',headers:AT_HEADERS});}catch(e){}}setRecipes(prev=>prev.filter(x=>x.id!==r.id));}} style={{background:'none',border:'none',color:P.remove,fontSize:12,fontWeight:600,cursor:'pointer',padding:'3px 6px',flexShrink:0}}>✕</button>
                       </div>
                     ))}
                   </div>
