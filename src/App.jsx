@@ -266,7 +266,7 @@ const [selectedDay, setSelectedDay] = useState(() => {
   backgroundImage:'url(/fon-ecran.png)',
   backgroundRepeat:'repeat',
   backgroundSize:'300px',
-  opacity:0.20
+  opacity:0.07
 }} />
 
       <Toast msg={toast} bottom={toastBottom} />
