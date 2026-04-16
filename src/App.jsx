@@ -134,7 +134,10 @@ export default function App() {
   const [nextRid, setNextRid] = useState(67);
   const [loaded, setLoaded] = useState(false);
   const [tab, setTab] = useState('planner');
-  const [selectedDay, setSelectedDay] = useState(0);
+const [selectedDay, setSelectedDay] = useState(() => {
+  const day = new Date().getDay();
+  return day === 0 ? 6 : day - 1;
+});
   const [toast, setToast] = useState('');
   const [toastBottom, setToastBottom] = useState(false);
   const [sheet, setSheet] = useState(null);
