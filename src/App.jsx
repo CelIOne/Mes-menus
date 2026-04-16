@@ -467,7 +467,6 @@ const pullStart = useRef(0);
                     <div style={{display:'flex',alignItems:'center',gap:10}}>
                       <div style={{flex:1}}>
                         <div style={{fontSize:16,fontWeight:600,color:P.text,lineHeight:1.4}}>{recipe.name}</div>
-                        <div style={{fontSize:13,color:P.textSec,marginTop:5}}>{recipe.time} min</div>
                       </div>
                       <span onClick={e=>{e.stopPropagation();removeMeal(selectedDay,m);}} style={{color:P.remove,fontSize:12,fontWeight:600,cursor:'pointer',padding:'5px 12px',background:P.redBg,borderRadius:20,flexShrink:0}}>Retirer</span>
                     </div>
