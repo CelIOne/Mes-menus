@@ -8,9 +8,7 @@ const DATES = Array.from({ length: 7 }, (_, i) => {
   const day = d.getDay();
   const diff = d.getDate() - day + (day === 0 ? -6 : 1) + i;
   const nd = new Date(d); nd.setDate(diff); return nd.getDate();
-  const [refreshing, setRefreshing] = useState(false);
-const [pullY, setPullY] = useState(0);
-const pullStart = useRef(0);
+ 
 
 });
 const MEALS = ['dejeuner','diner'];
@@ -186,11 +184,40 @@ const [selectedDay, setSelectedDay] = useState(() => {
   const [newRecipe, setNewRecipe] = useState({name:'',protein:'🍗',meal:'dejeuner',time:'',ing:''});
   const [antiRep, setAntiRep] = useState(true);
   const [searchPlat, setSearchPlat] = useState('');
+   const [refreshing, setRefreshing] = useState(false);
+const [pullY, setPullY] = useState(0);
+const pullStart = useRef(0);
 
   const showToast = useCallback((msg, bottom = false) => {
     setToast(msg); setToastBottom(bottom);
     setTimeout(() => setToast(''), 2200);
   }, []);
+  async function doRefresh() {
+    setRefreshing(true);
+    try {
+      const res = await fetch(`${AT_URL}`, {headers: AT_HEADERS});
+      const data = await res.json();
+      if (data.records?.length) {
+        setRecipes(data.records.map(r => ({
+          id: r.fields.id||r.id, airtableId: r.id,
+          name: r.fields.name||'', protein: r.fields.protein||'🍗',
+          meal: r.fields.meal||'dejeuner', ing: r.fields.ing||''
+        })));
+      }
+      const res2 = await fetch('/api/planner', {headers: AT_HEADERS});
+      const data2 = await res2.json();
+      if (data2.records?.length) {
+        const p = {};
+        data2.records.forEach(r => {
+          if (r.fields.Slot && r.fields.recipeID)
+            p[r.fields.Slot] = {recipeId: r.fields.recipeID, airtableId: r.id};
+        });
+        setPlanner(p);
+      }
+    } catch(e) {}
+    setRefreshing(false);
+    showToast('Actualisé ✓');
+  }
 
   useEffect(() => {
     async function load() {
