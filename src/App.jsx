@@ -463,7 +463,6 @@ const [selectedDay, setSelectedDay] = useState(() => {
             </div>
           ))
         }
-        <PrimaryBtn onClick={doAddMeal} style={{marginTop:14}}>Confirmer</PrimaryBtn>
         <GhostBtn onClick={()=>setSheet(null)}>Annuler</GhostBtn>
       </Sheet>
 
