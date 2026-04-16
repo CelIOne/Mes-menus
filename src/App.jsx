@@ -177,7 +177,7 @@ const [selectedDay, setSelectedDay] = useState(() => {
       } catch(e) {}
       
       try {
-  const res = await fetch(`${AT_URL}/Recipes`, {headers: AT_HEADERS});
+  const res = await fetch(`${AT_URL}`, {headers: AT_HEADERS});
   const data = await res.json();
   if (data.records?.length) {
     setRecipes(data.records.map(r => ({
@@ -234,7 +234,7 @@ const [selectedDay, setSelectedDay] = useState(() => {
   if (!newRecipe.name.trim()) return;
   const newR = {id:nextRid, name:newRecipe.name.trim(), protein:newRecipe.protein, meal:newRecipe.meal, ing:newRecipe.ing.trim()};
   try {
-    const res = await fetch(`${AT_URL}/Recipes`, {method:'POST', headers:AT_HEADERS,
+    const res = await fetch(`${AT_URL}`, {method:'POST', headers:AT_HEADERS,
       body:JSON.stringify({fields:{id:nextRid, name:newR.name, protein:newR.protein, meal:newR.meal, ing:newR.ing}})});
     const data = await res.json();
     newR.airtableId = data.id;
@@ -395,7 +395,7 @@ const [selectedDay, setSelectedDay] = useState(() => {
                           <div style={{fontSize:14,fontWeight:600,color:P.text}}>{r.name}</div>
                           <div style={{fontSize:12,color:P.textSec,marginTop:2}}>{ML[r.meal]}</div>
                         </div>
-                        <button onClick={async()=>{if(r.airtableId){try{await fetch(`${AT_URL}/Recipes/${r.airtableId}`,{method:'DELETE',headers:AT_HEADERS});}catch(e){}}setRecipes(prev=>prev.filter(x=>x.id!==r.id));}} style={{background:'none',border:'none',color:P.remove,fontSize:12,fontWeight:600,cursor:'pointer',padding:'3px 6px',flexShrink:0}}>✕</button>
+                        <button onClick={async()=>{if(r.airtableId){try{await fetch(`${AT_URL}/${r.airtableId}`,{method:'DELETE',headers:AT_HEADERS});}catch(e){}}setRecipes(prev=>prev.filter(x=>x.id!==r.id));}} style={{background:'none',border:'none',color:P.remove,fontSize:12,fontWeight:600,cursor:'pointer',padding:'3px 6px',flexShrink:0}}>✕</button>
                       </div>
                     ))}
                   </div>
