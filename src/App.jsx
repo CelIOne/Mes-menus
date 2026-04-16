@@ -164,29 +164,45 @@ const [selectedDay, setSelectedDay] = useState(() => {
 
   useEffect(() => {
     async function load() {
+      // Charger recettes depuis Airtable
+      try {
+        const res = await fetch(`${AT_URL}`, {headers: AT_HEADERS});
+        const data = await res.json();
+        if (data.records?.length) {
+          setRecipes(data.records.map(r => ({
+            id: r.fields.id || r.id, airtableId: r.id,
+            name: r.fields.name||'', protein: r.fields.protein||'🍗',
+            meal: r.fields.meal||'dejeuner', ing: r.fields.ing||''
+          })));
+        }
+      } catch(e) {}
+
+      // Charger planning depuis Airtable
+      try {
+        const res = await fetch('/api/planner', {headers: AT_HEADERS});
+        const data = await res.json();
+        if (data.records?.length) {
+          const p = {};
+          data.records.forEach(r => {
+            if (r.fields.Slot && r.fields.recipeID) {
+              p[r.fields.Slot] = { recipeId: r.fields.recipeID, airtableId: r.id };
+            }
+          });
+          setPlanner(p);
+        }
+      } catch(e) {}
+
+      // Charger courses depuis window.storage
       try {
         const r = await window.storage.get(STORAGE_KEY);
         if (r?.value) {
           const d = JSON.parse(r.value);
-          if (d.recipes) setRecipes(d.recipes);
-          if (d.planner) setPlanner(d.planner);
           if (d.groceryChecked) setGroceryChecked(d.groceryChecked);
           if (d.manualItems) setManualItems(d.manualItems);
           if (d.nextRid) setNextRid(d.nextRid);
         }
       } catch(e) {}
-      
-      try {
-  const res = await fetch(`${AT_URL}`, {headers: AT_HEADERS});
-  const data = await res.json();
-  if (data.records?.length) {
-    setRecipes(data.records.map(r => ({
-      id: r.fields.id || r.id, airtableId: r.id,
-      name: r.fields.name||'', protein: r.fields.protein||'🍗',
-      meal: r.fields.meal||'dejeuner', ing: r.fields.ing||''
-    })));
-  }
-} catch(e) {}
+
       setLoaded(true);
     }
     load();
@@ -195,37 +211,72 @@ const [selectedDay, setSelectedDay] = useState(() => {
   useEffect(() => {
     if (!loaded) return;
     const t = setTimeout(async () => {
-      try { await window.storage.set(STORAGE_KEY, JSON.stringify({recipes,planner,groceryChecked,manualItems,nextRid})); showToast('Sauvegardé ✓'); } catch(e) {}
+      try { await window.storage.set(STORAGE_KEY, JSON.stringify({groceryChecked,manualItems,nextRid})); } catch(e) {}
     }, 500);
     return () => clearTimeout(t);
-  }, [recipes, planner, groceryChecked, manualItems, nextRid, loaded]);
+  }, [groceryChecked, manualItems, nextRid, loaded]);
 
-  function doAddMeal() {
+  async function doAddMeal() {
     if (!addRecipeId) return;
-    setPlanner(p => ({...p, [`${selectedDay}-${addMeal}`]: addRecipeId}));
+    const slot = `${selectedDay}-${addMeal}`;
+    // Si le slot existe déjà, supprimer l'ancien enregistrement Airtable
+    if (planner[slot]?.airtableId) {
+      try { await fetch(`/api/planner?id=${planner[slot].airtableId}`, {method:'DELETE', headers:AT_HEADERS}); } catch(e) {}
+    }
+    // Créer le nouveau
+    let airtableId = null;
+    try {
+      const res = await fetch('/api/planner', {method:'POST', headers:AT_HEADERS,
+        body: JSON.stringify({fields:{Slot:slot, recipeID:addRecipeId}})});
+      const data = await res.json();
+      airtableId = data.id;
+    } catch(e) {}
+    setPlanner(p => ({...p, [slot]: {recipeId: addRecipeId, airtableId}}));
     setSheet(null);
+    showToast('Repas planifié ✓');
   }
-  function removeMeal(day, meal) {
-    setPlanner(p => { const n={...p}; delete n[`${day}-${meal}`]; return n; });
+
+  async function removeMeal(day, meal) {
+    const slot = `${day}-${meal}`;
+    if (planner[slot]?.airtableId) {
+      try { await fetch(`/api/planner?id=${planner[slot].airtableId}`, {method:'DELETE', headers:AT_HEADERS}); } catch(e) {}
+    }
+    setPlanner(p => { const n={...p}; delete n[slot]; return n; });
   }
   function openAddMealSheet(meal) {
     setAddMeal(meal);
     const slotEmoji = PROTEIN_EMOJI[`${selectedDay}-${meal}`];
     const pool = recipes.filter(r => r.protein === slotEmoji);
-    setAddRecipeId(planner[`${selectedDay}-${meal}`] || pool[0]?.id || null);
+    setAddRecipeId(planner[`${selectedDay}-${meal}`]?.recipeId || pool[0]?.id || null);
     setSheet('addMeal');
   }
-  function doRandom() {
+  async function doRandom() {
     const np = {};
-    DAYS.forEach((_,i) => {
-      MEALS.forEach(m => {
+    // Supprimer tous les slots existants dans Airtable
+    await Promise.all(Object.values(planner).map(async v => {
+      if (v?.airtableId) {
+        try { await fetch(`/api/planner?id=${v.airtableId}`, {method:'DELETE', headers:AT_HEADERS}); } catch(e) {}
+      }
+    }));
+    // Générer et sauvegarder les nouveaux
+    for (let i=0; i<DAYS.length; i++) {
+      for (const m of MEALS) {
         const emoji = PROTEIN_EMOJI[`${i}-${m}`];
         let pool = recipes.filter(r => r.protein===emoji);
         if (!pool.length) pool = recipes;
-        if (antiRep) { const used=Object.values(np); const fresh=pool.filter(r=>!used.includes(r.id)); if (fresh.length) pool=fresh; }
-        np[`${i}-${m}`] = pool[Math.floor(Math.random()*pool.length)].id;
-      });
-    });
+        if (antiRep) { const used=Object.values(np).map(v=>v.recipeId); const fresh=pool.filter(r=>!used.includes(r.id)); if (fresh.length) pool=fresh; }
+        const picked = pool[Math.floor(Math.random()*pool.length)];
+        const slot = `${i}-${m}`;
+        let airtableId = null;
+        try {
+          const res = await fetch('/api/planner', {method:'POST', headers:AT_HEADERS,
+            body: JSON.stringify({fields:{Slot:slot, recipeID:picked.id}})});
+          const data = await res.json();
+          airtableId = data.id;
+        } catch(e) {}
+        np[slot] = {recipeId: picked.id, airtableId};
+      }
+    }
     setPlanner(np);
     setSheet(null);
     showToast('Semaine générée !', true);
@@ -322,12 +373,12 @@ const [selectedDay, setSelectedDay] = useState(() => {
                 <div key={i} onClick={()=>setSelectedDay(i)} style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:5,cursor:'pointer'}}>
                   <div style={{width:42,height:42,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:700,background:i===selectedDay?P.accent:P.surface,color:i===selectedDay?'white':P.text,border:`1.5px solid ${i===selectedDay?P.accent:P.border}`,boxShadow:i===selectedDay?`0 4px 14px ${P.accentLight}66`:'none',transition:'all 0.18s'}}>{DATES[i]}</div>
                   <span style={{fontSize:10,fontWeight:600,color:i===selectedDay?P.accent:P.textTert,letterSpacing:'0.02em'}}>{d}</span>
-                  <div style={{width:4,height:4,borderRadius:'50%',background:MEALS.some(m=>planner[`${i}-${m}`])?P.accentLight:'transparent'}}/>
+                  <div style={{width:4,height:4,borderRadius:'50%',background:MEALS.some(m=>planner[`${i}-${m}`]?.recipeId)?P.accentLight:'transparent'}}/>
                 </div>
               ))}
             </div>
             {MEALS.map(m => {
-              const rid = planner[`${selectedDay}-${m}`];
+              const rid = planner[`${selectedDay}-${m}`]?.recipeId;
               const recipe = rid ? recipes.find(r=>r.id===rid) : null;
               const emoji = PROTEIN_EMOJI[`${selectedDay}-${m}`] || '';
               const hasPlanned = !!recipe;
@@ -471,7 +522,7 @@ const [selectedDay, setSelectedDay] = useState(() => {
       </div>
 
       {/* SHEETS */}
-      <Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title={`${planner[selectedDay+'-'+addMeal]?'Modifier':'Ajouter'} · ${ML[addMeal]} ${PROTEIN_EMOJI[selectedDay+'-'+addMeal]||''}`}>
+      <Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title={`${planner[selectedDay+'-'+addMeal]?.recipeId?'Modifier':'Ajouter'} · ${ML[addMeal]} ${PROTEIN_EMOJI[selectedDay+'-'+addMeal]||''}`}>
         <VLabel>Plats disponibles · {EMOJI_LABEL[slotEmoji]} {slotEmoji}</VLabel>
         {filteredForSlot.length === 0
           ? <div style={{color:P.textTert,fontSize:14,padding:'12px 0',textAlign:'center'}}>Aucun plat pour cette protéine.<br/>Ajoutez-en dans "Plats".</div>
