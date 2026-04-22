@@ -561,8 +561,6 @@ body:JSON.stringify({fields:{name:newR.name, protein:newR.protein, meal:newR.mea
             </button>
           ))}
         </div>
-        <VLabel>Ingrédients principaux</VLabel>
-        <VInput value={newRecipe.ing} onChange={e=>setNewRecipe(f=>({...f,ing:e.target.value}))} placeholder="séparés par des virgules"/>
         <PrimaryBtn onClick={saveNewRecipe}>Enregistrer</PrimaryBtn>
         <GhostBtn onClick={()=>setSheet(null)}>Annuler</GhostBtn>
       </Sheet>
