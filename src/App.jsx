@@ -354,14 +354,6 @@ const pullStart = useRef(0);
   showToast('Plat ajouté ✓');
 }
 
-    const added = new Set();
-    recs.forEach(r => r.ing.split(',').map(s=>s.trim()).filter(Boolean).forEach(ing => {
-      if (added.has(ing)) return; added.add(ing);
-      let placed=false;
-      for (const [cat,ks] of Object.entries(kws)) { if (ks.some(k=>ing.toLowerCase().includes(k))) { cats[cat].push(ing); placed=true; break; } }
-      if (!placed) cats['Épicerie'].push(ing);
-    }));
-    return cats;
   })();
 
   function addManualItem() {
