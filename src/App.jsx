@@ -3,14 +3,7 @@ const AT_URL = '/api/airtable';
 const AT_HEADERS = {'Content-Type':'application/json'};
 const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const FULL_DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
-const DATES = Array.from({ length: 7 }, (_, i) => {
-  const d = new Date();
-  const day = d.getDay();
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1) + i;
-  const nd = new Date(d); nd.setDate(diff); return nd.getDate();
- 
 
-});
 const MEALS = ['dejeuner','diner'];
 const ML = { dejeuner:'Déjeuner', diner:'Dîner' };
 const PROTEIN_EMOJI = {
@@ -96,32 +89,7 @@ const DEFAULT_RECIPES = [
   {id:66, name:'Bouillon asiatique + tofu ou crevettes', protein:'🐟', meal:'diner', ing:'bouillon, tofu ou crevettes, épices asiatiques'},
 ];
 
-async function doRefresh() {
-  setRefreshing(true);
-  try {
-    const res = await fetch(`${AT_URL}`, {headers: AT_HEADERS});
-    const data = await res.json();
-    if (data.records?.length) {
-      setRecipes(data.records.map(r => ({
-        id: r.fields.id||r.id, airtableId: r.id,
-        name: r.fields.name||'', protein: r.fields.protein||'🍗',
-        meal: r.fields.meal||'dejeuner', ing: r.fields.ing||''
-      })));
-    }
-    const res2 = await fetch('/api/planner', {headers: AT_HEADERS});
-    const data2 = await res2.json();
-    if (data2.records?.length) {
-      const p = {};
-      data2.records.forEach(r => {
-        if (r.fields.Slot && r.fields.recipeID)
-          p[r.fields.Slot] = {recipeId: r.fields.recipeID, airtableId: r.id};
-      });
-      setPlanner(p);
-    }
-  } catch(e) {}
-  setRefreshing(false);
-  showToast('Actualisé ✓');
-}
+
 function Toast({ msg, bottom }) {
   if (!msg) return null;
   const pos = bottom ? { bottom: 90 } : { top: 62 };
@@ -184,9 +152,19 @@ const [selectedDay, setSelectedDay] = useState(() => {
   const [newRecipe, setNewRecipe] = useState({name:'',protein:'🍗',meal:'dejeuner',time:'',ing:''});
   const [antiRep, setAntiRep] = useState(true);
   const [searchPlat, setSearchPlat] = useState('');
+  const [weekOffset, setWeekOffset] = useState(0);
    const [refreshing, setRefreshing] = useState(false);
 const [pullY, setPullY] = useState(0);
 const pullStart = useRef(0);
+
+  const DATES = Array.from({length:7}, (_,i) => {
+    const d = new Date();
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day===0?-6:1) + i + (weekOffset*7);
+    const nd = new Date(d); nd.setDate(diff); return nd.getDate();
+  });
+  const weekLabel = weekOffset===0?'Cette semaine':weekOffset===1?'Semaine prochaine':weekOffset===-1?'Semaine dernière':`Semaine ${weekOffset>0?'+':''}${weekOffset}`;
+  const weekKey = `w${weekOffset}`;
 
   const showToast = useCallback((msg, bottom = false) => {
     setToast(msg); setToastBottom(bottom);
@@ -275,7 +253,7 @@ const pullStart = useRef(0);
 
   async function doAddMeal() {
     if (!addRecipeId) return;
-    const slot = `${selectedDay}-${addMeal}`;
+    const slot = `${weekKey}-${selectedDay}-${addMeal}`;
     // Si le slot existe déjà, supprimer l'ancien enregistrement Airtable
     if (planner[slot]?.airtableId) {
       try { await fetch(`/api/planner?id=${planner[slot].airtableId}`, {method:'DELETE', headers:AT_HEADERS}); } catch(e) {}
@@ -304,7 +282,7 @@ const pullStart = useRef(0);
     setAddMeal(meal);
     const slotEmoji = PROTEIN_EMOJI[`${selectedDay}-${meal}`];
     const pool = recipes.filter(r => r.protein === slotEmoji);
-    setAddRecipeId(planner[`${selectedDay}-${meal}`]?.recipeId || pool[0]?.id || null);
+    setAddRecipeId(planner[`${weekKey}-${selectedDay}-${meal}`]?.recipeId || pool[0]?.id || null);
     setSheet('addMeal');
   }
   async function doRandom() {
@@ -323,7 +301,7 @@ const pullStart = useRef(0);
         if (!pool.length) pool = recipes;
         if (antiRep) { const used=Object.values(np).map(v=>v.recipeId); const fresh=pool.filter(r=>!used.includes(r.id)); if (fresh.length) pool=fresh; }
         const picked = pool[Math.floor(Math.random()*pool.length)];
-        const slot = `${i}-${m}`;
+        const slot = `${weekKey}-${i}-${m}`;
         let airtableId = null;
         try {
           const res = await fetch('/api/planner', {method:'POST', headers:AT_HEADERS,
@@ -402,7 +380,11 @@ const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plat
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
               <div>
                 <div style={{fontSize:30,fontWeight:800,letterSpacing:-0.8,color:P.text}}>Mes menus</div>
-                <div style={{fontSize:14,color:P.textSec,marginTop:5}}>{new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'}).replace(/^./, c => c.toUpperCase())}</div>
+                <div style={{display:'flex',alignItems:'center',gap:10,marginTop:5}}>
+                  <button onClick={()=>setWeekOffset(w=>w-1)} style={{background:'none',border:'none',fontSize:18,cursor:'pointer',color:P.accent,padding:0,lineHeight:1}}>‹</button>
+                  <div style={{fontSize:13,color:P.textSec}}>{weekLabel}</div>
+                  <button onClick={()=>setWeekOffset(w=>w+1)} style={{background:'none',border:'none',fontSize:18,cursor:'pointer',color:P.accent,padding:0,lineHeight:1}}>›</button>
+                </div>
               </div>
               <div style={{display:'flex',gap:8,marginTop:6}}>
                 <button onClick={()=>{ if(window.confirm('Vider le planning ?')){ setPlanner({}); showToast('Planning vidé', true); }}} style={{background:P.redBg,color:P.remove,border:'none',borderRadius:20,padding:'7px 12px',fontSize:13,fontWeight:700,cursor:'pointer'}}>Vider</button>
@@ -420,12 +402,12 @@ const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plat
                 <div key={i} onClick={()=>setSelectedDay(i)} style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:5,cursor:'pointer'}}>
                   <div style={{width:42,height:42,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:700,background:i===selectedDay?P.accent:P.surface,color:i===selectedDay?'white':P.text,border:`1.5px solid ${i===selectedDay?P.accent:P.border}`,boxShadow:i===selectedDay?`0 4px 14px ${P.accentLight}66`:'none',transition:'all 0.18s'}}>{DATES[i]}</div>
                   <span style={{fontSize:10,fontWeight:600,color:i===selectedDay?P.accent:P.textTert,letterSpacing:'0.02em'}}>{d}</span>
-                  <div style={{width:4,height:4,borderRadius:'50%',background:MEALS.some(m=>planner[`${i}-${m}`]?.recipeId)?P.accentLight:'transparent'}}/>
+                  <div style={{width:4,height:4,borderRadius:'50%',background:MEALS.some(m=>planner[`${weekKey}-${i}-${m}`]?.recipeId)?P.accentLight:'transparent'}}/>
                 </div>
               ))}
             </div>
             {MEALS.map(m => {
-              const rid = planner[`${selectedDay}-${m}`]?.recipeId;
+              const rid = planner[`${weekKey}-${selectedDay}-${m}`]?.recipeId;
               const recipe = rid ? recipes.find(r=>r.id===rid) : null;
               const emoji = PROTEIN_EMOJI[`${selectedDay}-${m}`] || '';
               const hasPlanned = !!recipe;
@@ -514,7 +496,7 @@ const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plat
         ))}
       </div>
 
-<Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title={`${planner[selectedDay+'-'+addMeal]?.recipeId?'Modifier':'Ajouter'} · ${ML[addMeal]} ${PROTEIN_EMOJI[selectedDay+'-'+addMeal]||''}`}>
+<Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title={`${planner[weekKey+'-'+selectedDay+'-'+addMeal]?.recipeId?'Modifier':'Ajouter'} · ${ML[addMeal]} ${PROTEIN_EMOJI[selectedDay+'-'+addMeal]||''}`}>
   <VLabel>Rechercher ou créer un plat</VLabel>
   <div style={{background:P.surface2,borderRadius:12,padding:'9px 14px',display:'flex',alignItems:'center',gap:8,marginBottom:8,border:`0.5px solid ${P.border}`}}>
     <svg viewBox="0 0 20 20" style={{width:14,height:14,fill:P.textTert,flexShrink:0}}><path d="M13.3 11.9l4.8 4.8-1.4 1.4-4.8-4.8A7 7 0 1 1 13.3 11.9zM8 13A5 5 0 1 0 8 3a5 5 0 0 0 0 10z"/></svg>
@@ -522,7 +504,7 @@ const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plat
   </div>
   {filteredForSlot.filter(r=>r.name.toLowerCase().includes(newRecipe.name.toLowerCase())).map(r=>(
     <div key={r.id} onClick={async()=>{
-      const slot = selectedDay+'-'+addMeal;
+      const slot = weekKey+'-'+selectedDay+'-'+addMeal;
       if (planner[slot]?.airtableId) {
         try { await fetch(`/api/planner?id=${planner[slot].airtableId}`,{method:'DELETE',headers:AT_HEADERS}); } catch(e) {}
       }
