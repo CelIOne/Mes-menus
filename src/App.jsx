@@ -316,7 +316,7 @@ const pullStart = useRef(0);
   const newR = {id:nextRid, name:newRecipe.name.trim(), protein:newRecipe.protein, meal:newRecipe.meal, ing:newRecipe.ing.trim()};
   try {
     const res = await fetch(`${AT_URL}`, {method:'POST', headers:AT_HEADERS,
-body:JSON.stringify({fields:{name:newR.name, protein:newR.protein, meal:newR.meal, ing:newR.ing}})
+body:JSON.stringify({fields:{name:newR.name, protein:newR.protein, meal:newR.meal, ing:newR.ing}})});
     const data = await res.json();
     newR.airtableId = data.id;
   } catch(e) {}
