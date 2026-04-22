@@ -3,7 +3,7 @@ const AT_URL = '/api/airtable';
 const AT_HEADERS = {'Content-Type':'application/json'};
 const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const FULL_DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
-
+const [filterProtein, setFilterProtein] = useState('Tous');
 const MEALS = ['dejeuner','diner'];
 const ML = { dejeuner:'Déjeuner', diner:'Dîner' };
 const PROTEIN_EMOJI = {
@@ -456,7 +456,14 @@ const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plat
               <svg viewBox="0 0 20 20" style={{width:14,height:14,fill:P.textTert,flexShrink:0}}><path d="M13.3 11.9l4.8 4.8-1.4 1.4-4.8-4.8A7 7 0 1 1 13.3 11.9zM8 13A5 5 0 1 0 8 3a5 5 0 0 0 0 10z"/></svg>
               <input value={searchPlat} onChange={e=>setSearchPlat(e.target.value)} placeholder="Rechercher un plat…" style={{background:'none',border:'none',outline:'none',fontSize:15,color:P.text,flex:1,fontFamily:'inherit'}}/>
             </div>
-            {PROTEIN_ORDER.map(emoji => {
+            <div style={{display:'flex',gap:8,marginBottom:8,flexWrap:'wrap'}}>
+  {['Tous','🥚','🍗','🥩','🐟'].map(e=>(
+    <button key={e} onClick={()=>setFilterProtein(e)} style={{padding:'6px 14px',borderRadius:20,fontSize:e==='Tous'?13:18,fontWeight:600,cursor:'pointer',border:`1.5px solid ${filterProtein===e?P.accent:P.border}`,background:filterProtein===e?P.accentBg:'transparent',color:filterProtein===e?P.accentText:P.text,transition:'all 0.15s'}}>
+      {e}
+    </button>
+  ))}
+</div>
+           {PROTEIN_ORDER.filter(emoji => filterProtein==='Tous' || filterProtein===emoji).map(emoji => {
               const list = (recipesByProtein[emoji]||[]).filter(r=>r.name.toLowerCase().includes(searchPlat.toLowerCase()));
               if (!list.length) return null;
               return (
