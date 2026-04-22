@@ -514,42 +514,64 @@ const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plat
         ))}
       </div>
 
-      {/* SHEETS */}
-      <Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title={`${planner[selectedDay+'-'+addMeal]?.recipeId?'Modifier':'Ajouter'} · ${ML[addMeal]} ${PROTEIN_EMOJI[selectedDay+'-'+addMeal]||''}`}>
-        <VLabel>Plats disponibles · {EMOJI_LABEL[slotEmoji]} {slotEmoji}</VLabel>
-        {filteredForSlot.length === 0
-          ? <div style={{color:P.textTert,fontSize:14,padding:'12px 0',textAlign:'center'}}>Aucun plat pour cette protéine.<br/>Ajoutez-en dans "Plats".</div>
-          : filteredForSlot.map(r => (
-<div key={r.id} onClick={async()=>{
-  const slot = selectedDay+'-'+addMeal;
-  if (planner[slot]?.airtableId) {
-    try { await fetch(`/api/planner?id=${planner[slot].airtableId}`,{method:'DELETE',headers:AT_HEADERS}); } catch(e) {}
-  }
-  let airtableId = null;
-  try {
-    const res = await fetch('/api/planner',{method:'POST',headers:AT_HEADERS,
-      body:JSON.stringify({fields:{Slot:slot,recipeID:r.id}})});
-    const data = await res.json();
-    airtableId = data.id;
-  } catch(e) {}
-  setPlanner(p=>({...p,[slot]:{recipeId:r.id,airtableId}}));
-  setSheet(null);
-  showToast('Repas planifié ✓');
-}} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 14px',borderRadius:14,marginBottom:6,cursor:'pointer',background:P.surface3,border:`1px solid ${P.border}`}}>
-              <div style={{flex:1}}>
-                <div style={{fontSize:15,fontWeight:addRecipeId===r.id?600:500,color:addRecipeId===r.id?P.accentText:P.text}}>{r.name}</div>
-                <div style={{fontSize:12,color:P.textSec,marginTop:2}}>{ML[r.meal]}</div>
-              </div>
-              {addRecipeId===r.id && (
-                <div style={{width:20,height:20,borderRadius:'50%',background:P.accent,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                  <svg viewBox="0 0 12 10" style={{width:10,height:10}}><path d="M1 5l3 3 7-7" stroke="white" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </div>
-              )}
-            </div>
-          ))
-        }
-        <GhostBtn onClick={()=>setSheet(null)}>Annuler</GhostBtn>
-      </Sheet>
+<Sheet open={sheet==='addMeal'} onClose={()=>setSheet(null)} title={`${planner[selectedDay+'-'+addMeal]?.recipeId?'Modifier':'Ajouter'} · ${ML[addMeal]} ${PROTEIN_EMOJI[selectedDay+'-'+addMeal]||''}`}>
+  <VLabel>Rechercher ou créer un plat</VLabel>
+  <div style={{background:P.surface2,borderRadius:12,padding:'9px 14px',display:'flex',alignItems:'center',gap:8,marginBottom:8,border:`0.5px solid ${P.border}`}}>
+    <svg viewBox="0 0 20 20" style={{width:14,height:14,fill:P.textTert,flexShrink:0}}><path d="M13.3 11.9l4.8 4.8-1.4 1.4-4.8-4.8A7 7 0 1 1 13.3 11.9zM8 13A5 5 0 1 0 8 3a5 5 0 0 0 0 10z"/></svg>
+    <input value={newRecipe.name} onChange={e=>setNewRecipe(f=>({...f,name:e.target.value}))} placeholder="Rechercher un plat…" style={{background:'none',border:'none',outline:'none',fontSize:15,color:P.text,flex:1,fontFamily:'inherit'}}/>
+  </div>
+  {filteredForSlot.filter(r=>r.name.toLowerCase().includes(newRecipe.name.toLowerCase())).map(r=>(
+    <div key={r.id} onClick={async()=>{
+      const slot = selectedDay+'-'+addMeal;
+      if (planner[slot]?.airtableId) {
+        try { await fetch(`/api/planner?id=${planner[slot].airtableId}`,{method:'DELETE',headers:AT_HEADERS}); } catch(e) {}
+      }
+      let airtableId = null;
+      try {
+        const res = await fetch('/api/planner',{method:'POST',headers:AT_HEADERS,
+          body:JSON.stringify({fields:{Slot:slot,recipeID:r.id}})});
+        const data = await res.json();
+        airtableId = data.id;
+      } catch(e) {}
+      setPlanner(p=>({...p,[slot]:{recipeId:r.id,airtableId}}));
+      setNewRecipe({name:'',protein:'🍗',meal:'dejeuner',ing:''});
+      setSheet(null);
+      showToast('Repas planifié ✓');
+    }} style={{display:'flex',alignItems:'center',padding:'13px 14px',borderRadius:14,marginBottom:6,cursor:'pointer',background:P.surface3,border:`1px solid ${P.border}`}}>
+      <div style={{flex:1}}>
+        <div style={{fontSize:15,fontWeight:500,color:P.text}}>{r.name}</div>
+      </div>
+    </div>
+  ))}
+  {newRecipe.name.trim().length > 2 && !filteredForSlot.some(r=>r.name.toLowerCase()===newRecipe.name.toLowerCase()) && (
+    <div>
+      <div style={{fontSize:12,color:P.textTert,padding:'8px 2px'}}>Plat non trouvé — créer :</div>
+      <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:8}}>
+        {PROTEIN_ORDER.map(e=>(
+          <button key={e} onClick={()=>setNewRecipe(f=>({...f,protein:e}))} style={{padding:'6px 14px',borderRadius:20,fontSize:18,cursor:'pointer',border:`1.5px solid ${newRecipe.protein===e?P.accent:P.border}`,background:newRecipe.protein===e?P.accentBg:'transparent'}}>
+            {e}
+          </button>
+        ))}
+      </div>
+      <VInput value={newRecipe.ing} onChange={e=>setNewRecipe(f=>({...f,ing:e.target.value}))} placeholder="Ingrédients…" style={{marginBottom:8}}/>
+      <PrimaryBtn onClick={async()=>{
+        if(!newRecipe.name.trim()) return;
+        const newR = {id:nextRid, name:newRecipe.name.trim(), protein:newRecipe.protein, meal:addMeal, ing:newRecipe.ing.trim()};
+        try {
+          const res = await fetch(`${AT_URL}`,{method:'POST',headers:AT_HEADERS,
+            body:JSON.stringify({fields:{id:nextRid,name:newR.name,protein:newR.protein,meal:newR.meal,ing:newR.ing}})});
+          const data = await res.json();
+          newR.airtableId = data.id;
+        } catch(e) {}
+        setRecipes(prev=>[...prev,newR]);
+        setNextRid(n=>n+1);
+        setNewRecipe({name:'',protein:'🍗',meal:'dejeuner',ing:''});
+        showToast('Plat créé ✓');
+      }} style={{marginTop:4}}>Créer et ajouter</PrimaryBtn>
+    </div>
+  )}
+  <GhostBtn onClick={()=>setSheet(null)}>Annuler</GhostBtn>
+</Sheet>
 
       <Sheet open={sheet==='newRecipe'} onClose={()=>setSheet(null)} title="Nouveau plat">
         <VLabel>Nom du plat</VLabel>
