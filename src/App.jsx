@@ -3,7 +3,7 @@ const AT_URL = '/api/airtable';
 const AT_HEADERS = {'Content-Type':'application/json'};
 const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const FULL_DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
-const [filterProtein, setFilterProtein] = useState('Tous');
+
 const MEALS = ['dejeuner','diner'];
 const ML = { dejeuner:'Déjeuner', diner:'Dîner' };
 const PROTEIN_EMOJI = {
@@ -145,6 +145,7 @@ const [selectedDay, setSelectedDay] = useState(() => {
   return day === 0 ? 6 : day - 1;
 });
   const [toast, setToast] = useState('');
+  const [filterProtein, setFilterProtein] = useState('Tous');
   const [toastBottom, setToastBottom] = useState(false);
   const [sheet, setSheet] = useState(null);
   const [addMeal, setAddMeal] = useState('dejeuner');
