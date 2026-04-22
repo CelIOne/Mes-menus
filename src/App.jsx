@@ -134,9 +134,6 @@ function Toggle({ value, onChange }) {
 export default function App() {
   const [recipes, setRecipes] = useState(DEFAULT_RECIPES);
   const [planner, setPlanner] = useState({});
-  const [groceryChecked, setGroceryChecked] = useState({});
-  const [manualItems, setManualItems] = useState([]);
-  const [newItem, setNewItem] = useState('');
   const [nextRid, setNextRid] = useState(67);
   const [loaded, setLoaded] = useState(false);
   const [tab, setTab] = useState('planner');
@@ -232,8 +229,6 @@ const pullStart = useRef(0);
         const r = await window.storage.get(STORAGE_KEY);
         if (r?.value) {
           const d = JSON.parse(r.value);
-          if (d.groceryChecked) setGroceryChecked(d.groceryChecked);
-          if (d.manualItems) setManualItems(d.manualItems);
           if (d.nextRid) setNextRid(d.nextRid);
         }
       } catch(e) {}
@@ -246,10 +241,10 @@ const pullStart = useRef(0);
   useEffect(() => {
     if (!loaded) return;
     const t = setTimeout(async () => {
-      try { await window.storage.set(STORAGE_KEY, JSON.stringify({groceryChecked,manualItems,nextRid})); } catch(e) {}
+      try { await window.storage.set(STORAGE_KEY, JSON.stringify({nextRid})); } catch(e) {}
     }, 500);
     return () => clearTimeout(t);
-  }, [groceryChecked, manualItems, nextRid, loaded]);
+  }, [nextRid, loaded]);
 
   async function doAddMeal() {
     if (!addRecipeId) return;
@@ -333,13 +328,6 @@ const pullStart = useRef(0);
 }
 
 
-  function addManualItem() {
-    const v = newItem.trim(); if (!v) return;
-    setManualItems(prev => [...prev, {id:Date.now(), name:v, checked:false}]);
-    setNewItem('');
-  }
-  function toggleManual(id) { setManualItems(prev => prev.map(i => i.id===id ? {...i,checked:!i.checked} : i)); }
-  function removeManual(id) { setManualItems(prev => prev.filter(i => i.id!==id)); }
 
   const PROTEIN_ORDER = ['🥚','🍗','🥩','🐟'];
   const recipesByProtein = PROTEIN_ORDER.reduce((acc,e) => { acc[e]=recipes.filter(r=>r.protein===e); return acc; }, {});
