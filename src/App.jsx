@@ -181,14 +181,14 @@ const pullStart = useRef(0);
       }
       const res2 = await fetch('/api/planner', {headers: AT_HEADERS});
       const data2 = await res2.json();
+      const p = {};
       if (data2.records?.length) {
-        const p = {};
         data2.records.forEach(r => {
           if (r.fields.Slot && r.fields.recipeID)
             p[r.fields.Slot] = {recipeId: r.fields.recipeID, airtableId: r.id};
         });
-        setPlanner(p);
       }
+      setPlanner(p);
     } catch(e) {}
     setRefreshing(false);
     showToast('Actualisé ✓');
@@ -213,15 +213,15 @@ const pullStart = useRef(0);
       try {
         const res = await fetch('/api/planner', {headers: AT_HEADERS});
         const data = await res.json();
+        const p = {};
         if (data.records?.length) {
-          const p = {};
           data.records.forEach(r => {
             if (r.fields.Slot && r.fields.recipeID) {
               p[r.fields.Slot] = { recipeId: r.fields.recipeID, airtableId: r.id };
             }
           });
-          setPlanner(p);
         }
+        setPlanner(p);
       } catch(e) {}
 
       // Charger courses depuis window.storage
