@@ -536,8 +536,8 @@ const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plat
         const newR = {id:nextRid, name:newRecipe.name.trim(), protein:newRecipe.protein, meal:addMeal, ing:newRecipe.ing.trim()};
         try {
           const res = await fetch(`${AT_URL}`,{method:'POST',headers:AT_HEADERS,
-            body:JSON.stringify({fields:{name:newR.name,protein:newR.protein,meal:newR.meal,ing:newR.ing}})});
-          const data = await res.json();
+body:JSON.stringify({fields:{name:newR.name, protein:newR.protein, meal:newR.meal, ing:newR.ing}})});
+    const data = await res.json();
           newR.airtableId = data.id;
         } catch(e) {}
         setRecipes(prev=>[...prev,newR]);
