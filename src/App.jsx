@@ -354,7 +354,7 @@ const pullStart = useRef(0);
   showToast('Plat ajouté ✓');
 }
 
-  })();
+  }();
 
   function addManualItem() {
     const v = newItem.trim(); if (!v) return;
