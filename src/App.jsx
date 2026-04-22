@@ -530,7 +530,6 @@ const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plat
           </button>
         ))}
       </div>
-      <VInput value={newRecipe.ing} onChange={e=>setNewRecipe(f=>({...f,ing:e.target.value}))} placeholder="Ingrédients…" style={{marginBottom:8}}/>
       <PrimaryBtn onClick={async()=>{
         if(!newRecipe.name.trim()) return;
         const newR = {id:nextRid, name:newRecipe.name.trim(), protein:newRecipe.protein, meal:addMeal, ing:newRecipe.ing.trim()};
