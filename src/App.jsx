@@ -385,10 +385,10 @@ const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plat
   onTouchMove={e=>{ const delta = e.touches[0].clientY - pullStart.current; if(delta>0 && delta<80) setPullY(delta); }}
   onTouchEnd={()=>{ if(pullY>60) doRefresh(); setPullY(0); }}
 >
-            <div className="scroll" style={{display:'flex',gap:8,padding:'14px 0 10px',overflowX:'auto'}}>
+            <div className="scroll" style={{display:'flex',gap:4,padding:'14px 0 10px',overflowX:'auto'}}>
               {DAYS.map((d,i)=>(
                 <div key={i} onClick={()=>setSelectedDay(i)} style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:5,cursor:'pointer'}}>
-                  <div style={{width:42,height:42,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:700,background:i===selectedDay?P.accent:P.surface,color:i===selectedDay?'white':P.text,border:`1.5px solid ${i===selectedDay?P.accent:P.border}`,boxShadow:i===selectedDay?`0 4px 14px ${P.accentLight}66`:'none',transition:'all 0.18s'}}>{DATES[i]}</div>
+                  <div style={{width:38,height:38,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:700,background:i===selectedDay?P.accent:P.surface,color:i===selectedDay?'white':P.text,border:`1.5px solid ${i===selectedDay?P.accent:P.border}`,boxShadow:i===selectedDay?`0 4px 14px ${P.accentLight}66`:'none',transition:'all 0.18s'}}>{DATES[i]}</div>
                   <span style={{fontSize:10,fontWeight:600,color:i===selectedDay?P.accent:P.textTert,letterSpacing:'0.02em'}}>{d}</span>
                   <div style={{width:4,height:4,borderRadius:'50%',background:MEALS.some(m=>planner[`${weekOffset}_${i}_${m}`]?.recipeId)?P.accentLight:'transparent'}}/>
                 </div>
