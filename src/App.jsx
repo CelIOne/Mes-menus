@@ -270,8 +270,8 @@ const pullStart = useRef(0);
     showToast('Repas planifié ✓');
   }
 
-async function removeMeal(day, meal) {
-  const slot = `${weekOffset}_${day}_${meal}`;
+  async function removeMeal(day, meal) {
+    const slot = `${weekOffset}_${day}_${meal}`;
     if (planner[slot]?.airtableId) {
       try { await fetch(`/api/planner?id=${planner[slot].airtableId}`, {method:'DELETE', headers:AT_HEADERS}); } catch(e) {}
     }
