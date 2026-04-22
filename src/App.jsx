@@ -202,7 +202,7 @@ const pullStart = useRef(0);
         const data = await res.json();
         if (data.records?.length) {
           setRecipes(data.records.map(r => ({
-            id: r.fields.id || r.id, airtableId: r.id,
+            r.id: r.fields.id || r.id, airtableId: r.id,
             name: r.fields.name||'', protein: r.fields.protein||'🍗',
             meal: r.fields.meal||'dejeuner', ing: r.fields.ing||''
           })));
@@ -316,7 +316,7 @@ const pullStart = useRef(0);
   const newR = {id:nextRid, name:newRecipe.name.trim(), protein:newRecipe.protein, meal:newRecipe.meal, ing:newRecipe.ing.trim()};
   try {
     const res = await fetch(`${AT_URL}`, {method:'POST', headers:AT_HEADERS,
-      body:JSON.stringify({fields:{id:nextRid, name:newR.name, protein:newR.protein, meal:newR.meal, ing:newR.ing}})});
+body:JSON.stringify({fields:{name:newR.name, protein:newR.protein, meal:newR.meal, ing:newR.ing}})
     const data = await res.json();
     newR.airtableId = data.id;
   } catch(e) {}
