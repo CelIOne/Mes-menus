@@ -174,7 +174,7 @@ const pullStart = useRef(0);
       const data = await res.json();
       if (data.records?.length) {
         setRecipes(data.records.map(r => ({
-          id: r.fields.id||r.id, airtableId: r.id,
+          id: r.id, airtableId: r.id,
           name: r.fields.name||'', protein: r.fields.protein||'🍗',
           meal: r.fields.meal||'dejeuner', ing: r.fields.ing||''
         })));
@@ -202,7 +202,7 @@ const pullStart = useRef(0);
         const data = await res.json();
         if (data.records?.length) {
           setRecipes(data.records.map(r => ({
-            r.id: r.fields.id || r.id, airtableId: r.id,
+            id: r.id, airtableId: r.id,
             name: r.fields.name||'', protein: r.fields.protein||'🍗',
             meal: r.fields.meal||'dejeuner', ing: r.fields.ing||''
           })));
@@ -396,7 +396,7 @@ const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plat
             </div>
             {MEALS.map(m => {
               const rid = planner[`${weekOffset}_${selectedDay}_${m}`]?.recipeId;
-              const recipe = rid ? recipes.find(r=>r.id===rid) : null;
+              const recipe = rid ? recipes.find(r=>r.airtableId===rid || r.id===rid) : null;
               const emoji = PROTEIN_EMOJI[`${selectedDay}-${m}`] || '';
               const hasPlanned = !!recipe;
               return (
@@ -536,7 +536,7 @@ const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plat
         const newR = {id:nextRid, name:newRecipe.name.trim(), protein:newRecipe.protein, meal:addMeal, ing:newRecipe.ing.trim()};
         try {
           const res = await fetch(`${AT_URL}`,{method:'POST',headers:AT_HEADERS,
-            body:JSON.stringify({fields:{id:nextRid,name:newR.name,protein:newR.protein,meal:newR.meal,ing:newR.ing}})});
+            body:JSON.stringify({fields:{name:newR.name,protein:newR.protein,meal:newR.meal,ing:newR.ing}})});
           const data = await res.json();
           newR.airtableId = data.id;
         } catch(e) {}
