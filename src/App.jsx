@@ -367,7 +367,7 @@ const pullStart = useRef(0);
   const recipesByProtein = PROTEIN_ORDER.reduce((acc,e) => { acc[e]=recipes.filter(r=>r.protein===e); return acc; }, {});
   const slotEmoji = PROTEIN_EMOJI[`${selectedDay}-${addMeal}`] || '🍗';
   const filteredForSlot = recipes.filter(r => r.protein === slotEmoji);
-  const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plats'};
+const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plats'}];
   const TAB_EMOJI = {planner:'📆', menutypes:'🥗'};
 
   return (
