@@ -354,16 +354,6 @@ const pullStart = useRef(0);
   showToast('Plat ajouté ✓');
 }
 
-  const groceryCats = (() => {
-    const rids = [...new Set(Object.values(planner))];
-    const recs = rids.map(id=>recipes.find(r=>r.id===id)).filter(Boolean);
-    const cats = {'Féculents & légumineuses':[],'Protéines':[],'Légumes & fruits':[],'Produits laitiers':[],'Épicerie':[]};
-    const kws = {
-      'Féculents & légumineuses':['quinoa','riz','lentilles','haricot','pois','farine','patate douce'],
-      'Protéines':['cabillaud','poulet','sardine','maquereau','oeuf','oeufs','poisson','thon','boeuf','steak','tartare','feta','avocat'],
-      'Légumes & fruits':['courgette','tomate','haricot vert','brocoli','carotte','épinard','salade','poireau','citron','poire','pomme','champignon','poivron'],
-      'Produits laitiers':['fromage','yaourt','brebis','chèvre','faisselle'],
-    };
     const added = new Set();
     recs.forEach(r => r.ing.split(',').map(s=>s.trim()).filter(Boolean).forEach(ing => {
       if (added.has(ing)) return; added.add(ing);
@@ -386,8 +376,8 @@ const pullStart = useRef(0);
   const recipesByProtein = PROTEIN_ORDER.reduce((acc,e) => { acc[e]=recipes.filter(r=>r.protein===e); return acc; }, {});
   const slotEmoji = PROTEIN_EMOJI[`${selectedDay}-${addMeal}`] || '🍗';
   const filteredForSlot = recipes.filter(r => r.protein === slotEmoji);
-  const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plats'},{name:'courses',label:'Courses'}];
-  const TAB_EMOJI = {planner:'📆', menutypes:'🥗', courses:'🛒'};
+  const tabCfg = [{name:'planner',label:'Planifier'},{name:'menutypes',label:'Plats'};
+  const TAB_EMOJI = {planner:'📆', menutypes:'🥗'};
 
   return (
     <div style={{maxWidth:390,margin:'0 auto',background:P.bg,minHeight:780,position:'relative',overflow:'hidden',fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif'}}>
@@ -522,60 +512,7 @@ const pullStart = useRef(0);
         </div>
       )}
 
-      {/* ══ COURSES ══ */}
-      {tab==='courses' && (
-        <div style={{display:'flex',flexDirection:'column',height:700}}>
-          <div style={{padding:'6px 20px 4px'}}>
-            <div style={{fontSize:28,fontWeight:800,letterSpacing:-0.8,color:P.text}}>Courses</div>
-            <div style={{fontSize:13,color:P.textSec,marginTop:1}}>Générées depuis la semaine</div>
-          </div>
-          <div className="scroll" style={{flex:1,overflowY:'auto',padding:'0 16px 90px'}}>
-            {Object.values(groceryCats).flat().length > 0
-              ? Object.entries(groceryCats).map(([cat,items]) => items.length > 0 ? (
-                <div key={cat}>
-                  <div style={{fontSize:11,fontWeight:700,color:P.accentLight,textTransform:'uppercase',letterSpacing:'0.08em',padding:'14px 4px 6px'}}>{cat}</div>
-                  <div style={{background:P.surface,borderRadius:14,overflow:'hidden',marginBottom:4,border:`0.5px solid ${P.border}`}}>
-                    {items.map((item,idx) => {
-                      const key='g_'+item.replace(/[\s,]/g,'_');
-                      const chk = groceryChecked[key]||false;
-                      return (
-                        <div key={item} style={{display:'flex',alignItems:'center',padding:'13px 16px',borderBottom:idx<items.length-1?`0.5px solid ${P.border}`:'none',gap:12,background:chk?P.surface3:'transparent',transition:'background 0.15s'}}>
-                          <div onClick={()=>setGroceryChecked(p=>({...p,[key]:!chk}))} style={{width:22,height:22,borderRadius:8,flexShrink:0,cursor:'pointer',background:chk?P.accent:P.surface2,border:`1.5px solid ${chk?P.accent:P.border}`,display:'flex',alignItems:'center',justifyContent:'center',transition:'all 0.15s'}}>
-                            {chk&&<svg viewBox="0 0 12 10" style={{width:10,height:10}}><path d="M1 5l3 3 7-7" stroke="white" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                          </div>
-                          <span style={{fontSize:15,color:chk?P.textTert:P.text,textDecoration:chk?'line-through':'none',flex:1,transition:'all 0.15s'}}>{item.charAt(0).toUpperCase()+item.slice(1)}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              ) : null)
-              : <div style={{color:P.textTert,fontSize:14,textAlign:'center',padding:'2rem 1rem',lineHeight:2}}>Planifiez votre semaine<br/>pour voir la liste.</div>
-            }
-            {manualItems.length > 0 && (
-              <div>
-                <div style={{fontSize:11,fontWeight:700,color:P.accentLight,textTransform:'uppercase',letterSpacing:'0.08em',padding:'14px 4px 6px'}}>Ajouts manuels</div>
-                <div style={{background:P.surface,borderRadius:14,overflow:'hidden',marginBottom:4,border:`0.5px solid ${P.border}`}}>
-                  {manualItems.map((item,idx)=>(
-                    <div key={item.id} style={{display:'flex',alignItems:'center',padding:'13px 16px',borderBottom:idx<manualItems.length-1?`0.5px solid ${P.border}`:'none',gap:12,background:item.checked?P.surface3:'transparent'}}>
-                      <div onClick={()=>toggleManual(item.id)} style={{width:22,height:22,borderRadius:8,flexShrink:0,cursor:'pointer',background:item.checked?P.accent:P.surface2,border:`1.5px solid ${item.checked?P.accent:P.border}`,display:'flex',alignItems:'center',justifyContent:'center',transition:'all 0.15s'}}>
-                        {item.checked&&<svg viewBox="0 0 12 10" style={{width:10,height:10}}><path d="M1 5l3 3 7-7" stroke="white" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                      </div>
-                      <span style={{fontSize:15,color:item.checked?P.textTert:P.text,textDecoration:item.checked?'line-through':'none',flex:1}}>{item.name}</span>
-                      <span onClick={()=>removeManual(item.id)} style={{color:P.remove,fontSize:12,cursor:'pointer',padding:'2px 6px'}}>✕</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-          <div style={{position:'absolute',bottom:110,left:0,right:0,background:P.surface,borderTop:`0.5px solid ${P.border}`,padding:'10px 16px',display:'flex',gap:10,alignItems:'center'}}>
-            <input value={newItem} onChange={e=>setNewItem(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addManualItem()} placeholder="Ajouter un ingrédient…" style={{flex:1,background:P.surface2,border:`0.5px solid ${P.border}`,borderRadius:12,padding:'10px 14px',fontSize:15,color:P.text,outline:'none',fontFamily:'inherit'}}/>
-            <button onClick={addManualItem} style={{background:P.accent,color:'white',border:'none',borderRadius:12,padding:'10px 16px',fontSize:15,fontWeight:700,cursor:'pointer',fontFamily:'inherit',flexShrink:0}}>+</button>
-          </div>
-        </div>
-      )}
-
+     
       {/* TAB BAR */}
       <div style={{position:'absolute',bottom:0,left:0,right:0,height:82,background:P.tabBar,borderTop:`0.5px solid ${P.border}`,display:'flex',alignItems:'flex-start',paddingTop:10}}>
         {tabCfg.map(({name,label})=>(
